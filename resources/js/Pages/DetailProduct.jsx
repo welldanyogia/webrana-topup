@@ -195,12 +195,12 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                         <img className="rounded-xl"
                                              src={brand.image_url ? brand.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
                                              alt={brand.brand_name}/>
+                                        <div className="text-xl dark:text-white font-bold items-center h-auto">
+                                            <h1>{brand.brand_name}</h1>
+                                        </div>
                                     </div>
-                                    <div className="text-xl dark:text-white font-bold items-center h-auto">
-                                        <h1>{brand.brand_name}</h1>
-                                    </div>
-                                </div>
-                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b-2 border-lime-400 py-2">
+                                    <div
+                                        className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b-2 border-lime-400 py-2">
                                         <div className="flex flex-row items-center gap-1">
                                             <div className='hidden dark:block'>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16"
