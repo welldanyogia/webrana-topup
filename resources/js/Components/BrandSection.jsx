@@ -5,7 +5,7 @@ import {Link, usePage} from "@inertiajs/react"; // Import komponen ApplicationLo
 
 function BrandSection() {
     const { categories } = usePage().props
-    const [activeTab, setActiveTab] = useState(categories[0].category_id);
+    const [activeTab, setActiveTab] = useState(categories[0]?.category_id);
     const [hoveredButton, setHoveredButton] = useState(null);
     // const history = useHistory();
 
