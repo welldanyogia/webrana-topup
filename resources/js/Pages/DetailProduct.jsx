@@ -51,7 +51,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
 
     function price(paymentPrice,feeFlat,feePercent) {
         // setPaymentPriceWithFee(paymentPrice + feeFlat + (paymentPrice*(feePercent/100)))
-        return paymentPrice + feeFlat + (paymentPrice*(feePercent))
+        return parseFloat(paymentPrice) + parseFloat(feeFlat) + parseFloat((paymentPrice*(feePercent)))
     }
     const handleToggle = (group) => {
         // e.preventDefault()
