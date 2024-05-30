@@ -130,7 +130,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
         return products
             .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
             .map(productType => (
-                <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 sm:grid-cols-2 max-sm:grid-cols-2 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
+                <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 max-sm:grid-cols-2 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
                     {products
                         .filter(product => product.type_id === productType.type_id)
                         .map(product => (
@@ -139,9 +139,9 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                 key={product.id}
                                 onClick={(e) => handleProductButton(e,product)}
                             >
-                                <div className='flex flex-col sm:text-sm text-start'>
-                                    <div className='text-md font-semibold'>{product.product_name}</div>
-                                    <div className='text-xl font-bold'>{formatRupiah(product.selling_price)}</div>
+                                <div className='flex flex-col max-sm:text-xs text-start'>
+                                    <div className='font-semibold'>{product.product_name}</div>
+                                    <div className='font-bold'>{formatRupiah(product.selling_price)}</div>
                                 </div>
                                 {selectedProduct === product.id ? <span
                                     className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">

@@ -527,7 +527,7 @@ export default function DetailBrand() {
                                         <td className="h-px w-72 whitespace-nowrap">
                                             <div className="px-6 py-3">
                                                 <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.selling_price ? formatRupiah(product.selling_price) : formatRupiah(product.price)}</span>
+                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.selling_price ? formatRupiah(product.selling_price) : "Edit harga jual produk anda"}</span>
                                             </div>
                                         </td>
                                         <td className="size-px whitespace-nowrap">
