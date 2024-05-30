@@ -52,7 +52,7 @@ export default function DetailBrand() {
         {label: 'Option 4', value: '4'},
     ];
 
-    console.log(formInputs)
+    // console.log(formInputs)
     // console.log(optionsInput)
 
     // console.log(brand[0].brand_id)
