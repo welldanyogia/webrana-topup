@@ -170,11 +170,6 @@ export default function DetailBrand() {
         }
     }
 
-    const editor = useEditor({
-        extensions: [StarterKit],
-        content: "<p>Hello <b>world</b>!</p>",
-    });
-
     return (
         <AuthenticatedAdmin>
             {flash && flash.message && alertVisible && (
