@@ -17,11 +17,11 @@ export default function EditProductModal({product}) {
 
         // Lakukan logika untuk menyimpan kategori baru (misalnya, kirim ke server)
         // console.log("New category:", newCategory);
-        console.log(productSellingPrice)
+        // console.log(productSellingPrice)
         e.preventDefault()
        try {
 
-           router.post(`/product/${product.id}`,{
+           router.post(`/admin/product/${product.id}`,{
                id:product.id,
                product_name: productName,
                price: productPrice,

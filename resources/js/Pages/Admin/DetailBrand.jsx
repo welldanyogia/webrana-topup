@@ -557,7 +557,6 @@ export default function DetailBrand() {
                                                     type="button"
                                                     onClick={() => {
                                                         handleEditClick(product)
-                                                        console.log(selectedProduct)
                                                     }}
                                                     data-hs-overlay={`#hs-static-backdrop-modal-edit-product-${product.id}`}>
                                                     Edit
