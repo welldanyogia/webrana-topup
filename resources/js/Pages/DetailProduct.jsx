@@ -191,9 +191,9 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                             <div className='col-span-2 max-md:col-span-6'>
                                 <div
                                     className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-md shadow-lime-400">
-                                    <div className="flex flex-row gap-6 md:grid sm:grid">
+                                    <div className="flex flex-row gap-6 md:grid max-sm:grid">
                                         <div
-                                            className="w-28 h-28 bg-cover bg-no-repeat bg-[url('https://s3-alpha-sig.figma.com/img/5f72/2ccf/9a6497f5e6f67e69c32a91a96938a460?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=C4BiYETOcRLeA9mN-p7X96hy3weDIX4YYmKQGIfZmdlrggxjlfPnT2Z4ouKpcoJcnJutSEBANvI8fmW48YGs5nHnYeMIpjlwTFvUV9zA2bqo-nsrsNlsELtGMx39QfFLPhXvqTttaO8fV6aGYYVaiX2B32z7jwnB9JGqIXj1O1U1I38RE2w4Y1woJxa4SWESpfr5sifmvte0LQzxEzHSCSchwKUDconljz7Ce9YHh-b~v2GffnSnsXLb6Aj~OltyCgKjxzs3QgZTC4MZcYVi1ydxWc0K70XGD2cSqkyZnl9ffctnIIjRlrK6AUffFWhC~37arp7w9OhPxBA8F3~RBA__')] rounded-lg">
+                                            className="w-28 h-28 bg-cover bg-no-repeat bg-[url('https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80')] rounded-lg">
                                         </div>
                                         <div className="text-xl dark:text-white font-bold items-center h-auto">
                                             <h1>{brand.brand_name}</h1>

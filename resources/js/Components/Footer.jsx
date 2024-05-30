@@ -1,22 +1,12 @@
 function Footer() {
-    // This code should be added to <head>.
-// It's used to prevent page load glitches.
-//     const html = document.querySelector('html');
-//     const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
-//     const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-//
-//     if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dark');
-//     else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
-//     else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
-//     else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
     return(
         // <!-- ========== FOOTER ========== -->
         <footer className="mt-20 w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
             {/*<!-- Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-10">
                 <div className="col-span-full hidden lg:col-span-1 lg:block">
-                    <a className="flex-none text-xl font-semibold dark:text-white" href="#" aria-label="Brand">{import.meta.env.VITE_APP_NAME}</a>
-                    <p className="mt-3 text-xs sm:text-sm text-gray-600 dark:text-neutral-400">© 2022 {import.meta.env.VITE_APP_NAME}.</p>
+                    <a className="flex-none text-xl font-semibold dark:text-white" href="#" aria-label="Brand">{import.meta.env.APP_NAME}</a>
+                    <p className="mt-3 text-xs sm:text-sm text-gray-600 dark:text-neutral-400">© 2022 {import.meta.env.APP_NAME}.</p>
                 </div>
                 {/*<!-- End Col --*/}
 
