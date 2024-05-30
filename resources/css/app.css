@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes bounce {
+     0%, 20%, 50%, 80%, 100% {
+         transform: translateY(0);
+     }
+     40% {
+         transform: translateY(-30px);
+     }
+     60% {
+         transform: translateY(-15px);
+     }
+ }
+
+.alert-bounce {
+    animation: bounce 1s;
+}
+
+.fixed {
+    position: fixed;
+    top: 1rem; /* Adjusts the top position */
+    right: 1rem; /* Adjusts the right position */
+    z-index: 1000; /* Ensures it stays on top of other content */
+}
+
+
+
 .container {
     width: 500px;
     max-width: 100%;

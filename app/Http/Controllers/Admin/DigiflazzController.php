@@ -15,6 +15,16 @@ use Inertia\Inertia;
 
 class DigiflazzController extends Controller
 {
+    protected $url;
+
+    public function __construct()
+    {
+        if (DigiAuth::latest()->first()->is_production === 0){
+            $this->url = "https://api.digiflazz.com/v1";
+        }elseif (DigiAuth::latest()->first()->is_production === 1){
+            $this->url = "https://api.digiflazz.com/v1";
+        }
+    }
     public function index(){
         $latestAuth = DigiAuth::latest()->first();
         $ipAddress = $this->getClientIP();
@@ -34,14 +44,15 @@ class DigiflazzController extends Controller
     {
         DigiAuth::updateOrCreate([
             'username' => $request->username_digiflazz,
-            'api_key' => $request->api_key_digiflazz
+            'api_key' => $request->api_key_digiflazz,
+            'is_production' => $request->is_production
         ]);
     }
 
     private function checkBalance($username, $apiKey)
     {
         $sign = md5($username . $apiKey . 'depo');
-        $response = Http::post('https://api.digiflazz.com/v1/cek-saldo', [
+        $response = Http::post($this->url .'/cek-saldo', [
             'cmd' => 'deposit',
             'username' => $username,
             'sign' => $sign,
@@ -61,7 +72,7 @@ class DigiflazzController extends Controller
         $latestAuth = DigiAuth::latest()->first();
         $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');
         // Mengirim request ke endpoint API
-        $response = Http::post('https://api.digiflazz.com/v1/price-list', [
+        $response = Http::post($this->url.'/price-list', [
             'cmd' => 'prepaid', // atau 'cmd' => 'postpaid' sesuai kebutuhan
             'username' => $latestAuth->username,
             'sign' => $sign,

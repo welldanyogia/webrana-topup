@@ -12,6 +12,16 @@ use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
+    protected $url;
+
+    public function __construct()
+    {
+        if (Tripay::latest()->first()->is_production === 0){
+            $this->url = "https://tripay.co.id/api-sandbox/";
+        }elseif (Tripay::latest()->first()->is_production === 1){
+            $this->url = "https://tripay.co.id/api/";
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -43,7 +53,7 @@ class TransactionController extends Controller
         ];
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $tripay->api_key,
-        ])->get('https://tripay.co.id/api-sandbox/payment/instruction',$data);
+        ])->get($this->url.'payment/instruction',$data);
 
 //        $paymentInstruction = null;
         if ($response->successful()){
@@ -123,17 +133,14 @@ class TransactionController extends Controller
                     'name'        => $product_name,
                     'price'       => $product_price,
                     'quantity'    => 1,
-//                    'product_url' => 'https://tokokamu.com/product/nama-produk-1',
-//                    'image_url'   => 'https://tokokamu.com/product/nama-produk-1.jpg',
                 ]
             ],
-//            'return_url'   => 'https://domainanda.com/redirect',
             'expired_time' => (time() + (00 * 60 * 00)), // 24 jam
             'signature'    => $signature
         ];
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $tripay->api_key,
-        ])->post('https://tripay.co.id/api-sandbox/transaction/create',$request_data);
+        ])->post($this->url.'transaction/create',$request_data);
 
         if ($response->successful()){
             $responseData = $response->json();
@@ -196,35 +203,6 @@ class TransactionController extends Controller
 //            ], $response->status());
             return redirect()->back()->with(['flash'=>['message'=>'Transaksi gagal']]);
         }
-
-
-//        $mode = Constant::MODE_DEVELOPMENT;
-//        $guzzleOptions = []; // Your additional Guzzle options (https://docs.guzzlephp.org/en/stable/request-options.html)
-//
-//        $client = new TriPayClient($merchantCode, $apiKey, $privateKey, $mode, $guzzleOptions);
-//        $transaction = new Transaction($client);
-//
-//        $result = $transaction
-//            ->addOrderItem('Gula', 10000, 1)
-//            ->addOrderItem('Kopi', 6000, 5)
-//            ->create([
-//                'method' => 'BRIVA',
-//                'merchant_ref' => 'INV123',
-//                'customer_name' => 'Nama Pelanggan',
-//                'customer_email' => 'email@konsumen.id',
-//                'customer_phone' => '081234567890',
-//                'expired_time' => Helper::makeTimestamp('6 HOUR'), // see Supported Time Units
-//            ]);
-//
-//        // Proses respons dari TriPay di sini
-//        $response = $result->getBody()->getContents();
-//
-//        // Untuk tujuan debugging
-//        $debugs = $client->debugs();
-//        // Lakukan apa yang diperlukan dengan debugs, seperti log atau penanganan lainnya
-//
-//        // Kembalikan respons ke klien, misalnya:
-//        return response()->json(['response' => $response, 'debugs' => $debugs]);
     }
 
     function generateOrderId($appName, $length = 8): string

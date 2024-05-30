@@ -8,7 +8,7 @@ export default function TripayTable(){
 
     function handleSync(e) {
         e.preventDefault()
-        router.get('/api/tripay/getpaymentmethod')
+        router.post('/tripay/getpaymentmethod')
     }
     function handleDismiss() {
         setAlertVisible(false);
@@ -225,20 +225,6 @@ export default function TripayTable(){
                                     </svg>
                                     {paymentMethod.active ? 'Active' : 'Nonactive'}
                                 </span>
-                            </div>
-                        </td>
-                        <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-3">
-                                <span
-                                    className="text-sm text-gray-500 dark:text-neutral-500">{paymentMethod.updated_at}</span>
-                            </div>
-                        </td>
-                        <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-1.5">
-                                <a className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
-                                   href={route('admin.brand.show', paymentMethod.id)}>
-                                    Edit
-                                </a>
                             </div>
                         </td>
                     </tr>

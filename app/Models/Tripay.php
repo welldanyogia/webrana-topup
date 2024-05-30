@@ -12,6 +12,7 @@ class Tripay extends Model
     protected $fillable = [
         'merchant_code',
         'api_key',
-        'private_key'
+        'private_key',
+        'is_production'
     ];
 }

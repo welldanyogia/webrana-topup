@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 export default defineConfig({
-    server: {
-        host: process.env.APP_URL,
-    },
+    // server: {
+    //     host: process.env.APP_URL,
+    // },
     plugins: [
         laravel({
             input: 'resources/js/app.jsx',

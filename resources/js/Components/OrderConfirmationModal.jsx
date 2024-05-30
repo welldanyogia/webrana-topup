@@ -6,7 +6,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
 
     const concatenatedValues = Object.values(values).join('');
 
-    console.log(concatenatedValues)
+    console.log("con"+concatenatedValues)
     console.log(formInputs)
     console.log(values)
     console.log(product)
@@ -38,6 +38,16 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
     function handleSubmit(e) {
         e.preventDefault();
         router.post('/pay', transactionData)
+    }
+
+    for (const [key, value] of Object.entries(transactionData)) {
+        if (key === 'email_customer') {
+            continue; // Skip the email_customer key
+        }
+        if (value === null || value === '') {
+            // alert(`Field ${key} tidak boleh kosong`);
+            return; // Stop further execution if any value is null or empty
+        }
     }
     return (
         <div id={`hs-vertically-centered-modal-order-confirmation`}
@@ -116,6 +126,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                         </button>
                         <button type="button"
                                 // data-hs-overlay="#hs-vertically-centered-modal-order-confirmation"
+                                data-hs-overlay="#hs-vertically-centered-modal-order-confirmation"
                                 onClick={handleSubmit}
                                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-lime-600 text-white hover:bg-lime-700 disabled:opacity-50 disabled:pointer-events-none">
                             Bayar sekarang

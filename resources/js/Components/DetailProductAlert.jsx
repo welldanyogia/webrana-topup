@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default function DetailProductAlert({ message,isOpen,setIsOpen }) {
+export default function DetailProductAlert({ message, isOpen, setIsOpen }) {
+    useEffect(() => {
+        if (isOpen) {
+            const timeout = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Automatically dismiss the alert after 3 seconds
+            return () => clearTimeout(timeout);
+        }
+    }, [isOpen, setIsOpen]);
 
     if (!isOpen) return null;
 
     return (
         <div id="dismiss-alert"
-             className="hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 bg-red-50 border border-red-200 text-sm text-red-800 rounded-lg p-4 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500"
+             className="alert-bounce fixed top-4 right-4 hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 bg-red-50 border border-red-200 text-sm text-red-800 rounded-lg p-4 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500"
              role="alert">
             <div className="flex">
                 <div className="flex-shrink-0">

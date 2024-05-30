@@ -2,6 +2,8 @@ import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
 import GuestLayout from "@/Layouts/GuestLayout.jsx";
 import {Head, Link, useForm} from "@inertiajs/react";
 import {format} from 'date-fns';
+import SigninModal from "@/Components/SigninModal.jsx";
+import React from "react";
 
 export default function TransactionHistory({auth, latestTransaction, searchResult, searchMessage}) {
     const isAuthenticated = !!auth;
@@ -36,6 +38,7 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
             user={auth?.user}
             header={<h2 className="text-xl font-semibold leading-tight text-white">Transaction Detail</h2>}
         >
+            <SigninModal />
             <Head title="Riwayat Pesanan"/>
             <div className="w-3/4 mx-auto space-y-6">
                 <div className="font-bold text-xl dark:text-white text-neutral-900">

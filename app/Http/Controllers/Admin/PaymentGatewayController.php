@@ -11,6 +11,16 @@ use Inertia\Inertia;
 
 class PaymentGatewayController extends Controller
 {
+    protected $url;
+
+    public function __construct()
+    {
+        if (Tripay::latest()->first()->is_production === 0){
+            $this->url = "https://tripay.co.id/api-sandbox/";
+        }elseif (Tripay::latest()->first()->is_production === 1){
+            $this->url = "https://tripay.co.id/api/";
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,6 +44,7 @@ class PaymentGatewayController extends Controller
             'api_key' => $request->get('api_key_tripay'),
             'private_key' => $request->get('private_key_tripay'),
             'merchant_code' => $request->get('merchant_code_tripay'),
+            'is_production' => $request->get('is_production'),
         ]);
 
         return redirect()->back()->with('flash',['message' =>'Data saved successfully.','type' => 'success']);
@@ -76,7 +87,7 @@ class PaymentGatewayController extends Controller
         // Make the API request with the Authorization header
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $tripay->api_key,
-        ])->get('https://tripay.co.id/api-sandbox/merchant/payment-channel');
+        ])->get($this->url.'merchant/payment-channel');
 
         // Check if the API request was successful
         if ($response->successful()) {

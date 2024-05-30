@@ -11,6 +11,7 @@ class DigiAuth extends Model
 
     protected $fillable = [
         'username',
-        'api_key'
+        'api_key',
+        'is_production'
     ];
 }

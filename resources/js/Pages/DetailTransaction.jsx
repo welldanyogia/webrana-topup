@@ -1,13 +1,14 @@
 import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
 import GuestLayout from "@/Layouts/GuestLayout.jsx";
 import {Head} from "@inertiajs/react";
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {transform} from "lodash";
 import TransactionUnpaid from "@/Components/TransactionUnpaid.jsx";
 import TransactionPaid from "@/Components/TransactionPaid.jsx";
 import {useLocation} from "react-router-dom";
 import DOMPurify from 'dompurify';
 import PaymentInstruction from "@/Components/PaymentInstruction.jsx";
+import SigninModal from "@/Components/SigninModal.jsx";
 
 export default function DetailTransaction({auth, transaction,paymentInstruction,data}) {
     const isAuthenticated = !!auth;
@@ -74,6 +75,7 @@ export default function DetailTransaction({auth, transaction,paymentInstruction,
             header={<h2 className="text-xl font-semibold leading-tight text-white">Transaction Detail</h2>}
         >
             <Head title={transaction.trx_id}/>
+            <SigninModal />
             <div className="grid text-neutral-800 dark:text-white gap-6 w-3/4 mb-10 mx-auto md:grid max-sm:flex max-sm:flex-col">
                 <div className="grid grid-cols-2 dark:border-white md:grid-cols-2 sm:grid-cols-1 max-sm:grid-cols-1 border-b-2 w-full space-y-2 p-4">
                     {

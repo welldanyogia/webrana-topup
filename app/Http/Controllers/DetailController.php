@@ -47,11 +47,17 @@ class DetailController extends Controller
 
         $sortedGroupedChannels = $groupedChannels->map(function ($group) {
             return $group->sortBy(function ($channel) {
-                return $channel->total_fee_flat + ($channel->total_fee_percent*100);
+                return $channel->total_fee_flat + ($channel->total_fee_percent * 100);
             });
         });
+
         $sortedGroupedChannels = $sortedGroupedChannels->sortBy(function ($group) {
             return $group->first()->total_fee_flat + ($group->first()->total_fee_percent);
+        });
+
+        // Ensure all groups are arrays
+        $sortedGroupedChannels = $sortedGroupedChannels->map(function ($group) {
+            return $group->values();
         });
 
         return Inertia::render('DetailProduct', [

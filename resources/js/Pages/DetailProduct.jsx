@@ -9,6 +9,7 @@ import OrderConfirmationModal from "@/Components/OrderConfirmationModal.jsx";
 import DetailProductAlert from "@/Components/DetailProductAlert.jsx";
 
 export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupedChannels }) {
+    console.log(sortedGroupedChannels)
     const [activeGroup, setActiveGroup] = useState(null);
     const [activeTab, setActiveTab] = useState(brand.products[0].type_id);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -25,7 +26,6 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
     const [phone, setPhone] = useState(null);
     const isAuthenticated = !!auth;
     const [values,setValues] = useState({})
-    const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState("")
     const [isAlert, setIsAlert] = useState(false)
     const [message,setMessage] = useState("")
@@ -50,8 +50,8 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
     function handleConfirm(e) {
         e.preventDefault()
         if (phone === null){
-            document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
-            setMessage(`Silahkan masukan nomor whatsapp terlebih dahulu`)
+            // document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
+            setMessage(`Silahkan lengkapi transaksi terlebih dahulu`)
             setIsAlert(true)
         }
     }
@@ -93,53 +93,60 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
         setEmail(e.target.value)
     }
 
+    const validateInputs = () => {
+        if (formInputs !== null && values !== null) {
+            let emptyFields = [];
+            formInputs.forEach(form => {
+                if (!values[form.name]) {
+                    emptyFields.push(form.name);
+                }
+            });
+
+            if (emptyFields.length > 0) {
+                const formNames = emptyFields.join(", ");
+                document.getElementById('values-input').scrollIntoView({ behavior: 'smooth' });
+                setMessage(`Isi ${formNames} dengan benar`);
+                setIsAlert(true);
+            } else {
+                setIsAlert(false);
+                setMessage("");
+            }
+        }
+    };
+
     function handleProductButton(e,product) {
         let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '')
         let concatenatedValues = Object.values(values).join('');
+        // console.log('conprod'+concatenatedValues)
 
-        if (formInputs !== null && values === null){
-            let formin = ""
-            formInputs.forEach(
-                formin + " " + formInputs.name
-            )
-            document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
-            setMessage(`Isi ${formin} dengan benar`)
-            setIsAlert(true)
-        }
+        validateInputs()
 
         if (gamecode === 'mobilelegends'){
             gamecode = 'mobilelegend'
         }
         e.preventDefault()
         if (gamecode === 'mobilelegend' || gamecode === 'freefire') {
-            setLoading(true); // Set loading menjadi true sebelum pemanggilan API
             axios.post('/api/checkusername', {
                 brand_name: gamecode,
                 user_id: concatenatedValues
             }).then(response => {
                 // Tangani respons yang diterima dari API
                 const data = response.data;
-                // if (data.status === 1 && data.message === 'Data Found'){
-                //     setLoading(false)
-                //     setUsername(data.data.username)
-                // }
-                console.log(response)
-                if (data.status === 1 && data.message === 'Data Not Found') {
-                    setLoading(false)
-                    // setUsername(data.message)
-                    setMessage("Username tidak ditemukan")
-                    document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
-                    setIsAlert(true)
+                if (data.status === 0 && data.rc === 2) {
+                    document.getElementById('values-input').scrollIntoView({ behavior: 'smooth' });
+                    setMessage(`${data.error_msg}`);
+                    setIsAlert(true);
+                    return
                     // alert('Data tidak ditemukan'); // Tampilkan alert jika data tidak ditemukan
                 }
-                setUsername(data.data.username)
-                document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth'});
+                if (data?.data?.is_valid === true){
+                    setUsername(data.data.username)
+                    document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth'});
+                }
             }).catch(error => {
                 // Tangani error jika terjadi kesalahan dalam permintaan API
                 console.error('Error:', error);
-            }).finally(() => {
-                setLoading(false); // Set loading kembali menjadi false setelah pemanggilan API selesai
-            });
+            })
         }
         setSelectedProduct(product.id)
         setSelectedProductName(product.product_name)
@@ -224,11 +231,12 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                 <div className='top-0 right-0'>
                     <DetailProductAlert isOpen={isAlert} message={message} setIsOpen={setIsAlert}/>
                 </div>
-            {/*<LoadingAnimation loading={loading}/>*/}
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 grid grid-cols-6  text-gray-900 dark:text-gray-100 gap-6">
-                            <div className='hidden  col-span-6 bg-gray-200 shadow-md rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800 h-40'>01</div>
+                            <div
+                                className='hidden  col-span-6 bg-gray-200 shadow-md rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800 h-40'>01
+                            </div>
                             <div className='col-span-2 max-md:col-span-6'>
                                 <div
                                     className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-md shadow-lime-400">
@@ -382,7 +390,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                             </div>
                             <div className='col-span-4 gap-6 flex flex-col max-md:col-span-6'>
                                 <div id='values-input'
-                                    className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
+                                     className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
                                     <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">1
@@ -424,7 +432,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                     </div>
                                 </div>
                                 <div id='productSection'
-                                    className='bg-gray-200 shadow-md rounded-md dark:shadow dark:shadow-lime-400 space-y-2 dark:bg-gray-800 p-4'>
+                                     className='bg-gray-200 shadow-md rounded-md dark:shadow dark:shadow-lime-400 space-y-2 dark:bg-gray-800 p-4'>
                                     <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-1.5 text-sm dark:text-white">2
@@ -444,7 +452,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
 
                                 </div>
                                 <div id='paymentSection'
-                                    className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
+                                     className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
                                     <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">3
@@ -465,15 +473,22 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                     <button
                                                         type="button"
                                                         className="payment-method-button flex items-center justify-end w-full p-5 font-medium hover:rounded-b-lg rtl:text-right focus:ring-4 focus:ring-lime-200 dark:focus:ring-lime-800 dark:border-gray-700 dark:text-gray-400 hover:bg-lime-100 dark:hover:bg-lime-500 gap-3"
-                                                        onClick={() => handleToggle(group)}
+                                                        onClick={() => {
+                                                            if (selectedProduct === null) {
+                                                                setMessage('Please select a product first.');
+                                                                setIsAlert(true)
+                                                                document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
+                                                            } else {
+                                                                handleToggle(group);
+                                                            }
+                                                        }}
                                                         aria-expanded={activeGroup === group}
-                                                        disabled={selectedProduct === null}
+                                                        disabled={!selectedProduct === null}
                                                         aria-controls={`accordion-color-body-${group.replace(/\s+/g, '-').toLowerCase()}`}
                                                     >
-                                                        {channels.map((channel) => (
+                                                        {Array.isArray(channels) && channels.map((channel) => (
                                                             <div className="w-[15%] h-full" key={channel.id}>
-                                                                <img className="flex" src={channel.icon_url}
-                                                                     alt={channel.name}/>
+                                                                <img className="flex" src={channel.icon_url} alt={channel.name} />
                                                             </div>
                                                         ))}
                                                         <svg
@@ -498,7 +513,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                             className="grid grid-cols-3 flex-wrap rounded-b-lg gap-4 max-lg:grid-cols-2 max-sm:grid-cols-2 p-5 border border-b-0 -mt-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900"
                                                             aria-labelledby={`accordion-color-heading-${group.replace(/\s+/g, '-').toLowerCase()}`}
                                                         >
-                                                            {channels.map((channel) => (
+                                                            {Array.isArray(channels) && channels.map((channel) => (
                                                                 <div
                                                                     key={channel.id}
                                                                     className={`${selectedPayment === channel.id ? 'bg-white border-4 border-[#72057D]' : 'dark:bg-white bg-white'} rounded-xl col-span-1 hover:text-white transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-lime-500 duration-300 paymentButton`}
@@ -563,30 +578,31 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                             Pesanan
                                         </div>
                                     </div>
-                                    <div className='grid gap-4'>
-                                        <div className='grid-cols-2 gap-4 max-sm flex flex-col-reverse'>
+                                    <div className='grid grid-cols-2 gap-4'>
+                                        <div className='col-span-2 grid grid-cols-2 gap-4 max-sm:flex max-sm:flex-col-reverse'>
                                             <div className="max-w-sm">
-                                            <label htmlFor="input-wa"
-                                                   className="block text-sm font-medium mb-2 dark:text-white">Nomor
-                                                Whatsapp</label>
-                                            <input type="number" id="input-wa" onChange={handlePhone}
-                                                   className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                   placeholder="+628xxxxxxx" aria-describedby="hs-input-helper-text"/>
-                                            <p className="mt-2 text-sm text-gray-500 dark:text-neutral-500"
-                                               id="hs-input-helper-text">Invoice akan kami kirimkan ke nomor
-                                                whatsapp.</p>
-                                        </div>
-                                            <div className="max-w-sm">
-                                            <div className="flex justify-between items-center">
-                                                <label htmlFor="with-corner-hint"
-                                                       className="block text-sm font-medium mb-2 dark:text-white">Email</label>
-                                                <span
-                                                    className="block mb-2 text-sm text-gray-500 dark:text-neutral-500">Optional</span>
+                                                <label htmlFor="input-wa"
+                                                       className="block text-sm font-medium mb-2 dark:text-white">Nomor
+                                                    Whatsapp</label>
+                                                <input type="number" id="input-wa" onChange={handlePhone}
+                                                       className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                       placeholder="+628xxxxxxx"
+                                                       aria-describedby="hs-input-helper-text"/>
+                                                <p className="mt-2 text-sm text-gray-500 dark:text-neutral-500"
+                                                   id="hs-input-helper-text">Invoice akan kami kirimkan ke nomor
+                                                    whatsapp.</p>
                                             </div>
-                                            <input type="email" id="with-corner-hint" onChange={handleEmail}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                   placeholder="email@example.com"/>
-                                        </div>
+                                            <div className="max-w-sm">
+                                                <div className="flex justify-between items-center">
+                                                    <label htmlFor="with-corner-hint"
+                                                           className="block text-sm font-medium mb-2 dark:text-white">Email</label>
+                                                    <span
+                                                        className="block mb-2 text-sm text-gray-500 dark:text-neutral-500">Optional</span>
+                                                </div>
+                                                <input type="email" id="with-corner-hint" onChange={handleEmail}
+                                                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                       placeholder="email@example.com"/>
+                                            </div>
                                         </div>
                                         <button type="button" onClick={handleConfirm}
                                                 data-hs-overlay={`#hs-vertically-centered-modal-order-confirmation`}

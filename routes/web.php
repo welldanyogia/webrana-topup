@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/admin/digiflazz/store',[\App\Http\Controllers\Admin\DigiflazzController::class,'store']);
         Route::post('/admin/paymentgateway/store',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'store']);
         Route::post('/admin/digiflazz/fetch',[\App\Http\Controllers\Admin\DigiflazzController::class,'fetchAndStorePriceList']);
+        Route::post('/tripay/getpaymentmethod',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'paymentChannel'])->name('tripay.update.paymentChannel');
         Route::get('/category',[\App\Http\Controllers\Admin\CategoryController::class,'index'])->name('admin.category');
         Route::post('/category/store',[\App\Http\Controllers\Admin\CategoryController::class,'store']);
         Route::get('/brand',[\App\Http\Controllers\Admin\BrandController::class,'index']);
