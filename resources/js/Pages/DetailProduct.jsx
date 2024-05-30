@@ -521,8 +521,9 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                             Pesanan
                                         </div>
                                     </div>
-                                    <div className='grid grid-cols-2 gap-4'>
-                                        <div className="max-w-sm">
+                                    <div className='grid gap-4'>
+                                        <div className='grid-cols-2 gap-4 max-sm flex-col-reverse'>
+                                            <div className="max-w-sm">
                                             <label htmlFor="input-wa"
                                                    className="block text-sm font-medium mb-2 dark:text-white">Nomor
                                                 Whatsapp</label>
@@ -533,7 +534,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                id="hs-input-helper-text">Invoice akan kami kirimkan ke nomor
                                                 whatsapp.</p>
                                         </div>
-                                        <div className="max-w-sm">
+                                            <div className="max-w-sm">
                                             <div className="flex justify-between items-center">
                                                 <label htmlFor="with-corner-hint"
                                                        className="block text-sm font-medium mb-2 dark:text-white">Email</label>
@@ -543,6 +544,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                             <input type="email" id="with-corner-hint" onChange={handleEmail}
                                                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    placeholder="email@example.com"/>
+                                        </div>
                                         </div>
                                         <button type="button" onClick={handleConfirm}
                                                 data-hs-overlay={`#hs-vertically-centered-modal-order-confirmation`}
