@@ -459,7 +459,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                             {channels.map((channel) => (
                                                                 <div
                                                                     key={channel.id}
-                                                                    className={`${selectedPayment === channel.id ? 'bg-white border-4 border-[#72057D]' : 'dark:bg-white bg-white'} rounded-xl hover:text-white transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-lime-500 duration-300 paymentButton`}
+                                                                    className={`${selectedPayment === channel.id ? 'bg-white border-4 border-[#72057D]' : 'dark:bg-white bg-white'} rounded-xl col-span-1 hover:text-white transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-lime-500 duration-300 paymentButton`}
                                                                 >
                                                                     <button
                                                                         type="button"
@@ -484,7 +484,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                                         </div>
                                                                         <div>
                                                                             <p id="product-price"
-                                                                               className="paymentMethod text-start">
+                                                                               className="paymentMethod text-start max-sm:text-xs">
                                                                                 {formatRupiah(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}
                                                                             </p>
                                                                         </div>
