@@ -139,7 +139,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                 key={product.id}
                                 onClick={(e) => handleProductButton(e,product)}
                             >
-                                <div className='flex flex-col text-start'>
+                                <div className='flex flex-col sm:text-sm text-start'>
                                     <div className='text-md font-semibold'>{product.product_name}</div>
                                     <div className='text-xl font-bold'>{formatRupiah(product.selling_price)}</div>
                                 </div>
