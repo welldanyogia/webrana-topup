@@ -39,7 +39,9 @@ class BrandController extends Controller
     {
         $brands = Brand::where('brand_id',$id)->with('products')->get();
         $brand = Brand::find($id);
-        $products = Product::where('brand_id',$id)->paginate();
+        $products = Product::where('brand_id', $id)
+            ->orderBy('price', 'asc')
+            ->paginate();
         $formInputs = FormInputBrand::where('brand_id',$id)->with('options')->get();
 //        $optionsInput = OptionSelectInput::where('form_input_id',$formInputs->id)->get();
 

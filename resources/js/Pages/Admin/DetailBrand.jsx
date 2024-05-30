@@ -24,38 +24,11 @@ export default function DetailBrand() {
     const [editorContent, setEditorContent] = useState("");
     const [selectValue, setSelectValue] = useState("")
     const [selectedProduct, setSelectedProduct] = useState(null);
-    // const rteRef = useRef<RichTextEditorRef>null;
 
 
     const handleEditClick = (product) => {
         setSelectedProduct(product);
     };
-
-    // useEffect(() => {
-    //     const inputElement = document.getElementById('input-label');
-    //     if (inputElement) {
-    //         const handleInput = (e) => {
-    //             e.target.value = e.target.value.replace(/[^0-9]/g, '');
-    //         };
-    //         inputElement.addEventListener('input', handleInput);
-    //
-    //         return () => {
-    //             inputElement.removeEventListener('input', handleInput);
-    //         };
-    //     }
-    // }, []);
-
-    const selectOptions = [
-        {label: 'Option 1', value: '1'},
-        {label: 'Option 2', value: '2'},
-        {label: 'Option 3', value: '3'},
-        {label: 'Option 4', value: '4'},
-    ];
-
-    // console.log(formInputs)
-    // console.log(optionsInput)
-
-    // console.log(brand[0].brand_id)
 
     function handleBrandImageChange(e) {
         setBrandImage(e.target.files[0]);
@@ -81,18 +54,11 @@ export default function DetailBrand() {
         }
     }
 
-    function handleTestButton() {
-        console.log('test button : ' + editorContent)
-    }
 
     const handleSelect = (event) => {
         setSelectValue(event.target.value);
     };
 
-    function handleEditorChange(content) {
-        setEditorContent(content);
-        console.log(content)
-    }
 
     function handleBrandNameChange(e) {
         setBrandName(e.target.value);
@@ -105,17 +71,6 @@ export default function DetailBrand() {
 
     function handleDismiss() {
         setAlertVisible(false);
-    }
-
-    // Function to open the modal
-    function openAddFormModal() {
-        setIsAddFormModalOpen(true);
-        console.log('modal form : ' + isAddFormModalOpen)
-    }
-
-    // Function to close the modal
-    function closeAddFormModal() {
-        setIsAddFormModalOpen(false);
     }
 
     function openAddModal() {
