@@ -130,7 +130,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
         return products
             .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
             .map(productType => (
-                <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
+                <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 sm:grid-cols-2 max-sm:grid-cols-2 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
                     {products
                         .filter(product => product.type_id === productType.type_id)
                         .map(product => (
