@@ -5,7 +5,7 @@ export default function CarouselHero() {
                 "loadingclassNamees": "opacity-0",
                 "isAutoPlay": true
               }' className="relative">
-            <div className="hs-carousel relative overflow-hidden w-full min-h-96 max-sm:w-3/4 max-sm:h-auto bg-white rounded-lg">
+            <div className="hs-carousel relative overflow-hidden w-full min-h-96 max-sm:min-h-48 bg-white rounded-lg">
                 <div
                     className="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
                     <div className="hs-carousel-slide">

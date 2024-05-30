@@ -25,7 +25,7 @@ export default function Navbar() {
 
                 {/*// <!-- Button Group */}
                 <div className="flex items-center gap-x-2 ms-auto py-1 md:ps-6 md:order-3 md:col-span-3">
-                    <div className='sm:hidden'>
+                    <div className='max-sm:hidden'>
                     <button
                         type="button" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-gray-200 text-black hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white" data-hs-overlay="#hs-modal-signin">
                             Sign in
@@ -61,7 +61,7 @@ export default function Navbar() {
                             <a className="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300"
                                href="#">Tentang</a>
                         </div>
-                        <div className='flex'>
+                        <div className='grid grid-cols-2 gap-4'>
                             <button
                                 type="button"
                                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-gray-200 text-black hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white"
