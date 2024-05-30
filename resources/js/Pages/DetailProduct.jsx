@@ -6,6 +6,7 @@ import TextFieldUser from "@/Components/TextFieldUser.jsx";
 import NumberFieldUser from "@/Components/NumberFieldUser.jsx";
 import SelectFieldUser from "@/Components/SelectFieldUser.jsx";
 import OrderConfirmationModal from "@/Components/OrderConfirmationModal.jsx";
+import DetailProductAlert from "@/Components/DetailProductAlert.jsx";
 
 export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupedChannels }) {
     const [activeGroup, setActiveGroup] = useState(null);
@@ -26,6 +27,8 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
     const [values,setValues] = useState({})
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState("")
+    const [isAlert, setIsAlert] = useState(false)
+    const [message,setMessage] = useState("")
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
 
@@ -46,7 +49,17 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
 
     function handleConfirm(e) {
         e.preventDefault()
-        console.log("bismillah")
+        if (phone === null){
+            document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
+            setMessage(`Silahkan masukan nomor whatsapp terlebih dahulu`)
+            setIsAlert(true)
+        }
+    }
+
+    function handleCloseAlert(e) {
+        e.preventDefault()
+        setIsAlert(false)
+        setMessage("")
     }
 
     function price(paymentPrice,feeFlat,feePercent) {
@@ -72,12 +85,27 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
 
     function handleEmail(e) {
         e.preventDefault()
+        if (selectedProduct === null){
+            document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
+            setMessage(`Silahkan pilih nominal terlebih dahulu`)
+            setIsAlert(true)
+        }
         setEmail(e.target.value)
     }
 
     function handleProductButton(e,product) {
         let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '')
         let concatenatedValues = Object.values(values).join('');
+
+        if (formInputs !== null && values === null){
+            let formin = ""
+            formInputs.forEach(
+                formin + " " + formInputs.name
+            )
+            document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
+            setMessage(`Isi ${formin} dengan benar`)
+            setIsAlert(true)
+        }
 
         if (gamecode === 'mobilelegends'){
             gamecode = 'mobilelegend'
@@ -98,9 +126,13 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                 if (data.status === 1 && data.message === 'Data Not Found') {
                     setLoading(false)
                     // setUsername(data.message)
-                    alert('Data tidak ditemukan'); // Tampilkan alert jika data tidak ditemukan
+                    setMessage("Username tidak ditemukan")
+                    document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
+                    setIsAlert(true)
+                    // alert('Data tidak ditemukan'); // Tampilkan alert jika data tidak ditemukan
                 }
                 setUsername(data.data.username)
+                document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth'});
             }).catch(error => {
                 // Tangani error jika terjadi kesalahan dalam permintaan API
                 console.error('Error:', error);
@@ -122,6 +154,11 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
 
     function handlePhone(e) {
         e.preventDefault()
+        if (selectedProduct === null){
+            document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
+            setMessage(`Silahkan pilih nominal terlebih dahulu`)
+            setIsAlert(true)
+        }
         setPhone(e.target.value)
     }
 
@@ -182,7 +219,10 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
             header={<h2 className="text-xl font-semibold leading-tight text-white">Product Detail</h2>}
         >
             <Head title={brand.brand_name}/>
-            <div className="py-2">
+            <div className="py-2 relative">
+                <div className='top-0 right-0'>
+                    <DetailProductAlert isOpen={isAlert} message={message} setIsOpen={setIsAlert}/>
+                </div>
             {/*<LoadingAnimation loading={loading}/>*/}
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
@@ -340,7 +380,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                 </div>
                             </div>
                             <div className='col-span-4 gap-6 flex flex-col max-md:col-span-6'>
-                                <div
+                                <div id='values-input'
                                     className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
                                     <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
                                         <div
@@ -382,7 +422,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                         }
                                     </div>
                                 </div>
-                                <div
+                                <div id='productSection'
                                     className='bg-gray-200 shadow-md rounded-md dark:shadow dark:shadow-lime-400 space-y-2 dark:bg-gray-800 p-4'>
                                     <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
                                         <div
@@ -402,7 +442,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                     </div>
 
                                 </div>
-                                <div
+                                <div id='paymentSection'
                                     className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
                                     <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
                                         <div
