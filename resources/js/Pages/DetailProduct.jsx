@@ -121,8 +121,9 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                 const data = response.data;
                 // if (data.status === 1 && data.message === 'Data Found'){
                 //     setLoading(false)
-                //     setUsername(data.data.username)
+                    setUsername(data.data.username)
                 // }
+                console.log(response)
                 if (data.status === 1 && data.message === 'Data Not Found') {
                     setLoading(false)
                     // setUsername(data.message)
