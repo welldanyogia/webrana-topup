@@ -15,7 +15,7 @@ function BrandSection() {
         <div className="w-full rounded-lg shadow-md">
             <div className="border-b border-gray-200 px-4 dark:border-neutral-700">
                 <nav className="flex space-x-2" aria-label="Tabs" role="tablist">
-                    {categories.map(tab => (
+                    {categories && categories.map(tab => (
                         <button
                             key={tab.category_id}
                             type="button"
