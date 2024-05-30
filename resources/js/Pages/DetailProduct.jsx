@@ -1,7 +1,7 @@
 import {Head} from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import TextFieldUser from "@/Components/TextFieldUser.jsx";
 import NumberFieldUser from "@/Components/NumberFieldUser.jsx";
 import SelectFieldUser from "@/Components/SelectFieldUser.jsx";
@@ -192,13 +192,14 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                 <div
                                     className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-md shadow-lime-400">
                                     <div className="flex flex-row gap-6 md:grid max-sm:grid">
-                                        <div
-                                            className="w-28 h-28 bg-cover bg-no-repeat bg-[url('https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80')] rounded-lg">
-                                        </div>
-                                        <div className="text-xl dark:text-white font-bold items-center h-auto">
-                                            <h1>{brand.brand_name}</h1>
-                                        </div>
+                                        <img className="rounded-xl"
+                                             src={brand.image_url ? brand.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
+                                             alt={brand.brand_name}/>
                                     </div>
+                                    <div className="text-xl dark:text-white font-bold items-center h-auto">
+                                        <h1>{brand.brand_name}</h1>
+                                    </div>
+                                </div>
                                     <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b-2 border-lime-400 py-2">
                                         <div className="flex flex-row items-center gap-1">
                                             <div className='hidden dark:block'>
