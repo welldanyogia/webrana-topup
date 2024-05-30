@@ -23,7 +23,7 @@ function BrandSection() {
                         <button
                             key={tab.category_id}
                             type="button"
-                            className={`hs-tab-active:font-semibold hs-tab-active:border-blue-600 hs-tab-active:text-blue-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-md whitespace-nowrap text-gray-500 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-blue-500 ${activeTab === tab.category_id ? 'active' : ''}`}
+                            className={`hs-tab-active:font-semibold hs-tab-active:border-lime-600 hs-tab-active:text-lime-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-md whitespace-nowrap text-gray-500 hover:text-lime-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-lime-500 ${activeTab === tab.category_id ? 'active' : ''}`}
                             id={`basic-tabs-item-${tab.category_id}`}
                             data-hs-tab={`#basic-tabs-${tab.category_id}`}
                             aria-controls={`basic-tabs-${tab.category_id}`}
@@ -50,7 +50,7 @@ function BrandSection() {
                                 // onClick={() => history.push('/product')}
 
                                 key={card.brand_id}
-                                className="relative shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="relative shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500"
                                 href={`/brand/${card.brand_id}`}
                                 style={{ backdropFilter: 'blur(10px)' }} // Efek blur pada latar belakang
                                 onMouseEnter={() => setHoveredButton(index)}
@@ -63,7 +63,7 @@ function BrandSection() {
                                         <h2>{card.brand_name}</h2>
                                     </div>
                                 )}
-                                <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-neutral-400`}>{card.brand_name}</h1>
+                                <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-neutral-400 text-center`}>{card.brand_name}</h1>
                             </Link>
                         ))}
                     </div>

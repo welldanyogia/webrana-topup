@@ -164,7 +164,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                 <button
                     type="button"
                     key={product.type_id}
-                    className={`hs-tab-active:bg-lime-600 hs-tab-active:text-white hs-tab-active:hover:text-white hs-tab-active:dark:text-white border-2 border-lime-400 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-neutral-300 ${activeTab === product.type_id ? 'active' : ''}`}
+                    className={`hs-tab-active:bg-lime-600 hs-tab-active:text-white hs-tab-active:hover:text-white hs-tab-active:dark:text-white border-2 border-lime-400 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-lime-600 rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-neutral-300 ${activeTab === product.type_id ? 'active' : ''}`}
                     id={`pills-with-brand-color-item-${product.type_id}`}
                     data-hs-tab={`#pills-with-brand-color-${product.type_id}`}
                     aria-controls={`pills-with-brand-color-${product.type_id}`}
@@ -422,7 +422,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                 <div className="w-full bg-lime-400 dark:bg-white rounded-b-lg">
                                                     <button
                                                         type="button"
-                                                        className="payment-method-button flex items-center justify-end w-full p-5 font-medium hover:rounded-b-lg rtl:text-right focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-lime-500 gap-3"
+                                                        className="payment-method-button flex items-center justify-end w-full p-5 font-medium hover:rounded-b-lg rtl:text-right focus:ring-4 focus:ring-lime-200 dark:focus:ring-lime-800 dark:border-gray-700 dark:text-gray-400 hover:bg-lime-100 dark:hover:bg-lime-500 gap-3"
                                                         onClick={() => handleToggle(group)}
                                                         aria-expanded={activeGroup === group}
                                                         disabled={selectedProduct === null}
@@ -527,7 +527,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                    className="block text-sm font-medium mb-2 dark:text-white">Nomor
                                                 Whatsapp</label>
                                             <input type="number" id="input-wa" onChange={handlePhone}
-                                                   className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    placeholder="+628xxxxxxx" aria-describedby="hs-input-helper-text"/>
                                             <p className="mt-2 text-sm text-gray-500 dark:text-neutral-500"
                                                id="hs-input-helper-text">Invoice akan kami kirimkan ke nomor
@@ -541,7 +541,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                                     className="block mb-2 text-sm text-gray-500 dark:text-neutral-500">Optional</span>
                                             </div>
                                             <input type="email" id="with-corner-hint" onChange={handleEmail}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    placeholder="email@example.com"/>
                                         </div>
                                         <button type="button" onClick={handleConfirm}
