@@ -3,28 +3,13 @@ import Alert from "@/Components/Alert.jsx";
 import AddCategoryModal from "@/Components/AddCategoryModal.jsx";
 import React, {useState, useRef, useEffect} from "react";
 import {router, usePage} from "@inertiajs/react";
-import {useEditor} from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import {
-    MenuButtonBold,
-    MenuButtonItalic,
-    MenuControlsContainer,
-    MenuDivider,
-    MenuSelectHeading,
-    RichTextEditorProvider,
-    RichTextField,
-} from "mui-tiptap";
 import '../../../css/app.css'
-import PageContentWithEditor from "@/Components/PageContentEditor.jsx";
 import AddSelectInput from "@/Components/AddSelectInput.jsx";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
 import AddOptionModal from "@/Components/AddOptionModal.jsx";
-import {Atm} from "@mui/icons-material";
 import AddTextInput from "@/Components/AddTextInput.jsx";
 import EditProductModal from "@/Components/EditProductModal.jsx";
 import AddNumberInput from "@/Components/AddNumberInput.jsx";
-import RichTextEditor from "@/Components/DescBrandEditor.jsx";
-import Editor from "@/Components/DescBrandEditor.jsx";
 
 export default function DetailBrand() {
     const {flash, brand, products, formInputs} = usePage().props
