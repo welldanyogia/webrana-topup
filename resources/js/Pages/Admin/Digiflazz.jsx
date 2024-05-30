@@ -73,7 +73,7 @@ export default function Digiflazz(props) {
                             {/*<!-- End Col */}
 
                             <div className="sm:col-span-9">
-                                <div className="sm:flex">
+                                <div className="sm:flex text-neutral-800">
                                     Rp. {digi_balance}
                                 </div>
                             </div>
