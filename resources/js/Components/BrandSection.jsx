@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 // import { useHistory } from 'react-router';
 import ApplicationLogo from './ApplicationLogo';
 import {Link, usePage} from "@inertiajs/react"; // Import komponen ApplicationLogo
 
 function BrandSection() {
     const { categories } = usePage().props
-    const [activeTab, setActiveTab] = useState(categories[0]?.category_id);
+    const [activeTab, setActiveTab] = useState(null);
     const [hoveredButton, setHoveredButton] = useState(null);
     // const history = useHistory();
 
-    console.log(categories)
+    useEffect(() => {
+        if (categories && categories.length > 0) {
+            setActiveTab(categories[0].category_id);
+        }
+    }, [categories]);
 
     return (
         <div className="w-full rounded-lg shadow-md">
