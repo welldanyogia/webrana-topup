@@ -522,7 +522,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                                         </div>
                                     </div>
                                     <div className='grid gap-4'>
-                                        <div className='grid-cols-2 gap-4 max-sm flex-col-reverse'>
+                                        <div className='grid-cols-2 gap-4 max-sm flex flex-col-reverse'>
                                             <div className="max-w-sm">
                                             <label htmlFor="input-wa"
                                                    className="block text-sm font-medium mb-2 dark:text-white">Nomor
