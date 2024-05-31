@@ -5,7 +5,6 @@ export default function AddOptionModal({label,formId}) {
     const [optionName,setOptionName] = useState("")
     const [optionValue,setOptionValue] = useState("")
 
-    console.log(formId)
     function handleInputNameChange(e) {
         setOptionName(e.target.value)
     }

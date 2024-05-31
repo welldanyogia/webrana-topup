@@ -12,28 +12,12 @@ export default function AddCategoryModal({ isOpen, onClose }) {
             category_status: categoryStatus
         };
 
-        // Lakukan logika untuk menyimpan kategori baru (misalnya, kirim ke server)
-        console.log("New category:", newCategory);
        try {
 
            router.post('/category/store',newCategory)
-           // const response = await fetch('/category/store', {
-           //     method: 'POST',
-           //     headers: {
-           //         'Content-Type': 'application/json',
-           //     },
-           //     // body: JSON.stringify({
-           //     //     category_name: categoryName,
-           //     //     category_status: categoryStatus
-           //     // }),
-           // });
-           // const data = await response.json();
-           // Tutup modal setelah menyimpan kategori
-           // alert(data.message);
            onClose();
        }catch (er){
-           console.log(er)
-           // alert(er.message)
+
        }
     };
     // Add your modal content and logic here

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Footer from "@/Components/Footer.jsx";
 import AuthNavbar from "@/Components/AuthNavbar.jsx";
 
-export default function Authenticated({ auth,user, header, children }) {
+export default function Authenticated({user, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (

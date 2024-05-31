@@ -1,4 +1,4 @@
-import { useForm} from "@inertiajs/react";
+import {router, useForm} from "@inertiajs/react";
 import {useEffect} from "react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
@@ -44,10 +44,10 @@ function SigninModal({...props}) {
                             <h2 className="block text-2xl font-bold text-gray-800 dark:text-neutral-200">Sign in</h2>
                             <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
                                 Don't have an account yet?
-                                <a className="text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
-                                   href={route('register')}>
+                                <button type='button' className="text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
+                                   data-hs-overlay="#hs-modal-signup">
                                     Sign up here
-                                </a>
+                                </button>
                             </p>
                         </div>
 
@@ -66,7 +66,7 @@ function SigninModal({...props}) {
                                             address</label>
                                         <div className="relative">
                                             <input type="email" id="email" name="email" value={data.email}
-                                                   onChange={(e)=> setData('email',e.target.value)}
+                                                   onChange={(e) => setData('email', e.target.value)}
                                                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="email-error"/>
                                             {errors.email && <div>{errors.email}</div>}
@@ -115,8 +115,9 @@ function SigninModal({...props}) {
                                     {/*<!-- Checkbox */}
                                     <div className="flex items-center">
                                         <div className="flex">
-                                            <input id="remember-me" name="remember" type="checkbox" checked={data.remember}
-                                                   onChange={(e)=>setData('remember',e.target.value)}
+                                            <input id="remember-me" name="remember" type="checkbox"
+                                                   checked={data.remember}
+                                                   onChange={(e) => setData('remember', e.target.value)}
                                                    className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-800 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"/>
                                         </div>
                                         <div className="ms-3">
@@ -125,8 +126,13 @@ function SigninModal({...props}) {
                                         </div>
                                     </div>
                                     {/*<!-- End Checkbox */}
+                                    {/*<button type="submit"*/}
+                                    {/*        className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Sign*/}
+                                    {/*    in*/}
+                                    {/*</button>*/}
 
                                     {/*<button type="submit" disabled={processing}*/}
+                                    {/*        data-hs-overlay="#hs-modal-signin"*/}
                                     {/*        className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Sign*/}
                                     {/*    in*/}
                                     {/*</button>*/}

@@ -6,13 +6,6 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
 
     const concatenatedValues = Object.values(values).join('');
 
-    console.log("con"+concatenatedValues)
-    console.log(formInputs)
-    console.log(values)
-    console.log(product)
-    console.log(brand)
-    console.log(productCode)
-
     function formatRupiah(number) {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -82,7 +75,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                             ))
                         }
                         {
-                            username.length < 0  && (
+                            username.length > 0  && (
                                 <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
                                     <div className='text-start'>Username</div>
                                     <div className='text-start'>{username}</div>

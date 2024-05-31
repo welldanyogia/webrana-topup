@@ -2,8 +2,10 @@ import {Link} from "@inertiajs/react";
 import SigninModal from "@/Components/SigninModal.jsx";
 import WebranaLogoBlack from "@/Components/WebranaLogoBlack.jsx";
 import WebranaLogo from "@/Components/WebranaLogo.jsx";
+import {useState} from "react";
 
 export default function Navbar() {
+    const [activePage, setActivePage] = useState('');
     return(
         // ========== HEADER =========
         <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full">
@@ -18,7 +20,7 @@ export default function Navbar() {
                         {/*    <circle cx="13" cy="16.5214" r="5" className="fill-black dark:fill-white" fill="currentColor"/>*/}
                         {/*</svg>*/}
                         {/*<WebranaLogoBlack/>*/}
-                        <img src='/logo_dark.png' width={145} alt={'Logo'}/>
+                        <img src='/logo_dark_2.png' width={145} alt={'Logo'}/>
                     </a>
                     {/*// <!-- End Logo */}
                 </div>
@@ -30,7 +32,7 @@ export default function Navbar() {
                         type="button" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-gray-200 text-black hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white" data-hs-overlay="#hs-modal-signin">
                             Sign in
                     </button>
-                    <button
+                    <button data-hs-overlay="#hs-modal-signup"
                         type="submit" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-lime-400 text-black hover:bg-lime-500 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-lime-500">
                         Sign up
                     </button>
@@ -70,6 +72,7 @@ export default function Navbar() {
                             </button>
                             <button
                                 type="submit"
+                                data-hs-overlay="#hs-modal-signup"
                                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-lime-400 text-black hover:bg-lime-500 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-lime-500">
                                 Sign up
                             </button>

@@ -135,7 +135,7 @@ class TransactionController extends Controller
                     'quantity'    => 1,
                 ]
             ],
-            'expired_time' => (time() + (00 * 60 * 00)), // 24 jam
+            'expired_time' => (time() + (1 * 00 * 00)),
             'signature'    => $signature
         ];
         $response = Http::withHeaders([

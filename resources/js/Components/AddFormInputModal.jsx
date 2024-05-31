@@ -8,9 +8,6 @@ export default function AddFormInputModal({brand, brandId}) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        console.log(inputName)
-        console.log(inputType)
-        console.log(brandId)
 
         router.post('/api/addform', {
             name: inputName,

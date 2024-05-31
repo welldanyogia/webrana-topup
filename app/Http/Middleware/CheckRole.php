@@ -16,12 +16,17 @@ class CheckRole
      * @param string $role
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, string ...$roles)
     {
         if (!auth()->check()) {
-            $role = 'guest'; // Tetapkan peran sebagai 'guest' jika pengguna tidak terotentikasi
+            if (in_array('guest', $roles)) {
+                return $next($request); // Allow guest access
+            }
+            abort(403);
         }
-        if ($role && auth()->check() && auth()->user()->role !== $role) {
+
+        $userRole = auth()->user()->role;
+        if (!in_array($userRole, $roles)) {
             abort(403);
         }
         return $next($request);

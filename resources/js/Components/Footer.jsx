@@ -7,7 +7,7 @@ function Footer() {
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-10">
                 <div className="col-span-full hidden lg:col-span-1 lg:block">
                     <a className="flex-none text-xl font-semibold dark:text-white" href="#" aria-label="Brand">{import.meta.env.ENV_APP_NAME}</a>
-                    <p className="mt-3 text-xs sm:text-sm text-gray-600 dark:text-neutral-400">© 2022 {import.meta.env.ENV_APP_NAME}.</p>
+                    <p className="mt-3 text-xs sm:text-sm text-gray-600 dark:text-neutral-400">© 2024 Webrana.</p>
                 </div>
                 {/*<!-- End Col --*/}
 
@@ -157,8 +157,7 @@ function Footer() {
 
                     <div className="flex justify-between items-center">
                         <div className="mt-3 sm:hidden">
-                            <a className="flex-none text-xl font-semibold dark:text-white" href="#" aria-label="Brand">{import.meta.env.VITE_APP_NAME}</a>
-                            <p className="mt-1 text-xs sm:text-sm text-gray-600 dark:text-neutral-400">© 2022 {import.meta.env.VITE_APP_NAME}.</p>
+                            <p className="mt-1 text-xs sm:text-sm text-gray-600 dark:text-neutral-400">© 2024 Webrana.</p>
                         </div>
 
                         {/*<!-- Social Brands */}

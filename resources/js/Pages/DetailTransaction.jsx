@@ -11,7 +11,7 @@ import PaymentInstruction from "@/Components/PaymentInstruction.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
 
 export default function DetailTransaction({auth, transaction,paymentInstruction,data}) {
-    const isAuthenticated = !!auth;
+    const isAuthenticated = auth?.user && auth.user.role === 'user';
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
     const [countDownTime, setCountDownTime] = useState({
         days: "00",
@@ -105,7 +105,7 @@ export default function DetailTransaction({auth, transaction,paymentInstruction,
                             </div>
                             <div className="flex gap-6 dark:text-white font-bold">
                                 {transaction.trx_id}
-                                <div className="flex font-bold">
+                                <div className="flex font-bold max-sm:py-10">
                                     {
                                         transaction.status === 'pending' && (
                                             <span
@@ -142,7 +142,7 @@ export default function DetailTransaction({auth, transaction,paymentInstruction,
                             </div>
 
                         </h1>
-                        <div className="grid grid-cols-2 dark:border-white border-2 divide-x-2">
+                        <div className="grid grid-cols-2 max-sm:grid-cols-1 dark:border-white border-2 divide-x-2">
                         <div className="grid p-2">
                                 <div className="flex justify-between font-bold">
                                     <div className="flex">

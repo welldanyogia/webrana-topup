@@ -6,7 +6,7 @@ import React, {useState} from "react";
 export default function Transaction({transactions,transactionsPaginate}){
     const [keyword, setKeyword] = useState('');
 
-    console.log(transactionsPaginate)
+    // console.log(transactionsPaginate)
 
     const filteredTransactions = transactionsPaginate ? transactionsPaginate.data.filter(transaction => {
         // Memastikan setiap nilai yang akan diakses tidak null

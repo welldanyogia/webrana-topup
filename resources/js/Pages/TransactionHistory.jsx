@@ -6,7 +6,7 @@ import SigninModal from "@/Components/SigninModal.jsx";
 import React from "react";
 
 export default function TransactionHistory({auth, latestTransaction, searchResult, searchMessage}) {
-    const isAuthenticated = !!auth;
+    const isAuthenticated = auth?.user && auth.user.role === 'user';
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
 
     const {data, setData, post, errors} = useForm({

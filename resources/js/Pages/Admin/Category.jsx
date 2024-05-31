@@ -26,7 +26,7 @@ export default function Category() {
     function closeAddModal() {
         setIsAddModalOpen(false);
     }
-    console.log(flash)
+    // console.log(flash)
     return (
         <AuthenticatedAdmin>
             Kategori

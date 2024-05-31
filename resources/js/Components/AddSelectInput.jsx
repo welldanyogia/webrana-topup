@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 export default function AddSelectInput({label,id,options,handleSelect}) {
 
-    console.log(options)
     return (
         <div>
             <label htmlFor={id} className="block text-sm font-medium mb-2 dark:text-white">{label}</label>

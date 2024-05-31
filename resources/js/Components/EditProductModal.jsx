@@ -10,14 +10,6 @@ export default function EditProductModal({product}) {
 
     // Handler untuk menyimpan kategori baru
     const handleSaveChanges =  (e) => {
-        // const newCategory = {
-        //     category_name: categoryName,
-        //     category_status: categoryStatus
-        // };
-
-        // Lakukan logika untuk menyimpan kategori baru (misalnya, kirim ke server)
-        // console.log("New category:", newCategory);
-        // console.log(productSellingPrice)
         e.preventDefault()
        try {
 
@@ -43,7 +35,7 @@ export default function EditProductModal({product}) {
            // alert(data.message);
            // onClose();
        }catch (er){
-           console.log(er)
+           // console.log(er)
            // alert(er.message)
        }
     };

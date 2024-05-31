@@ -26,7 +26,6 @@ export default function AdminDashboard(props) {
         dataWithPercentage[product] = parseFloat(percentage); // Konversi ke angka float
     }
 
-    console.log(dataWithPercentage);
 
 // Loop melalui semua nilai objek dalam data
     for (const key in groupedTransactionsSuccess) {

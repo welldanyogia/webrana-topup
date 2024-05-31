@@ -44,11 +44,11 @@ export default function DetailBrand() {
                     brand_status: event.target.checked
                 });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setAlertMessage('Brand successfully saved.');
             // Handle success, e.g., show success message or redirect
         } catch (error) {
-            console.error('Error:', error);
+            // console.error('Error:', error);
             setAlertMessage(`${error}`);
             // Handle error, e.g., show error message to user
         }
@@ -75,13 +75,13 @@ export default function DetailBrand() {
 
     function openAddModal() {
         setIsAddModalOpen(true)
-        console.log('category : ' + isAddModalOpen)
+        // console.log('category : ' + isAddModalOpen)
     }
 
     // Function to close the modal
     function closeAddModal() {
         setIsAddModalOpen(false);
-        console.log(isAddModalOpen)
+        // console.log(isAddModalOpen)
     }
 
     function formatRupiah(number) {
@@ -100,7 +100,7 @@ export default function DetailBrand() {
                 return 0
             }
         }
-        console.log('ststu :' +status(isCheckboxChecked))
+        // console.log('ststu :' +status(isCheckboxChecked))
 
 
         const formData = new FormData();
@@ -115,11 +115,11 @@ export default function DetailBrand() {
                 }
             });
 
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setAlertMessage('Brand successfully saved.');
             // Handle success, e.g., show success message or redirect
         } catch (error) {
-            console.error('Error:', error);
+            // console.error('Error:', error);
             setAlertMessage(`${error}`);
             // Handle error, e.g., show error message to user
         }

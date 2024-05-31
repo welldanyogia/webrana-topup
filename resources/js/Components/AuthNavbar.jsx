@@ -1,5 +1,4 @@
-import {Link} from "@inertiajs/react";
-import SigninModal from "@/Components/SigninModal.jsx";
+import {Link, router} from "@inertiajs/react";
 import Dropdown from "@/Components/Dropdown.jsx";
 import {useState} from "react";
 
@@ -15,7 +14,7 @@ export default function AuthNavbar({user}) {
                     {/*// <!-- Logo -->*/}
                     <a className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
                        href="#" aria-label="Preline">
-                        <img src='/logo_dark.png' width={145} alt={`logo}`}/>
+                        <img src='/logo_dark_2.png' width={145} alt={`logo}`}/>
                     </a>
                     {/*// <!-- End Logo */}
                 </div>
@@ -25,8 +24,8 @@ export default function AuthNavbar({user}) {
                 <div className="flex items-center gap-x-2 ms-auto py-1 md:ps-6 md:order-3 md:col-span-3">
                     <div className="hidden sm:flex sm:items-center sm:ms-6">
                         <div className="ms-3 relative">
-                            <Dropdown>
-                                <Dropdown.Trigger>
+                            {/*<Dropdown>*/}
+                            {/*    <Dropdown.Trigger>*/}
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
@@ -34,28 +33,16 @@ export default function AuthNavbar({user}) {
                                             >
                                                 {user?.name}
 
-                                                <svg
-                                                    className="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
                                             </button>
                                         </span>
-                                </Dropdown.Trigger>
+                                {/*</Dropdown.Trigger>*/}
 
-                                <Dropdown.Content>
-                                    <Dropdown.Link href={route('logout')} method="post" as="button">
-                                        Log Out
-                                    </Dropdown.Link>
-                                </Dropdown.Content>
-                            </Dropdown>
+                            {/*    <Dropdown.Content>*/}
+                            {/*        <Dropdown.Link href={route('logout')} method="post" as="button">*/}
+                            {/*            Log Out*/}
+                            {/*        </Dropdown.Link>*/}
+                            {/*    </Dropdown.Content>*/}
+                            {/*</Dropdown>*/}
                         </div>
                     </div>
                     {/*    <button*/}
@@ -93,7 +80,7 @@ export default function AuthNavbar({user}) {
                                 className={`relative inline-block text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 ${
                                     activePage === 'dashboard' ? 'before:bg-lime-400 underline' : ''
                                 } dark:text-white`}
-                                href='/dashboard'
+                                href='/'
                                 aria-current={activePage === 'dashboard' ? 'page' : undefined}
                                 onClick={() => setActivePage('dashboard')}
                             >
@@ -105,7 +92,7 @@ export default function AuthNavbar({user}) {
                                 className={`inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300 ${
                                     activePage === 'order-history' ? 'text-lime-400' : ''
                                 }`}
-                                href="#"
+                                href="/transactions/history"
                                 onClick={() => setActivePage('order-history')}
                             >
                                 Riwayat Pesanan
@@ -120,17 +107,6 @@ export default function AuthNavbar({user}) {
                                 onClick={() => setActivePage('about')}
                             >
                                 Tentang
-                            </Link>
-                        </div>
-                        <div>
-                            <Link
-                                className={`inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300 ${
-                                    activePage === 'blog' ? 'text-lime-400' : ''
-                                }`}
-                                href="#"
-                                onClick={() => setActivePage('blog')}
-                            >
-                                Blog
                             </Link>
                         </div>
                     </div>

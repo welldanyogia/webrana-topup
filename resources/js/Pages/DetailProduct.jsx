@@ -7,9 +7,10 @@ import NumberFieldUser from "@/Components/NumberFieldUser.jsx";
 import SelectFieldUser from "@/Components/SelectFieldUser.jsx";
 import OrderConfirmationModal from "@/Components/OrderConfirmationModal.jsx";
 import DetailProductAlert from "@/Components/DetailProductAlert.jsx";
+import SignupModal from "@/Components/SignupModal.jsx";
+import SigninModal from "@/Components/SigninModal.jsx";
 
-export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupedChannels }) {
-    console.log(sortedGroupedChannels)
+export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChannels }) {
     const [activeGroup, setActiveGroup] = useState(null);
     const [activeTab, setActiveTab] = useState(brand.products[0].type_id);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -24,14 +25,13 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
     const [fee,setFee] = useState(null)
     const [email, setEmail] = useState(null);
     const [phone, setPhone] = useState(null);
-    const isAuthenticated = !!auth;
+    const isAuthenticated = auth?.user && auth.user.role === 'user';
     const [values,setValues] = useState({})
     const [username, setUsername] = useState("")
     const [isAlert, setIsAlert] = useState(false)
     const [message,setMessage] = useState("")
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
-
 
     useEffect(() => {
         const initialValues = formInputs.reduce((acc, formInput) => {
@@ -117,7 +117,6 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
     function handleProductButton(e,product) {
         let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '')
         let concatenatedValues = Object.values(values).join('');
-        // console.log('conprod'+concatenatedValues)
 
         validateInputs()
 
@@ -145,7 +144,7 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                 }
             }).catch(error => {
                 // Tangani error jika terjadi kesalahan dalam permintaan API
-                console.error('Error:', error);
+                // console.error('Error:', error);
             })
         }
         setSelectedProduct(product.id)
@@ -221,10 +220,11 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
             ));
     };
 
+
     return (
         <Layout
             user={auth?.user}
-            header={<h2 className="text-xl font-semibold leading-tight text-white">Product Detail</h2>}
+            // header={<h2 className="text-xl font-semibold leading-tight text-white">Product Detail</h2>}
         >
             <Head title={brand.brand_name}/>
             <div className="py-2 relative">
@@ -633,6 +633,8 @@ export default function DetailProduct({ auth,brand,types,formInputs,sortedGroupe
                     </div>
                 </div>
             </div>
+            <SignupModal/>
+            <SigninModal/>
         </Layout>
     );
 }

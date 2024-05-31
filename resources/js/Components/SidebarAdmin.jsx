@@ -24,7 +24,7 @@ export default function SidebarAdmin(){
                 <div className="px-8 pt-4">
                     <a className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
                        href="/admin" aria-label="Preline">
-                        <img src='/logo_dark.png' width={132}/>
+                        <img src='/logo_dark_2.png' width={132}/>
                     </a>
                 </div>
 
