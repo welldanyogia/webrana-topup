@@ -15,10 +15,11 @@ function SigninModal({...props}) {
         };
     }, []);
 
-    const submit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-
-        post(route('login'));
+        post(route('login'), {
+            onFinish: () => reset('password'),
+        });
     };
     return(
         <div {...props} id="hs-modal-signin" className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto">
@@ -57,7 +58,7 @@ function SigninModal({...props}) {
                             </div>
 
                             {/*<!-- Form */}
-                            <form onSubmit={submit}>
+                            <form onSubmit={handleSubmit}>
                                 <div className="grid gap-y-4">
                                     {/*<!-- Form Group */}
                                     <div>
@@ -68,6 +69,7 @@ function SigninModal({...props}) {
                                                    onChange={(e)=> setData('email',e.target.value)}
                                                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="email-error"/>
+                                            {errors.email && <div>{errors.email}</div>}
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
                                                 <svg className="size-5 text-red-500" width="16" height="16"
                                                      fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
@@ -96,6 +98,7 @@ function SigninModal({...props}) {
                                                    onChange={(e) => setData('password', e.target.value)}
                                                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="password-error"/>
+                                            {errors.password && <div>{errors.password}</div>}
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
                                                 <svg className="size-5 text-red-500" width="16" height="16"
                                                      fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">

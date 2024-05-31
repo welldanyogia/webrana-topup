@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionHistoryController;
@@ -45,6 +46,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/product',[\App\Http\Controllers\Admin\ProductController::class,'index']);
         Route::post('/admin/storeOption',[\App\Http\Controllers\Admin\BrandController::class,'storeOption']);
         Route::post('/admin/deleteForm/{id}',[\App\Http\Controllers\Admin\BrandController::class,'deleteForm']);
+        Route::get('/admin/setting',[\App\Http\Controllers\Admin\SettingController::class,'index']);
+        Route::post('/admin/settings', [SettingController::class, 'store'])->name('admin.settings.store');
+        Route::delete('/admin/settings/{id}', [SettingController::class, 'destroy'])->name('admin.settings.destroy');
     });
     Route::group(['middleware' => 'checkRole:guest'], function() {
         Route::inertia('/', 'GuestDashboard')->name('guestDashboard');

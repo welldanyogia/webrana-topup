@@ -11,8 +11,9 @@ import {BrowserRouter, Router, useLocation} from 'react-router-dom';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import "preline/preline";
-import {HSAccordion, HSDropdown, HSOverlay, HSSelect, HSStaticMethods} from "preline";
+import {HSAccordion, HSDropdown, HSOverlay, HSSelect, HSStaticMethods, HSTooltip} from "preline";
 import ApexCharts from 'apexcharts'
+import ClipboardJS from "clipboard";
 
 HSStaticMethods.autoInit();
 
@@ -26,7 +27,7 @@ const observer = new MutationObserver((mutationsList) => {
     window.addEventListener('load', () => {
         const $clipboards = document.querySelectorAll('.js-clipboard-example');
         $clipboards.forEach((el) => {
-            const isToggleTooltip = HSStaticMethods.getClassProperty(el, '--is-toggle-tooltip') === 'false' ? false : true;
+            const isToggleTooltip = HSStaticMethods.getClassProperty(el, '--is-toggle-tooltip') !== 'false';
             const clipboard = new ClipboardJS(el, {
                 text: (trigger) => {
                     const clipboardText = trigger.dataset.clipboardText;

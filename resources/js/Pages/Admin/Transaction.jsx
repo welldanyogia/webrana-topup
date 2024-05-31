@@ -12,11 +12,13 @@ export default function Transaction({transactions,transactionsPaginate}){
         // Memastikan setiap nilai yang akan diakses tidak null
         return (
             transaction.trx_id &&
+            transaction.user_id &&
             transaction.phone_number &&
             transaction.payment_name
         ) && (
             // Cek jika ada kata kunci pencarian dan transaksi tidak null
             transaction.trx_id.toLowerCase().includes(keyword.toLowerCase()) ||
+            transaction.user_id.toLowerCase().includes(keyword.toLowerCase()) ||
             transaction.phone_number.toLowerCase().includes(keyword.toLowerCase()) ||
             transaction.payment_name.toLowerCase().includes(keyword.toLowerCase())
         );
@@ -38,48 +40,48 @@ export default function Transaction({transactions,transactionsPaginate}){
                     <div className="font-bold text-xl dark:text-white text-neutral-900">
                         Riwayat Transakasi Real-Time
                     </div>
+                    <div
+                        className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                                Categories
+                            </h2>
+                            <p className="text-sm text-white text-gray-600 dark:text-neutral-400">
+                                Add categories, edit and more.
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="inline-flex gap-x-2">
+
+                                <div className="hidden sm:block">
+                                    <label htmlFor="icon" className="sr-only">Search</label>
+                                    <div className="relative min-w-72 md:min-w-80">
+                                        <div
+                                            className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                                            <svg
+                                                className="flex-shrink-0 size-4 text-gray-400 dark:text-neutral-400"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round">
+                                                <circle cx="11" cy="11" r="8"/>
+                                                <path d="m21 21-4.3-4.3"/>
+                                            </svg>
+                                        </div>
+                                        <input type="text" id="icon" name="icon"
+                                               className="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                               placeholder="Search"
+                                               onChange={(e) => setKeyword(e.target.value)}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div className="-m-1.5 overflow-x-auto">
                         <div className="p-1.5 min-w-full inline-block align-middle">
                             <div className="overflow-hidden">
-                                <div
-                                    className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
-                                    <div>
-                                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                                            Categories
-                                        </h2>
-                                        <p className="text-sm text-white text-gray-600 dark:text-neutral-400">
-                                            Add categories, edit and more.
-                                        </p>
-                                    </div>
-
-                                    <div>
-                                        <div className="inline-flex gap-x-2">
-
-                                            <div className="hidden sm:block">
-                                                <label htmlFor="icon" className="sr-only">Search</label>
-                                                <div className="relative min-w-72 md:min-w-80">
-                                                    <div
-                                                        className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                                                        <svg
-                                                            className="flex-shrink-0 size-4 text-gray-400 dark:text-neutral-400"
-                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24"
-                                                            fill="none" stroke="currentColor" strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round">
-                                                            <circle cx="11" cy="11" r="8"/>
-                                                            <path d="m21 21-4.3-4.3"/>
-                                                        </svg>
-                                                    </div>
-                                                    <input type="text" id="icon" name="icon"
-                                                           className="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                           placeholder="Search"
-                                                           onChange={(e) => setKeyword(e.target.value)}/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                                     <thead>
                                     <tr>
@@ -91,6 +93,10 @@ export default function Transaction({transactions,transactionsPaginate}){
                                         </th>
                                         <th scope="col"
                                             className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Transaksi
+                                            ID
+                                        </th>
+                                        <th scope="col"
+                                            className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">User
                                             ID
                                         </th>
                                         <th scope="col"
@@ -132,6 +138,9 @@ export default function Transaction({transactions,transactionsPaginate}){
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                                                     {transaction.trx_id}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    {transaction.user_id}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                                                     {transaction.phone_number}

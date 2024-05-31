@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\TripayPaymentChannel;
 use App\Models\WebIndetity;
@@ -39,11 +40,18 @@ class HandleInertiaRequests extends Middleware
                 'user' => Auth::user(),
             ],
             'flash' => [
-                'message' => fn () => $request->session()->get('message')
+                'message' => fn () => $request->session()->get('message'),
+                'error' => $request->session()->get('error'),
             ],
             'categories' => Category::where('category_status',1)->with('brands')->get(),
             'tripayPaymentChannel' => TripayPaymentChannel::all(),
-            'web_identity' => WebIndetity::latest()->first()
+            'web_identity' => WebIndetity::latest()->first(),
+            'errors' => function () use ($request) {
+                return $request->session()->get('errors')
+                    ? $request->session()->get('errors')->getBag('default')->getMessages()
+                    : (object) [];
+            },
+            'banners' => Banner::all(),
         ];
     }
 }

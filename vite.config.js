@@ -15,4 +15,7 @@ export default defineConfig({
         }),
         react(),
     ],
+    define: {
+        'process.env': process.env
+    }
 });
