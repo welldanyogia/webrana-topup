@@ -13,11 +13,11 @@ class Brand extends Model
     public $incrementing = false;
     protected $primaryKey = 'brand_id';
 
-    protected $fillable = ['brand_id','brand_name', 'category_id','brand_status','brand_desc','image_url'];
+    protected $fillable = ['brand_id','brand_name', 'category_id','brand_status','brand_desc','image_url','processed_by'];
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
     public function products()

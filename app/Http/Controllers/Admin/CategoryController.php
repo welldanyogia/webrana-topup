@@ -66,7 +66,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'category_name' => 'required|string|max:255',
+            'category_status' => 'required|boolean',
+        ]);
+
+        // Temukan kategori berdasarkan id
+        $category = Category::findOrFail($id);
+
+        // Update kategori dengan data baru
+        $category->update([
+            'category_name' => $request->input('category_name'),
+            'category_status' => $request->input('category_status'),
+        ]);
+
+        // Redirect back dengan flash message sukses
+        return redirect()->back()->with(['flash'=>['success'=> 'Category updated successfully']]);
     }
 
     /**
@@ -74,6 +89,13 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Temukan kategori berdasarkan id
+        $category = Category::findOrFail($id);
+
+        // Hapus kategori
+        $category->delete();
+
+        // Redirect back dengan flash message sukses
+        return redirect()->back()->with(['flash'=>['success' => 'Category deleted successfully']]);
     }
 }

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useForm, router } from '@inertiajs/react';
 import AuthenticatedAdmin from "@/Layouts/AuthenticatedAdminLayout.jsx";
-import DetailProductAlert from "@/Components/DetailProductAlert.jsx";
+import ErrorAlert from "@/Components/ErrorAlert.jsx";
 
 export default function Setting({ banners,flash }) {
     const [isAlert, setIsAlert] = useState(false)
@@ -33,7 +33,7 @@ export default function Setting({ banners,flash }) {
     return (
         <AuthenticatedAdmin>
             {
-                flash.message &&  <DetailProductAlert isOpen={isAlert} message={flash.message} setIsOpen={setIsAlert}/>
+                flash.message &&  <ErrorAlert isOpen={isAlert} message={flash.message} setIsOpen={setIsAlert}/>
             }
             <div className="flex flex-col">
                 <div className="-m-1.5 overflow-x-auto">

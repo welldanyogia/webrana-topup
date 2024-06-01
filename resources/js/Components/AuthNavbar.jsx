@@ -6,7 +6,7 @@ export default function AuthNavbar({user}) {
     const [activePage, setActivePage] = useState('');
     return(
         // ========== HEADER =========
-        <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full">
+        <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 py-7 w-full">
             <nav
                 className="relative max-w-7xl w-full flex flex-wrap md:grid md:grid-cols-12 basis-full items-center px-4 md:px-6  mx-auto"
                 aria-label="Global">
@@ -14,7 +14,7 @@ export default function AuthNavbar({user}) {
                     {/*// <!-- Logo -->*/}
                     <a className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
                        href="#" aria-label="Preline">
-                        <img src='/logo_dark_2.png' width={145} alt={`logo}`}/>
+                        <img src='/logo_dark.png' alt={`logo}`}/>
                     </a>
                     {/*// <!-- End Logo */}
                 </div>

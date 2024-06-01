@@ -5,7 +5,7 @@ import Guest from "@/Layouts/GuestLayout.jsx";
 import CarouselHero from "@/Components/CarouselHero.jsx";
 import BrandSection from "@/Components/BrandSection.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
-import DetailProductAlert from "@/Components/DetailProductAlert.jsx";
+import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import SignupModal from "@/Components/SignupModal.jsx";
 import GuestLayout from "@/Layouts/GuestLayout.jsx";
 
@@ -25,7 +25,7 @@ export default function GuestDashboard(props) {
         <Layout user={auth?.user}>
             <Head title="Beranda"/>
             {
-                flash.error &&  <DetailProductAlert isOpen={isAlert} message={flash.error} setIsOpen={setIsAlert}/>
+                flash.error &&  <ErrorAlert isOpen={isAlert} message={flash.error} setIsOpen={setIsAlert}/>
             }
             <div className="py-12">
 

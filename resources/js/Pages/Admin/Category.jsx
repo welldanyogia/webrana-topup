@@ -1,13 +1,28 @@
 import AuthenticatedAdmin from "@/Layouts/AuthenticatedAdminLayout.jsx";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {router, usePage} from "@inertiajs/react";
 import Alert from "@/Components/Alert.jsx";
 import AddCategoryModal from "@/Components/AddCategoryModal.jsx";
+import SuccessAlert from "@/Components/SuccessAlert.jsx";
+import {Error} from "@mui/icons-material";
+import ErrorAlert from "@/Components/ErrorAlert.jsx";
 
 export default function Category() {
     const {flash, categories, totalBrands} = usePage().props
     const [alertVisible, setAlertVisible] = useState(true);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+    const [isAlert, setIsAlert] = useState(true)
+    const [categoryNames,setCategoryNames] = useState({})
+
+    useEffect(() => {
+        // Inisialisasi state dengan nama kategori dari props
+        const initialCategoryNames = {};
+        categories.forEach(category => {
+            initialCategoryNames[category.category_id] = category.category_name;
+        });
+        setCategoryNames(initialCategoryNames);
+    }, [categories]);
 
     function handleSync(e) {
         e.preventDefault()
@@ -26,15 +41,59 @@ export default function Category() {
     function closeAddModal() {
         setIsAddModalOpen(false);
     }
+
+    const handleInputChange = (e, categoryId) => {
+        setCategoryNames({
+            ...categoryNames,
+            [categoryId]: e.target.value,
+        });
+    };
+
+    function handleCheckboxChange(event,category) {
+        event.preventDefault()
+        setIsAlert(true)
+        setIsCheckboxChecked(event.target.checked);
+        router.post(`/categories/${category.category_id}`,{
+            category_name: category.category_name,
+            category_status: event.target.checked
+        })
+    }
+    function handleDelete(e,category) {
+        e.preventDefault()
+        router.post(`/categories/delete/${category.category_id}`)
+    }
+    function handleSave(e,category,categoryName) {
+        e.preventDefault()
+        router.post(`/categories/${category.category_id}`,{
+            category_name: categoryName,
+            category_status: category.category_status
+        })
+    }
+
     // console.log(flash)
     return (
         <AuthenticatedAdmin>
             Kategori
-            {flash && flash.message && alertVisible && (
-                <Alert onDismiss={handleDismiss}>
-                    {flash.message}
-                </Alert>
-            )}
+            {/*{flash && flash.message && alertVisible && (*/}
+            {/*    <Alert onDismiss={handleDismiss}>*/}
+            {/*        {flash.message}*/}
+            {/*    </Alert>*/}
+            {/*)}*/}
+            {
+                flash && flash.message && (
+                    <SuccessAlert setIsOpen={setIsAlert} isOpen={isAlert} message={flash.message}/>
+                )
+            }
+            {
+                flash && flash.success && (
+                    <SuccessAlert setIsOpen={setIsAlert} isOpen={isAlert} message={flash.success}/>
+                )
+            }
+            {
+                flash && flash.error && (
+                    <ErrorAlert setIsOpen={setIsAlert} isOpen={isAlert} message={flash.error}/>
+                )
+            }
             <div className="flex flex-col">
                 <div className="-m-1.5 overflow-x-auto">
                     <div className="p-1.5 min-w-full inline-block align-middle">
@@ -78,15 +137,15 @@ export default function Category() {
                                 <thead className="bg-gray-50 dark:bg-neutral-800">
                                 <tr>
                                     <th scope="col" className="ps-6 py-3 text-start">
-                                        <label htmlFor="hs-at-with-checkboxes-main" className="flex">
-                                            <input type="checkbox"
-                                                   className="shrink-0 border-gray-300 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-600 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                                                   id="hs-at-with-checkboxes-main"/>
-                                            <span className="sr-only">Checkbox</span>
-                                        </label>
+                                        <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            No
+                                          </span>
+                                        </div>
                                     </th>
 
-                                    <th scope="col" className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3 text-start">
+                                    <th scope="col" className="ps-6 lg:ps-3 py-3 text-start">
                                         <div className="flex items-center gap-x-2">
                                           <span
                                               className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
@@ -112,6 +171,9 @@ export default function Category() {
                                           </span>
                                         </div>
                                     </th>
+                                    {/*<th scope="col" className="px-6 py-3 text-start">*/}
+
+                                    {/*</th>*/}
 
 
                                     <th scope="col" className="px-6 py-3 text-start">
@@ -123,28 +185,41 @@ export default function Category() {
                                         </div>
                                     </th>
 
-                                    <th scope="col" className="px-6 py-3 text-end"></th>
+                                    <th scope="col" className="px-6 py-3">
+                                        <div className="flex items-center gap-x-2 mx-auto">
+                                          <span
+                                              className="text-xs mx-auto font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            Action
+                                          </span>
+                                        </div>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {categories && categories.map((category) => (
+                                {categories && categories.map((category, index) => (
                                     <tr key={category.category_id}>
                                         <td className="size-px whitespace-nowrap">
-                                            <div className="ps-6 py-3">
-                                                <label htmlFor="hs-at-with-checkboxes-3" className="flex">
-                                                    <input type="checkbox"
-                                                           className="shrink-0 border-gray-300 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-600 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                                                           id="hs-at-with-checkboxes-3"/>
-                                                    <span className="sr-only">Checkbox</span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td className="size-px whitespace-nowrap">
-                                            <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                                        <div className="ps-6 py-3">
                                                 <div className="flex items-center gap-x-3">
                                                 <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{category.category_name}
+                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{index+1}
                                                 </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="size-px w-auto whitespace-nowrap">
+                                            <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                                                <div className="flex items-center gap-x-3">
+                                                    {/*<span*/}
+                                                    {/*    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{category.category_name}*/}
+                                                    {/*</span>*/}
+                                                    <div className="max-w-sm space-y-3">
+                                                        <input type="text"
+                                                               value={categoryNames[category.category_id] || ''}
+                                                               onChange={(e) => handleInputChange(e, category.category_id)}
+                                                               className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                               placeholder="This is placeholder"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
@@ -158,8 +233,10 @@ export default function Category() {
                                         </td>
                                         <td className="size-px whitespace-nowrap">
                                             <div className="px-6 py-3">
-                                          <span
-                                              className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
+                                                {
+                                                    category.category_status === 1 && (
+                                                        <span
+                                                            className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
                                             <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16"
                                                  height="16"
                                                  fill="currentColor" viewBox="0 0 16 16">
@@ -168,6 +245,23 @@ export default function Category() {
                                             </svg>
                                             Active
                                           </span>
+                                                    )
+                                                }
+                                                {
+                                                    category.category_status === 0 && (
+                                                        <span
+                                                            className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-red-100 text-red-800 rounded-full dark:bg-red-500/10 dark:text-red-500">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                             viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+                                                             className="size-4">
+                                                          <path strokeLinecap="round" strokeLinejoin="round"
+                                                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                                        </svg>
+
+                                                        Nonactive
+                                                      </span>
+                                                    )
+                                                }
                                             </div>
                                         </td>
                                         <td className="size-px whitespace-nowrap">
@@ -177,11 +271,43 @@ export default function Category() {
                                             </div>
                                         </td>
                                         <td className="size-px whitespace-nowrap">
-                                            <div className="px-6 py-1.5">
-                                                <a className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
-                                                   href="#">
-                                                    Edit
-                                                </a>
+                                            <div className="px-6 py-1.5 flex space-x-4">
+                                                <div className="hs-tooltip flex items-center">
+                                                    <input type="checkbox" checked={category.category_status}
+                                                           onChange={(e) => {
+                                                               handleCheckboxChange(e, category)
+                                                           }}
+                                                           id="hs-small-switch"
+                                                           className="relative w-[35px] h-[21px] bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
+                                                           before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"/>
+                                                    {/*<label htmlFor="hs-tooltip-example"*/}
+                                                    {/*       className="text-sm text-gray-500 ms-3 dark:text-neutral-400">*/}
+                                                    {/*    {category.category_status === true ? "Brand Active" : "Brand Nonactive"}*/}
+                                                    {/*</label>*/}
+                                                    <div
+                                                        className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                                                        role="tooltip">
+                                                        {category.category_status === true ? "Nonactive Brand" : "Activated Brand"}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                <button type="button"
+                                                        onClick={(e) => {
+                                                            handleSave(e, category, categoryNames[category.category_id])
+                                                        }}
+                                                        className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
+                                                    Save
+                                                </button>
+                                                </div>
+                                            <div>
+                                                <button type="button"
+                                                        onClick={(e) => {
+                                                            handleDelete(e, category)
+                                                        }}
+                                                        className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
+                                                    Delete
+                                                </button>
+                                            </div>
                                             </div>
                                         </td>
                                     </tr>

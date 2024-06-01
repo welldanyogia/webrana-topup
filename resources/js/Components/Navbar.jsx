@@ -8,7 +8,7 @@ export default function Navbar() {
     const [activePage, setActivePage] = useState('');
     return(
         // ========== HEADER =========
-        <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full">
+        <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 py-7 w-full">
             <nav className="relative max-w-7xl w-full flex flex-wrap md:grid md:grid-cols-12 basis-full items-center px-4 md:px-6  mx-auto" aria-label="Global">
                 <div className="md:col-span-3">
                     {/*// <!-- Logo -->*/}
@@ -20,7 +20,7 @@ export default function Navbar() {
                         {/*    <circle cx="13" cy="16.5214" r="5" className="fill-black dark:fill-white" fill="currentColor"/>*/}
                         {/*</svg>*/}
                         {/*<WebranaLogoBlack/>*/}
-                        <img src='/logo_dark_2.png' width={145} alt={'Logo'}/>
+                        <img src='/logo_dark.png' alt={'Logo'}/>
                     </a>
                     {/*// <!-- End Logo */}
                 </div>

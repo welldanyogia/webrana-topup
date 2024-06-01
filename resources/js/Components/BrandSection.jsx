@@ -58,12 +58,12 @@ function BrandSection() {
                             >
                                 <img className="rounded-xl" src={card.image_url ? card.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'} alt={card.title} />
                                 {hoveredButton === index && (
-                                    <div className="absolute flex-col gap-y-5 inset-0 backdrop-blur flex items-center justify-center">
-                                        <ApplicationLogo className="w-16 h-16" /> {/* Icon di tengah saat dihover */}
+                                    <div className="absolute flex-col gap-y-5 rounded-xl border-lime-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
+                                        {/*<ApplicationLogo className="w-16 h-16" /> /!* Icon di tengah saat dihover *!/*/}
                                         <h2>{card.brand_name}</h2>
                                     </div>
                                 )}
-                                <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-neutral-400 text-center`}>{card.brand_name}</h1>
+                                {/*<h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-neutral-400 text-center`}>{card.brand_name}</h1>*/}
                             </Link>
                         ))}
                     </div>

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\FormInputBrand;
 use App\Models\OptionSelectInput;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class BrandController extends Controller
@@ -17,9 +19,13 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::withCount('products')->get();
+        $brands = Brand::with('category') // Mengambil kategori terkait
+        ->withCount('products') // Menghitung jumlah produk terkait
+        ->get();
+        $categories = Category::all();
         return Inertia::render('Admin/Brand',[
             'brands' => $brands,
+            'categories' => $categories,
             'flash' => session('flash')
         ]);
     }
@@ -29,7 +35,26 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'brand_name' => 'required|string',
+            'category_id' => 'required|string',
+            'brand_status' => 'required|integer',
+            'image_url' => 'nullable|string',
+            'processed_by' => 'required|in:manual,digiflazz' // Tambahkan validasi untuk processed_by
+        ]);
+
+        // Buat objek Brand baru dengan menggunakan Eloquent
+        $brand = Brand::create([
+            'brand_id' => Str::uuid(),
+            'brand_name' => $validatedData['brand_name'],
+            'category_id' => $validatedData['category_id'],
+            'brand_status' => $validatedData['brand_status'],
+            'image_url' => $validatedData['image_url'],
+            'processed_by' => $validatedData['processed_by'] // Masukkan processed_by yang telah divalidasi
+        ]);
+
+        return redirect()->back()->with(['flash'=>['message' => 'Brand created successfully']]);
+
     }
 
     /**
@@ -62,6 +87,7 @@ class BrandController extends Controller
     {
         $request->validate([
             'brand_name' => 'string|max:255',
+            'category_id' => 'required|string|exists:categories,category_id',
             'brand_image' => 'image|mimes:jpeg,png,jpg,gif',
             'brand_status' => 'boolean'
         ]);
@@ -76,6 +102,7 @@ class BrandController extends Controller
         $brand->brand_status = $request->get('brand_status');
 
         $brand->brand_name = $request->input('brand_name');
+        $brand->category_id = $request->input('category_id');
 
 
         try {
@@ -91,9 +118,9 @@ class BrandController extends Controller
             // Simpan perubahan
             $brand->save();
 
-            return response()->json(['message' => 'Brand updated successfully']);
+            return redirect()->back()->with(['message' => 'Brand updated successfully']);
         }catch (\Exception $exception){
-            return response()->json(['message' => $exception->getMessage()]);
+            return redirect()->back()->with(['message' => $exception->getMessage()]);
         }
         // Proses upload gambar jika ada
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\ProfileController;
@@ -38,9 +39,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/tripay/getpaymentmethod',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'paymentChannel'])->name('tripay.update.paymentChannel');
         Route::get('/category',[\App\Http\Controllers\Admin\CategoryController::class,'index'])->name('admin.category');
         Route::post('/category/store',[\App\Http\Controllers\Admin\CategoryController::class,'store']);
+        Route::post('/categories/{id}', [CategoryController::class, 'update']);
+        Route::post('/categories/delete/{id}', [CategoryController::class, 'destroy']);
         Route::get('/brand',[\App\Http\Controllers\Admin\BrandController::class,'index']);
         Route::get('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'show'])->name('admin.brand.show');
-        Route::post('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'update']);
+        Route::post('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'store']);
+        Route::post('/admin/brand/store',[\App\Http\Controllers\Admin\BrandController::class,'update']);
         Route::post('/admin/product/{id}',[\App\Http\Controllers\Admin\ProductController::class,'update']);
         Route::get('/admin/transaction',[\App\Http\Controllers\Admin\TransactionController::class,'index']);
         Route::get('/admin/product',[\App\Http\Controllers\Admin\ProductController::class,'index']);
@@ -49,6 +53,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/setting',[\App\Http\Controllers\Admin\SettingController::class,'index']);
         Route::post('/admin/settings', [SettingController::class, 'store'])->name('admin.settings.store');
         Route::delete('/admin/settings/{id}', [SettingController::class, 'destroy'])->name('admin.settings.destroy');
+
     });
     Route::group(['middleware' => ['checkRole:guest,user']], function() {
         Route::inertia('/', 'GuestDashboard')->name('guestDashboard');

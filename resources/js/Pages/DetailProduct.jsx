@@ -6,7 +6,7 @@ import TextFieldUser from "@/Components/TextFieldUser.jsx";
 import NumberFieldUser from "@/Components/NumberFieldUser.jsx";
 import SelectFieldUser from "@/Components/SelectFieldUser.jsx";
 import OrderConfirmationModal from "@/Components/OrderConfirmationModal.jsx";
-import DetailProductAlert from "@/Components/DetailProductAlert.jsx";
+import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import SignupModal from "@/Components/SignupModal.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
 
@@ -229,7 +229,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
             <Head title={brand.brand_name}/>
             <div className="py-2 relative">
                 <div className='top-0 right-0'>
-                    <DetailProductAlert isOpen={isAlert} message={message} setIsOpen={setIsAlert}/>
+                    <ErrorAlert isOpen={isAlert} message={message} setIsOpen={setIsAlert}/>
                 </div>
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
