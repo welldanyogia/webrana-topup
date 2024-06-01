@@ -62,21 +62,25 @@ class BrandController extends Controller
      */
     public function show(string $id)
     {
-        $brands = Brand::where('brand_id',$id)->with('products')->get();
-        $brand = Brand::find($id);
+        $brand = Brand::where('brand_id', $id)
+            ->with(['products', 'category'])
+            ->first();
+//        $brand = Brand::find($id)->with('products')->get();;
         $products = Product::where('brand_id', $id)
             ->orderBy('price', 'asc')
             ->paginate();
         $formInputs = FormInputBrand::where('brand_id',$id)->with('options')->get();
 //        $optionsInput = OptionSelectInput::where('form_input_id',$formInputs->id)->get();
+        $categories = Category::all();
 
         return Inertia::render('Admin/DetailBrand',[
-            'brands' => $brands,
-            'brand' => $brands,
+//            'brands' => $brands,
+            'brand' => $brand,
             'products' => $products,
             'formInputs' => $formInputs,
 //            'optionsInput' => $optionsInput,
-            'flash' => session('flash')
+            'flash' => session('flash'),
+            'categories' => $categories
         ]);
     }
 
@@ -85,26 +89,34 @@ class BrandController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validasi input
         $request->validate([
-            'brand_name' => 'string|max:255',
-            'category_id' => 'required|string|exists:categories,category_id',
-            'brand_image' => 'image|mimes:jpeg,png,jpg,gif',
-            'brand_status' => 'boolean'
+            'brand_name' => 'nullable|string|max:255',
+            'category_id' => 'nullable|string|exists:categories,category_id',
+            'brand_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'brand_status' => 'nullable|boolean',
+            'processed_by' => 'nullable|in:manual,digiflazz',
+            'mass_profit' => 'nullable|numeric',
+            'mass_profit_status' => 'nullable|boolean',
         ]);
 
-        // Cari merek berdasarkan ID
-        $brand = Brand::find($id);
+        // Pastikan setidaknya satu kolom diisi
+        $input = $request->only([
+            'brand_name',
+            'category_id',
+            'brand_image',
+            'brand_status',
+            'processed_by',
+            'mass_profit',
+            'mass_profit_status'
+        ]);
 
-        if (!$brand) {
-            return response()->json(['message' => 'Brand not found'], 404);
+        if (empty(array_filter($input, fn($value) => !is_null($value) && $value !== ''))) {
+            return redirect()->back()->with(['error' => 'At least one field must be provided.']);
         }
 
-        $brand->brand_status = $request->get('brand_status');
-
-        $brand->brand_name = $request->input('brand_name');
-        $brand->category_id = $request->input('category_id');
-
-
+        // Temukan Brand berdasarkan ID
+        $brand = Brand::findOrFail($id);
         try {
             if ($request->hasFile('brand_image')) {
                 $image = $request->file('brand_image');
@@ -116,11 +128,19 @@ class BrandController extends Controller
             }
 
             // Simpan perubahan
-            $brand->save();
+            $brand->update($input);
 
-            return redirect()->back()->with(['message' => 'Brand updated successfully']);
+            if ($brand->mass_profit_status == 1) {
+                $products = Product::where('brand_id', $brand->brand_id)->get();
+                foreach ($products as $product) {
+                    $product->selling_price = $product->price + ($product->price * ($brand->mass_profit / 100));
+                    $product->save();
+                }
+            }
+
+            return redirect()->back()->with(['flash'=>['success' => 'Brand updated successfully']]);
         }catch (\Exception $exception){
-            return redirect()->back()->with(['message' => $exception->getMessage()]);
+            return redirect()->back()->with(['flash'=>['error' => $exception->getMessage()]]);
         }
         // Proses upload gambar jika ada
 

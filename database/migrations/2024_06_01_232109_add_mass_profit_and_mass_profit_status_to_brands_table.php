@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('brands', function (Blueprint $table) {
-            $table->enum('processed_by', ['manual', 'digiflazz'])->default('digiflazz')->after('status');
+            $table->decimal('mass_profit', 10, 2)->nullable()->after('processed_by');
+            $table->boolean('mass_profit_status')->default(false)->after('mass_profit');
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('brands', function (Blueprint $table) {
-            $table->dropColumn('processed_by');
+            $table->dropColumn('mass_profit');
+            $table->dropColumn('mass_profit_status');
         });
     }
 };

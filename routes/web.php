@@ -43,8 +43,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/categories/delete/{id}', [CategoryController::class, 'destroy']);
         Route::get('/brand',[\App\Http\Controllers\Admin\BrandController::class,'index']);
         Route::get('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'show'])->name('admin.brand.show');
-        Route::post('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'store']);
-        Route::post('/admin/brand/store',[\App\Http\Controllers\Admin\BrandController::class,'update']);
+        Route::post('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'update']);
+        Route::post('/admin/brand/store',[\App\Http\Controllers\Admin\BrandController::class,'store']);
         Route::post('/admin/product/{id}',[\App\Http\Controllers\Admin\ProductController::class,'update']);
         Route::get('/admin/transaction',[\App\Http\Controllers\Admin\TransactionController::class,'index']);
         Route::get('/admin/product',[\App\Http\Controllers\Admin\ProductController::class,'index']);

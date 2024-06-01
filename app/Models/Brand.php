@@ -13,7 +13,9 @@ class Brand extends Model
     public $incrementing = false;
     protected $primaryKey = 'brand_id';
 
-    protected $fillable = ['brand_id','brand_name', 'category_id','brand_status','brand_desc','image_url','processed_by'];
+    protected $fillable = [
+        'brand_id','brand_name', 'category_id','brand_status','brand_desc','image_url',
+        'processed_by', 'mass_profit', 'mass_profit_status'];
 
     public function category()
     {

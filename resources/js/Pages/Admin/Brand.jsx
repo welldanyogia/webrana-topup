@@ -81,7 +81,7 @@ export default function Brand() {
             category_id: selectedCategoryId,
             brand_status: brand.brand_status,
             // brand_desc: brand.brand_desc,
-            // image_url: brand.image_url
+            image_url: brand.image_url
         });
     }
 
@@ -97,10 +97,12 @@ export default function Brand() {
                 brand_name: brand.brand_name,
                 category_id: brand.category_id,
                 brand_status: e.target.checked,
+                processed_by: brand.processed_by,
+                image_url: ""
             });
-            // console.log('Response:', response);
+            console.log('Response:', response);
         } catch (error) {
-            // console.error('Error:', error);
+            console.error('Error:', error);
         }
     }
 
@@ -252,58 +254,45 @@ export default function Brand() {
                         </div>
                     </div>
                 </div>
+                <div className='flex flex-col'>
+                    {/*<!-- Header >*/}
+                    <div
+                        className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-800 dark:text-neutral-200">
+                                Brand
+                            </h2>
+                            <p className="text-sm text-gray-600 dark:text-neutral-400">
+                                Add brands, edit and more.
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="inline-flex gap-x-2">
+                                <a className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                   href="#" onClick={handleSync}>
+                                    Sync with Digiflazz
+                                </a>
+                                <button type="button"
+                                        className="hs-collapse-toggle hs-collapse-open:bg-red-700 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                                        id="hs-basic-collapse" data-hs-collapse="#hs-basic-collapse-heading">
+                                    <div className="hs-collapse-open:hidden flex">
+                                        Add Brand
+                                    </div>
+                                    <div className="hs-collapse-open:block hidden flex">
+                                        Close
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        {/*<AddCategoryModal isOpen={isAddModalOpen} onClose={closeAddModal}/>*/}
+                    </div>
                 <div className="-m-1.5 overflow-x-auto">
                     <div className="p-1.5 min-w-full inline-block align-middle">
                         <div
                             className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-neutral-800 dark:border-neutral-700">
-                            {/*<!-- Header >*/}
-                            <div
-                                className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
-                                <div>
-                                    <h2 className="text-xl font-semibold text-gray-800 dark:text-neutral-200">
-                                        Brand
-                                    </h2>
-                                    <p className="text-sm text-gray-600 dark:text-neutral-400">
-                                        Add brands, edit and more.
-                                    </p>
-                                </div>
 
-                                <div>
-                                    <div className="inline-flex gap-x-2">
-                                        <a className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
-                                           href="#" onClick={handleSync}>
-                                            Sync with Digiflazz
-                                        </a>
-                                        <button type="button"
-                                                className="hs-collapse-toggle hs-collapse-open:bg-red-700 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                                                id="hs-basic-collapse" data-hs-collapse="#hs-basic-collapse-heading">
-                                            <div className="hs-collapse-open:hidden flex">
-                                                Add Brand
-                                            </div>
-                                            <div className="hs-collapse-open:block hidden flex">
-                                                Close
-                                            </div>
-                                        </button>
-
-                                        {/*<button className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"*/}
-                                        {/*   type="button"*/}
-                                        {/*   data-hs-collapse="#hs-basic-collapse-heading"*/}
-                                        {/*    // onClick={openAddModal}*/}
-                                        {/*>*/}
-                                        {/*    <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"*/}
-                                        {/*         width="24" height="24" viewBox="0 0 24 24" fill="none"*/}
-                                        {/*         stroke="currentColor" strokeWidth="2" strokeLinecap="round"*/}
-                                        {/*         strokeLinejoin="round">*/}
-                                        {/*        <path d="M5 12h14"/>*/}
-                                        {/*        <path d="M12 5v14"/>*/}
-                                        {/*    </svg>*/}
-                                        {/*    Add brand*/}
-                                        {/*</button>*/}
-                                    </div>
-                                </div>
-                                {/*<AddCategoryModal isOpen={isAddModalOpen} onClose={closeAddModal}/>*/}
-                            </div>
-                            <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                            <table className="min-w-full overflow-x-auto divide-y divide-gray-200 dark:divide-neutral-700">
                                 <thead className="bg-gray-50 dark:bg-neutral-800">
                                 <tr>
                                     <th scope="col" className="ps-6 py-3 text-start">
@@ -380,23 +369,21 @@ export default function Brand() {
                                 </thead>
                                 <tbody>
                                 {brands && brands.map((brand, index) => (
-                                    <tr key={brand.brand_id} onClick={() => router.get(`/admin/brand/${brand.brand_id}`)}
-                                        className='hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer'
-                                    >
+                                    <tr key={brand.brand_id} className='hover:bg-gray-100 dark:hover:bg-neutral-700'>
                                         <td className="size-px whitespace-nowrap">
                                             <div className="ps-6 py-3">
                                                 <span
                                                     className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{index + 1}</span>
                                             </div>
                                         </td>
-                                        <td className="size-px w-full whitespace-nowrap">
+                                        <td className="w-full whitespace-nowrap">
                                             <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
                                                 <div className="flex items-center gap-x-3">
                                                     <div className="max-w-sm space-y-3">
                                                         <input type="text"
-                                                               value={brandNames[brand.brand_id] || 'kosong'}
+                                                               value={brandNames[brand.brand_id] || ''}
                                                                onChange={(e) => handleInputChange(e, brand.brand_id)}
-                                                               className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                               className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                                placeholder="This is placeholder"/>
                                                     </div>
                                                 </div>
@@ -489,14 +476,6 @@ export default function Brand() {
                                             })}</span>
                                             </div>
                                         </td>
-                                        {/*<td className="size-px whitespace-nowrap">*/}
-                                        {/*    <div className="px-6 py-1.5">*/}
-                                        {/*        <a className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"*/}
-                                        {/*           href={route('admin.brand.show', brand.brand_id)}>*/}
-                                        {/*            Edit*/}
-                                        {/*        </a>*/}
-                                        {/*    </div>*/}
-                                        {/*</td>*/}
                                         <td className="size-px whitespace-nowrap">
                                             <div className="px-6 py-1.5 flex space-x-4">
                                                 <div className="hs-tooltip flex items-center">
@@ -507,10 +486,6 @@ export default function Brand() {
                                                            id="hs-small-switch"
                                                            className="relative w-[35px] h-[21px] bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
                                                            before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"/>
-                                                    {/*<label htmlFor="hs-tooltip-example"*/}
-                                                    {/*       className="text-sm text-gray-500 ms-3 dark:text-neutral-400">*/}
-                                                    {/*    {category.category_status === true ? "Brand Active" : "Brand Nonactive"}*/}
-                                                    {/*</label>*/}
                                                     <div
                                                         className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
                                                         role="tooltip">
@@ -527,13 +502,38 @@ export default function Brand() {
                                                     </button>
                                                 </div>
                                                 <div>
-                                                    <button type="button"
-                                                            onClick={(e) => {
+                                                    <div className="hs-dropdown inline-flex">
+                                                        <button id="hs-dropdown-custom-icon-trigger" type="button"
+                                                                className="hs-dropdown-toggle flex justify-center items-center size-9 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">
+                                                            <svg
+                                                                className="flex-none size-4 text-gray-600 dark:text-neutral-500"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" strokeWidth="2"
+                                                                strokeLinecap="round" strokeLinejoin="round">
+                                                                <circle cx="12" cy="12" r="1"/>
+                                                                <circle cx="12" cy="5" r="1"/>
+                                                                <circle cx="12" cy="19" r="1"/>
+                                                            </svg>
+                                                        </button>
+
+                                                        <div
+                                                            className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 hidden min-w-20 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700"
+                                                            aria-labelledby="hs-dropdown-custom-icon-trigger">
+                                                            <button className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                                                                    onClick={() => router.get(`/admin/brand/${brand.brand_id}`)}
+                                                               type="button" >
+                                                                Detail
+                                                            </button>
+                                                            <button
+                                                                className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-red-800 hover:bg-red-100 focus:outline-none focus:bg-red-100 dark:text-red-400 dark:hover:bg-red-700 dark:hover:text-red-300 dark:focus:bg-red-700"
+                                                                type="button" onClick={(e) => {
                                                                 handleDelete(e, brand)
-                                                            }}
-                                                            className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
-                                                        Delete
-                                                    </button>
+                                                            }}>
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
@@ -543,6 +543,7 @@ export default function Brand() {
                             </table>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </AuthenticatedAdmin>
