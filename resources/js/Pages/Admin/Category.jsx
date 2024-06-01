@@ -4,7 +4,6 @@ import {router, usePage} from "@inertiajs/react";
 import Alert from "@/Components/Alert.jsx";
 import AddCategoryModal from "@/Components/AddCategoryModal.jsx";
 import SuccessAlert from "@/Components/SuccessAlert.jsx";
-import {Error} from "@mui/icons-material";
 import ErrorAlert from "@/Components/ErrorAlert.jsx";
 
 export default function Category() {
