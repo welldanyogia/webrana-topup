@@ -10,6 +10,7 @@ import SuccessAlert from "@/Components/SuccessAlert.jsx";
 import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import AddProduct from "@/Components/AddProduct.jsx";
 import {Inertia} from "@inertiajs/inertia";
+import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
 
 export default function DetailBrand() {
     const {flash, brand, categories, products, formInputs} = usePage().props
@@ -595,6 +596,7 @@ export default function DetailBrand() {
                                                 return null;  // Mengembalikan null jika kondisi tidak terpenuhi
                                             })
                                         }
+                                        <AddFormInputModal brand={brandName} brandId={brandId}/>
 
                                     </div>
                                 </div>
