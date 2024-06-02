@@ -152,7 +152,13 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+
+        // Hapus kategori
+        $brand->delete();
+
+        // Redirect back dengan flash message sukses
+        return redirect()->back()->with(['flash'=>['success' => 'Brand deleted successfully']]);
     }
 
     public function storeOption(Request $request)
