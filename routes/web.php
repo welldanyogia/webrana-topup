@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'show'])->name('admin.brand.show');
         Route::post('/admin/brand/{id}',[\App\Http\Controllers\Admin\BrandController::class,'update']);
         Route::post('/admin/brand/delete/{id}',[\App\Http\Controllers\Admin\BrandController::class,'destroy']);
-        Route::post('/admin/brand/store',[\App\Http\Controllers\Admin\BrandController::class,'store']);
+        Route::post('/admin/brand/store/data',[\App\Http\Controllers\Admin\BrandController::class,'store']);
         Route::post('/admin/product/{id}',[\App\Http\Controllers\Admin\ProductController::class,'update']);
         Route::post('/admin/store/product', [ProductController::class, 'store']);
         Route::post('/admin/product/{id}/destroy', [ProductController::class, 'destroy'])->name('admin.product.destroy');

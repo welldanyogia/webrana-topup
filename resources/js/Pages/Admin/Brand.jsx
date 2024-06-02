@@ -51,7 +51,7 @@ export default function Brand() {
 
     function handleStore(e) {
         e.preventDefault()
-        router.post('/admin/brand/store',dataStore)
+        router.post('/admin/brand/store/data',dataStore)
     }
 
     function handleSync(e) {
@@ -59,19 +59,6 @@ export default function Brand() {
         router.post('/admin/digiflazz/fetch')
     }
 
-    function handleDismiss() {
-        setAlertVisible(false);
-    }
-
-    // Function to open the modal
-    function openAddModal() {
-        setIsAddModalOpen(true);
-    }
-
-    // Function to close the modal
-    function closeAddModal() {
-        setIsAddModalOpen(false);
-    }
 
     function handleCategoryChange(event, brand) {
         const selectedCategoryId = event.target.value;
