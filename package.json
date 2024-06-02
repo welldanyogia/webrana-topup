@@ -25,6 +25,7 @@
     "dependencies": {
         "@emotion/react": "^11.11.4",
         "@emotion/styled": "^11.11.5",
+        "@inertiajs/inertia": "^0.11.1",
         "@preline/carousel": "^2.1.0",
         "@preline/collapse": "^2.3.0",
         "@preline/copy-markup": "^2.3.0",

@@ -22,7 +22,28 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'brand_id' => 'required|string|exists:brands,brand_id',
+            'type_id' => 'nullable|string',
+//            'seller_name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'selling_price' => 'required|numeric',
+            'buyer_sku_code' => 'required|string|max:255',
+//            'buyer_product_status' => 'required|string|max:255',
+//            'seller_product_status' => 'required|string|max:255',
+//            'unlimited_stock' => 'required|boolean',
+//            'stock' => 'nullable|numeric',
+//            'multi' => 'required|boolean',
+//            'start_cut_off' => 'required|string|max:255',
+//            'end_cut_off' => 'required|string|max:255',
+            'desc' => 'required|string',
+            'product_status' => 'required|boolean',
+        ]);
+
+        Product::create($request->all());
+
+        return redirect()->back()->with(['success'=> 'Product created successfully!']);
     }
 
     /**
@@ -63,6 +84,12 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            $product->delete();
+            return redirect()->back()->with(['flash'=>['success' => 'Product deleted successfully']]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['flash'=>['error' => 'Failed to delete product']]);
+        }
     }
 }

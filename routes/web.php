@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\ProfileController;
@@ -47,6 +48,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/admin/brand/delete/{id}',[\App\Http\Controllers\Admin\BrandController::class,'destroy']);
         Route::post('/admin/brand/store',[\App\Http\Controllers\Admin\BrandController::class,'store']);
         Route::post('/admin/product/{id}',[\App\Http\Controllers\Admin\ProductController::class,'update']);
+        Route::post('/admin/store/product', [ProductController::class, 'store']);
+        Route::post('/admin/product/{id}/destroy', [ProductController::class, 'destroy'])->name('admin.product.destroy');
         Route::get('/admin/transaction',[\App\Http\Controllers\Admin\TransactionController::class,'index']);
         Route::get('/admin/product',[\App\Http\Controllers\Admin\ProductController::class,'index']);
         Route::post('/admin/storeOption',[\App\Http\Controllers\Admin\BrandController::class,'storeOption']);

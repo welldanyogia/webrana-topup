@@ -118,6 +118,14 @@ export default function TripayTable(){
                             </span>
                         </div>
                     </th>
+                    <th scope="col" className="px-6 py-3 text-start">
+                        <div className="flex items-center gap-x-2">
+                            <span
+                                className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                Status
+                            </span>
+                        </div>
+                    </th>
 
                     <th scope="col" className="px-6 py-3 text-start">
                         <div className="flex items-center gap-x-2">
@@ -142,15 +150,6 @@ export default function TripayTable(){
                             <span
                                 className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
                                 Total Fee
-                            </span>
-                        </div>
-                    </th>
-
-                    <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                            <span
-                                className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                                Status
                             </span>
                         </div>
                     </th>
@@ -195,6 +194,20 @@ export default function TripayTable(){
                                     className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{paymentMethod.code}</span>
                             </div>
                         </td>
+                        <td className="size-px whitespace-nowrap">
+                            <div className="px-6 py-3">
+                                <span
+                                    className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${paymentMethod.active ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
+                                    <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
+                                         width="16" height="16" fill="currentColor"
+                                         viewBox="0 0 16 16">
+                                        <path
+                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    {paymentMethod.active ? 'Active' : 'Nonactive'}
+                                </span>
+                            </div>
+                        </td>
                         <td className="h-px w-72 whitespace-nowrap">
                             <div className="px-6 py-3">
                                 <span
@@ -213,20 +226,7 @@ export default function TripayTable(){
                                     className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(paymentMethod.total_fee_flat)} + {formatPercent(paymentMethod.total_fee_percent)}</span>
                             </div>
                         </td>
-                        <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-3">
-                                <span
-                                    className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${paymentMethod.active ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
-                                    <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
-                                         width="16" height="16" fill="currentColor"
-                                         viewBox="0 0 16 16">
-                                        <path
-                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                    </svg>
-                                    {paymentMethod.active ? 'Active' : 'Nonactive'}
-                                </span>
-                            </div>
-                        </td>
+
                     </tr>
                 ))}
                 </tbody>

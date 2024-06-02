@@ -93,16 +93,16 @@ export default function Brand() {
         setIsCheckboxChecked(e.target.checked);
 
         try {
-            const response = await router.post(`/admin/brand/${brand.brand_id}`, {
+            router.post(`/admin/brand/${brand.brand_id}`, {
                 brand_name: brand.brand_name,
                 category_id: brand.category_id,
                 brand_status: e.target.checked,
                 processed_by: brand.processed_by,
                 image_url: ""
             });
-            console.log('Response:', response);
+            // console.log('Response:', response);
         } catch (error) {
-            console.error('Error:', error);
+            // console.error('Error:', error);
         }
     }
 

@@ -105,9 +105,10 @@ class DigiflazzController extends Controller
                 }
             }
 
-            return redirect()->back()->with('flash',['message' =>'Price list fetched and stored successfully.','type' => 'success']);
+//            return response()->json($priceList);
+            return redirect()->back()->with(['flash'=>['success' =>'Price list fetched and stored successfully.']]);
         } else {
-            return redirect()->back()->with('flash',['message'=>'Failed to fetch price list.', 'type' => 'error']);
+            return redirect()->back()->with(['flash'=>['error'=>'Failed to fetch price list.']]);
         }
     }
 
@@ -135,6 +136,10 @@ class DigiflazzController extends Controller
         );
 
         $brandId = $brand->brand_id;
+        $selling_price = '';
+        if ($brand->mass_profit_status === 1){
+            $selling_price = $item['price']+($item['price']*($brand->mass_profit/100));
+        }
 
         $type = Type::firstOrCreate(
             ['type_name' => $item['type']],
@@ -147,7 +152,7 @@ class DigiflazzController extends Controller
         $typeId = $type->type_id;
 
         Product::updateOrCreate(
-            ['product_name' => $item['product_name']],
+            ['buyer_sku_code' => $item['buyer_sku_code']],
             [
                 'product_name' => $item['product_name'],
                 'category_id' => $categoryId,
@@ -155,7 +160,7 @@ class DigiflazzController extends Controller
                 'type_id' => $typeId,
                 'seller_name' => $item['seller_name'],
                 'price' => $item['price'],
-//                'selling_price' => $item['price'],
+                'selling_price' => $selling_price,
                 'product_status' => $status,
                 'buyer_sku_code' => $item['buyer_sku_code'],
                 'buyer_product_status' => $item['buyer_product_status'],

@@ -81,13 +81,13 @@ class PaymentGatewayController extends Controller
 
         // Check if the tripay entry is found
         if (!$tripay) {
-            return redirect()->back()->with(['flash'=>['success' => false, 'message' => 'API key not found']]);
+            return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'API key not found']]);
         }
 
         // Make the API request with the Authorization header
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $tripay->api_key,
-        ])->get($this->url.'merchant/payment-channel');
+        ])->get($this->url . 'merchant/payment-channel');
 
         // Check if the API request was successful
         if ($response->successful()) {
@@ -97,8 +97,18 @@ class PaymentGatewayController extends Controller
             if (isset($responseData['data']) && is_array($responseData['data'])) {
                 $paymentChannels = $responseData['data'];
 
+                // Retrieve all existing payment channel codes from the database
+                $existingChannels = TripayPaymentChannel::pluck('code')->all();
+
+                // Create an array to store the codes of channels from the API response
+                $receivedCodes = [];
+
                 // Iterate over each payment channel and save it to the database
                 foreach ($paymentChannels as $channel) {
+                    // Store the received channel codes
+                    $receivedCodes[] = $channel['code'];
+
+                    // Update or create the payment channel
                     TripayPaymentChannel::updateOrCreate(
                         ['code' => $channel['code']], // Use 'code' as the unique identifier
                         [
@@ -119,6 +129,9 @@ class PaymentGatewayController extends Controller
                     );
                 }
 
+                // Mark inactive records that are not in the API response
+                TripayPaymentChannel::whereNotIn('code', $receivedCodes)->update(['active' => false]);
+
 //                return response()->json([
 //                    'success' => true,
 //                    'message' => 'Payment channels fetched and saved successfully',
@@ -128,20 +141,12 @@ class PaymentGatewayController extends Controller
                 return redirect()->back()->with(['flash'=>['success' => true,'message' => 'Payment channels fetched and saved successfully']]);
             } else {
                 // Handle the case where the expected data structure is not found
-//                return response()->json([
-//                    'success' => false,
-//                    'message' => 'Unexpected response structure',
-//                    'response' => $responseData,
-//                ], 500);
-                return redirect()->back()->with(['flash'=>['success'=>false,'message'=> 'Unexpected response structure']]);
+                return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'Unexpected response structure']]);
             }
         } else {
-//            return response()->json([
-//                'success' => false,
-//                'message' => 'Failed to fetch payment channels',
-//                'error' => $response->json(),
-//            ], $response->status());
-            return redirect()->back()->with(['flash'=>['success'=>false,'message'=> 'Failed to fetch payment channels']]);
+            // Handle the case where the API request failed
+            return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'Failed to fetch payment channels']]);
         }
     }
+
 }

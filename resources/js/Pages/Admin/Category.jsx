@@ -266,7 +266,14 @@ export default function Category() {
                                         <td className="size-px whitespace-nowrap">
                                             <div className="px-6 py-3">
                                             <span
-                                                className="text-sm text-gray-500 dark:text-neutral-500">{category.updated_at}</span>
+                                                className="text-sm text-gray-500 dark:text-neutral-500">{new Date(category.updated_at).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: 'numeric',
+                                                minute: 'numeric',
+                                                second: 'numeric'
+                                            })}</span>
                                             </div>
                                         </td>
                                         <td className="size-px whitespace-nowrap">
