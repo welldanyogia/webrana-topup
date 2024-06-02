@@ -186,6 +186,7 @@ class TransactionController extends Controller
                 'amount' => $responseData['data']['amount'],
                 'fee' => $responseData['data']['total_fee'],
                 'status' => $status,
+                'digiflazz_status' => $status,
                 'payment_method' => $responseData['data']['payment_method'],
                 'payment_name' => $responseData['data']['payment_name'],
                 'payment_status' => $responseData['data']['status'],

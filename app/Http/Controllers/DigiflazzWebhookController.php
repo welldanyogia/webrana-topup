@@ -18,13 +18,16 @@ class DigiflazzWebhookController extends Controller
 
         // Verify the signature
         if (!hash_equals($signature, $computed_signature)) {
+            Log::info('message : Invalid signature');
             return response()->json(['success' => false, 'message' => 'Invalid signature'], 400);
+
         }
 
         $event = $request->header('X-Digiflazz-Event');
         $data = json_decode($post_data, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
+            Log::info('message : Invalid JSON');
             return response()->json(['success' => false, 'message' => 'Invalid JSON'], 400);
         }
 
@@ -36,6 +39,7 @@ class DigiflazzWebhookController extends Controller
                 $this->handleUpdateEvent($data);
                 break;
             default:
+                Log::info('message : Unrecognized event');
                 return response()->json(['success' => false, 'message' => 'Unrecognized event'], 400);
         }
 
