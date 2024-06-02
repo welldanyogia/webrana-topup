@@ -39,7 +39,7 @@ export default function DetailBrand() {
     const [dataStore, setDataStore] = useState({
         product_name: '',
         brand_id: brand.brand_id,
-        type_id: brand.brand_name,
+        type_name: '',
         seller_name: 'default',
         price: '',
         selling_price: '',
@@ -80,7 +80,7 @@ export default function DetailBrand() {
         setDataStore({
             product_name: '',
             brand_id: brand.brand_id,
-            type_id: brand.brand_name,
+            type_name: '',
             seller_name: 'default',
             price: '',
             selling_price: '',

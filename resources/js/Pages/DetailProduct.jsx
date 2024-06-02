@@ -12,7 +12,9 @@ import SigninModal from "@/Components/SigninModal.jsx";
 
 export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChannels }) {
     const [activeGroup, setActiveGroup] = useState(null);
-    const [activeTab, setActiveTab] = useState(brand.products[0].type_id);
+    const [activeTab, setActiveTab] = useState(
+        brand && brand.products && brand.products.length > 0 ? brand.products[0].type_id : null
+    );
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedProductName, setSelectedProductName] = useState(null);
     const [selectedProductBrand, setSelectedProductBrand] = useState(brand.brand_name);
@@ -170,6 +172,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     }
 
     const renderProductTabs = (products) => {
+        console.log(products)
         const uniqueTypes = {};
         return products
             .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
