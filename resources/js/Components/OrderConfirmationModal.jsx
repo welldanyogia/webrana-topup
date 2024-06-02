@@ -26,6 +26,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
         product_price:price,
         fee:fee
     }
+    console.log(transactionData)
 
 
     function handleSubmit(e) {
@@ -33,15 +34,15 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
         router.post('/pay', transactionData)
     }
 
-    for (const [key, value] of Object.entries(transactionData)) {
-        if (key === 'email_customer') {
-            continue; // Skip the email_customer key
-        }
-        if (value === null || value === '') {
-            // alert(`Field ${key} tidak boleh kosong`);
-            return; // Stop further execution if any value is null or empty
-        }
-    }
+    // for (const [key, value] of Object.entries(transactionData)) {
+    //     if (key === 'email_customer') {
+    //         continue; // Skip the email_customer key
+    //     }
+    //     if (value === null || value === '') {
+    //         // alert(`Field ${key} tidak boleh kosong`);
+    //         return; // Stop further execution if any value is null or empty
+    //     }
+    // }
     return (
         <div id={`hs-vertically-centered-modal-order-confirmation`}
              className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
@@ -110,7 +111,8 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                     </div>
                     <p className="mt-2 mx-auto w-3/4 text-sm text-white"
                        id="hs-input-helper-text">Pastikan detail pesanan sudah benar semua, kesalahan
-                        input {import.meta.env.VITE_APP_NAME} <b>tidak bertanggungjawab</b>.</p>
+                        {/*input {import.meta.env.VITE_APP_NAME} <b>tidak bertanggungjawab</b>.*/}
+                    </p>
                     <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
                         <button type="button"
                                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"

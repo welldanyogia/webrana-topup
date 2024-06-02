@@ -607,7 +607,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                        placeholder="email@example.com"/>
                                             </div>
                                         </div>
-                                        <button type="button" onClick={handleConfirm}
+                                        <button type="button"
+                                                onClick={handleConfirm}
                                                 data-hs-overlay={`#hs-vertically-centered-modal-order-confirmation`}
                                                 className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-lime-600 text-white hover:bg-lime-700 disabled:opacity-50 disabled:pointer-events-none">
                                             Konfirmasi Pesanan
@@ -621,21 +622,21 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         </button>
                                     </div>
                                 </div>
-                                <OrderConfirmationModal formInputs={formInputs} values={values}
-                                                        product={selectedProductName}
-                                                        price={paymentPrice} email={email}
-                                                        paymentMethod={selectedPaymentMethod}
-                                                        phoneNumber={phone} productCode={selectedProductCode}
-                                                        paymentMethodCode={selectedPaymentCode}
-                                                        priceWithFee={paymentPriceWithFee} brand={selectedProductBrand}
-                                                        fee={fee} username={username}
-                                />
 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <OrderConfirmationModal formInputs={formInputs} values={values}
+                                    product={selectedProductName}
+                                    price={paymentPrice} email={email}
+                                    paymentMethod={selectedPaymentMethod}
+                                    phoneNumber={phone} productCode={selectedProductCode}
+                                    paymentMethodCode={selectedPaymentCode}
+                                    priceWithFee={paymentPriceWithFee} brand={selectedProductBrand}
+                                    fee={fee} username={username}
+            />
             <SignupModal/>
             <SigninModal/>
         </Layout>
