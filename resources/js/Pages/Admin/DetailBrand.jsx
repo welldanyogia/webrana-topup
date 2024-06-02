@@ -596,7 +596,7 @@ export default function DetailBrand() {
                                                 return null;  // Mengembalikan null jika kondisi tidak terpenuhi
                                             })
                                         }
-                                        <AddFormInputModal brand={brandName} brandId={brandId}/>
+                                        <AddFormInputModal brand={brandName} brandId={brand.brand_id}/>
 
                                     </div>
                                 </div>
