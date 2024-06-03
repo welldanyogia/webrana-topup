@@ -15,7 +15,8 @@ Route::post('/brands/{id}',[BrandController::class,'update']);
 Route::get('/tripay/getpaymentmethod',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'paymentChannel'])->name('tripay.update.paymentChannel');
 Route::post('/addform',[\App\Http\Controllers\FormInputController::class,'store']);
 
-Route::post('/pay',[\App\Http\Controllers\TransactionController::class,'createTransaction'])->name('tripay.create.transaction');
+Route::post('/createTransaction',[\App\Http\Controllers\TransactionController::class,'createTransaction'])->name('tripay.create.transaction');
 Route::post('/checkusername',[\App\Http\Controllers\CheckUserNameController::class,'checkUserName']);
 Route::post('/payment-callback', [\App\Http\Controllers\CallbackController::class, 'handle']);
 Route::post('/digiflazz/webhook', [\App\Http\Controllers\DigiflazzWebhookController::class, 'handle']);
+Route::post('/send-message', [\App\Http\Controllers\Admin\WhatsappGatewayController::class, 'sendMessage']);

@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TransactionCreated;
+
 use App\Models\Transactions;
 use App\Models\Tripay;
+use App\Services\FonnteService;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
     protected $url;
+    protected $fonnteService;
 
-    public function __construct()
+    public function __construct(FonnteService $fonnteService)
     {
+        $this->fonnteService = $fonnteService;
         if (Tripay::latest()->first()->is_production === 0){
             $this->url = "https://tripay.co.id/api-sandbox/";
         }elseif (Tripay::latest()->first()->is_production === 1){
@@ -93,118 +97,138 @@ class TransactionController extends Controller
      */
     public function createTransaction(Request $request): \Illuminate\Http\RedirectResponse
     {
-//        $channel = $request->get('code');
-        $user_id = $request->get('user_id');
-        $server_id = $request->get('server_id') ?? 'default_server_id'; // Ambil server_id hanya jika ada, jika tidak set ke null
-        $amount = $request->get('price');
-        $method_code = $request->get('method_code');
-        $customer_name = $request->get('customer_name') ?? 'default_customer_name'; // Ambil customer_name hanya jika ada, jika tidak set ke null
-        $email_customer = $request->get('email_customer') ?? 'webranas@gmail.com'; // Ambil email_customer hanya jika ada, jika tidak set ke null
-        $phone_number = $request->get('phone_number') ?? ''; // Ambil email_customer hanya jika ada, jika tidak set ke null
-        $product_code = $request->get('product_code');
-        $product_name = $request->get('product_name');
-        $product_brand = $request->get('product_brand');
-        $product_price = $request->get('product_price');
-        $buyer_id = auth()->check() ? auth()->user()->id : null;
+        try {
+            // Log the incoming request data
+            Log::info('Transaction request received', $request->all());
 
-        $tripay = Tripay::latest()->first();
+            $user_id = $request->get('user_id');
+            $server_id = $request->get('server_id') ?? 'default_server_id';
+            $amount = $request->get('price');
+            $method_code = $request->get('method_code');
+            $customer_name = $request->get('customer_name') ?? 'default_customer_name';
+            $email_customer = $request->get('email_customer') ?? 'webranas@gmail.com';
+            $phone_number = $request->get('phone_number') ?? '';
+            $product_code = $request->get('product_code');
+            $product_name = $request->get('product_name');
+            $product_brand = $request->get('product_brand');
+            $product_price = $request->get('product_price');
+            $buyer_id = auth()->check() ? auth()->user()->id : null;
 
-        if (!$tripay) {
-//            return response()->json(['success' => false, 'message' => 'API key not found'], 404);
-            return redirect()->back()->with(['flash'=>['message'=>'Transaksi Gagal, Segera hubungi admin.']]);
-        }
+            $tripay = Tripay::latest()->first();
 
-        $merchantCode = $tripay->merchant_code;
-        $apiKey = $tripay->api_key;
-        $privateKey = $tripay->private_key;
-        $order_id = UuidController::generateCustomUuid($product_name);
-        $signature = $this->generateSignature($order_id,$amount);
-
-        $request_data = [
-            'method'         => $method_code,
-            'merchant_ref'   => $order_id,
-            'amount'         => $amount,
-            'customer_name'  => $customer_name,
-            'customer_email' => $email_customer,
-//            'customer_phone' => '081234567890',
-            'order_items'    => [
-                [
-                    'sku'         => $product_code,
-                    'name'        => $product_name,
-                    'price'       => $product_price,
-                    'quantity'    => 1,
-                ]
-            ],
-            'expired_time' => (time() + (1 * 00 * 00)),
-            'signature'    => $signature
-        ];
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $tripay->api_key,
-        ])->post($this->url.'transaction/create',$request_data);
-
-        if ($response->successful()){
-            $responseData = $response->json();
-
-            $qr_url = null;
-            $status = "pending";
-            $qr_string = null;
-            $no_va = null;
-            $fee = $responseData['data']['total_fee'] ?? null;
-            if (isset($responseData['data']['qr_url'])) {
-                // Akses data dari item pertama di dalam 'order_items'
-                $qr_url = $responseData['data']['qr_url'];
-            } elseif (isset($responseData['data']['qr_string'])){
-                $qr_string = $responseData['data']['qr_string'];
-            }elseif (isset($responseData['data']['pay_code'])){
-                $no_va = $responseData['data']['pay_code'];
-            } elseif (isset($responseData['data']['status'])){
-                if ($responseData['data']['status'] === "UNPAID"){
-                    $status = "pending";
-                } elseif ($responseData['data']['status'] === "PAID"){
-                    $status = "process";
-                }
-            } else  {
-                // Handle jika 'order_items' tidak memiliki item
-                $qr_url = null;
-                $qr_string = null;
-                $no_va = null;
-//                $product_price = null;
+            if (!$tripay) {
+                Log::error('API key not found');
+                return redirect()->back()->with(['flash' => ['message' => 'Transaksi Gagal, Segera hubungi admin.']]);
             }
 
-            $transaction = Transactions::create([
-                'trx_id' => $responseData['data']['merchant_ref'],
-                'user_id' => $user_id,
-                'buyer_id' => $buyer_id,
-                'server_id' => $server_id,
-                'user_name' => $request->get('username'),
-                'email' => $email_customer,
-                'phone_number' => $phone_number,
-                'buyer_sku_code' => $responseData['data']['order_items'][0]['sku'],
-                'product_brand' => $product_brand,
-                'product_name' => $responseData['data']['order_items'][0]['name'],
-                'product_price' => $responseData['data']['order_items'][0]['price'],
-                'amount' => $responseData['data']['amount'],
-                'fee' => $responseData['data']['total_fee'],
-                'status' => $status,
-                'digiflazz_status' => $status,
-                'payment_method' => $responseData['data']['payment_method'],
-                'payment_name' => $responseData['data']['payment_name'],
-                'payment_status' => $responseData['data']['status'],
-                'expired_time' => date('Y-m-d H:i:s', $responseData['data']['expired_time']),
-                'qr_url' => $qr_url,
-                'qr_string' => $qr_string,
-                'no_va' => $no_va
+            $merchantCode = $tripay->merchant_code;
+            $apiKey = $tripay->api_key;
+            $privateKey = $tripay->private_key;
+            $order_id = UuidController::generateCustomUuid($product_name);
+            $signature = $this->generateSignature($order_id, $amount);
+
+            $request_data = [
+                'method' => $method_code,
+                'merchant_ref' => $order_id,
+                'amount' => $amount,
+                'customer_name' => $customer_name,
+                'customer_email' => $email_customer,
+                'order_items' => [
+                    [
+                        'sku' => $product_code,
+                        'name' => $product_name,
+                        'price' => $product_price,
+                        'quantity' => 1,
+                    ]
+                ],
+                'expired_time' => (time() + (1 * 00 * 00)),
+                'signature' => $signature,
+            ];
+
+            Log::info('Sending transaction create request to Tripay', $request_data);
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $tripay->api_key,
+            ])->post($this->url . 'transaction/create', $request_data);
+
+            if ($response->successful()) {
+                $responseData = $response->json();
+                Log::info('Transaction create response received', $responseData);
+
+                $qr_url = null;
+                $status = "pending";
+                $qr_string = null;
+                $no_va = null;
+                $fee = $responseData['data']['total_fee'] ?? null;
+                if (isset($responseData['data']['qr_url'])) {
+                    $qr_url = $responseData['data']['qr_url'];
+                } elseif (isset($responseData['data']['qr_string'])) {
+                    $qr_string = $responseData['data']['qr_string'];
+                } elseif (isset($responseData['data']['pay_code'])) {
+                    $no_va = $responseData['data']['pay_code'];
+                } elseif (isset($responseData['data']['status'])) {
+                    if ($responseData['data']['status'] === "UNPAID") {
+                        $status = "pending";
+                    } elseif ($responseData['data']['status'] === "PAID") {
+                        $status = "process";
+                    }
+                }
+
+                $transaction = Transactions::create([
+                    'trx_id' => $responseData['data']['merchant_ref'],
+                    'user_id' => $user_id,
+                    'buyer_id' => $buyer_id,
+                    'server_id' => $server_id,
+                    'user_name' => $request->get('username'),
+                    'email' => $email_customer,
+                    'phone_number' => $phone_number,
+                    'buyer_sku_code' => $responseData['data']['order_items'][0]['sku'],
+                    'product_brand' => $product_brand,
+                    'product_name' => $responseData['data']['order_items'][0]['name'],
+                    'product_price' => $responseData['data']['order_items'][0]['price'],
+                    'amount' => $responseData['data']['amount'],
+                    'fee' => $responseData['data']['total_fee'],
+                    'status' => $status,
+                    'digiflazz_status' => $status,
+                    'payment_method' => $responseData['data']['payment_method'],
+                    'payment_name' => $responseData['data']['payment_name'],
+                    'payment_status' => $responseData['data']['status'],
+                    'expired_time' => date('Y-m-d H:i:s', $responseData['data']['expired_time']),
+                    'qr_url' => $qr_url,
+                    'qr_string' => $qr_string,
+                    'no_va' => $no_va,
+                ]);
+
+                Log::info('Transaction created in database', ['transaction_id' => $transaction->id]);
+
+                try {
+                    $this->fonnteService->sendMessage([
+                        'target' => $phone_number,
+                        'message' => 'Transaction successful for ' . $product_name,
+                    ]);
+                    Log::info('Message sent successfully to ' . $phone_number);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send message: ' . $e->getMessage());
+                }
+
+                return redirect()->to(route('detail.transaction', $transaction->trx_id));
+            } else {
+                $responseContent = $response->json();
+                if ($response->status() == 403) {
+                    Log::error('Forbidden: The server is refusing to respond to the request.', ['response' => $responseContent]);
+                    return redirect()->back()->with(['flash' => ['message' => 'Akses ditolak, silakan hubungi admin.']]);
+                }
+                Log::error('Failed to create transaction', ['response' => $responseContent]);
+                return redirect()->back()->with(['flash' => ['message' => 'Transaksi gagal']]);
+            }
+        } catch (\Exception $e) {
+            Log::error('An error occurred during transaction creation: ' . $e->getMessage(), [
+                'exception' => $e,
             ]);
-//            return response()->json($responseData);
-            return redirect()->to(route('detail.transaction',$transaction->trx_id));
-        }else{
-//            return response()->json([
-//                'success' => false,
-//                'error' => $response->json(),
-//            ], $response->status());
-            return redirect()->back()->with(['flash'=>['message'=>'Transaksi gagal']]);
+            return redirect()->back()->with(['flash' => ['message' => 'Terjadi kesalahan, silakan coba lagi atau hubungi admin.']]);
         }
     }
+
 
     function generateOrderId($appName, $length = 8): string
     {

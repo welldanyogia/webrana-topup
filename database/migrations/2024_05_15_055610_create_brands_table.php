@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('brand_name');
             $table->string('image_url')->nullable();
             $table->boolean('brand_status');
+            $table->enum('processed_by', ['manual', 'digiflazz'])->default('digiflazz');
             // Ensure that the foreign key references the correct column name
             $table->uuid('category_id')->constrained('categories')->references('category_id')->onDelete('cascade');
             $table->timestamps();

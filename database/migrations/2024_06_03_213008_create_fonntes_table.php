@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('brands', function (Blueprint $table) {
-            $table->enum('processed_by', ['manual', 'digiflazz'])->default('digiflazz')->after('status');
+        Schema::create('fonntes', function (Blueprint $table) {
+            $table->id();
+            $table->string('acc_token')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('brands', function (Blueprint $table) {
-            $table->dropColumn('processed_by');
-        });
+        Schema::dropIfExists('fonntes');
     }
 };

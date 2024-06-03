@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/setting',[\App\Http\Controllers\Admin\SettingController::class,'index']);
         Route::post('/admin/settings', [SettingController::class, 'store'])->name('admin.settings.store');
         Route::delete('/admin/settings/{id}', [SettingController::class, 'destroy'])->name('admin.settings.destroy');
+        Route::get('/admin/whatsapp',[\App\Http\Controllers\Admin\WhatsappGatewayController::class,'index']);
+        Route::post('/admin/whatsapp/store',[\App\Http\Controllers\Admin\WhatsappGatewayController::class,'store']);
 
     });
     Route::group(['middleware' => ['checkRole:guest,user']], function() {
