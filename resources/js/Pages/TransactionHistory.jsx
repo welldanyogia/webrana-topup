@@ -22,7 +22,7 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
     };
 
     const maskValue = (string) => {
-        if (string.length <= 4) return trx_id; // If the ID is too short to mask
+        if (string.length <= 4) return string; // If the ID is too short to mask
         return string.substring(0, 2) + '****' + string.substring(string.length - 2);
     };
 
