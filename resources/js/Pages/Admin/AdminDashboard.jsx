@@ -4,7 +4,7 @@ import ApexCharts from 'apexcharts'
 
 export default function AdminDashboard(props) {
     const { users,auth,groupedTransactionsSuccess,groupedTransactionsFailed,totalSuccessfulTransactionsToday,totalRevenueToday,totalRevenueThisMonth,
-        totalTransactionsLastWeek,topProductsDetails } = props;
+        totalTransactionsLastWeek,topProductsDetails,dates } = props;
 
     const getInitials = (name) => {
         const nameParts = name.split(' ');
@@ -13,9 +13,31 @@ export default function AdminDashboard(props) {
 
         return initials.toUpperCase();
     };
-    let dataBerhasil = [];
-    let dataGagal = [];
     const totalTransactions = Object.values(topProductsDetails).reduce((acc, val) => acc + val, 0);
+
+    const formattedDates = dates.map(timestamp => {
+        const date = new Date(timestamp * 1000); // Convert timestamp to milliseconds
+        return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+    });
+
+    console.log(formattedDates);
+    function sumTransactions(transactions) {
+        return Object.values(transactions).reduce((total, num) => total + num, 0);
+    }
+
+    const totalFailedTransactions = sumTransactions(groupedTransactionsFailed);
+    const totalSuccessTransactions = sumTransactions(groupedTransactionsSuccess);
+
+    console.log('Total Failed Transactions:', totalFailedTransactions);
+    console.log('Total Success Transactions:', totalSuccessTransactions);
+    console.log('Total Transactions:', totalSuccessTransactions+totalFailedTransactions);
+
+
+    console.log(topProductsDetails)
+    console.log(groupedTransactionsSuccess)
+    console.log(groupedTransactionsFailed)
+    console.log(totalTransactionsLastWeek)
+    console.log(formattedDates)
 
 // Menghitung persentase untuk setiap produk
     const dataWithPercentage = {};
@@ -27,34 +49,18 @@ export default function AdminDashboard(props) {
     }
 
 
-// Loop melalui semua nilai objek dalam data
-    for (const key in groupedTransactionsSuccess) {
-        if (Object.hasOwnProperty.call(groupedTransactionsSuccess, key)) {
-            const element = groupedTransactionsSuccess[key];
-            // Hitung panjang data dan tambahkan ke dataBerhasil
-            dataBerhasil.push(element.length);
-        }
-    }
-    for (const key in groupedTransactionsFailed) {
-        if (Object.hasOwnProperty.call(groupedTransactionsFailed, key)) {
-            const element = groupedTransactionsFailed[key];
-            // Hitung panjang data dan tambahkan ke dataBerhasil
-            dataGagal.push(element.length);
-        }
-    }
-
 
     const options = {
-// add data series via arrays, learn more here: https://apexcharts.com/docs/series/
+        // add data series via arrays
         series: [
             {
                 name: "Transaksi Berhasil",
-                data: dataBerhasil,
+                data: Object.values(groupedTransactionsSuccess),
                 color: "#0cf41f",
             },
             {
                 name: "Transaksi Gagal",
-                data: dataGagal,
+                data: Object.values(groupedTransactionsFailed),
                 color: "#cf0404",
             },
         ],
@@ -104,7 +110,7 @@ export default function AdminDashboard(props) {
             },
         },
         xaxis: {
-            categories: Object.keys(groupedTransactionsSuccess),
+            categories: formattedDates,
             labels: {
                 show: false,
             },
@@ -123,7 +129,8 @@ export default function AdminDashboard(props) {
                 }
             }
         },
-    }
+    };
+
 
     if (document.getElementById("legend-chart") && typeof ApexCharts !== 'undefined') {
         const chart = new ApexCharts(document.getElementById("legend-chart"), options);
@@ -319,7 +326,7 @@ export default function AdminDashboard(props) {
                                 Total Transaksi dalam minggu ini
                             </h2>
                             <p className="text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200">
-                                {totalTransactionsLastWeek.length}
+                                {totalSuccessTransactions+totalFailedTransactions}
                             </p>
                         </div>
 

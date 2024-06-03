@@ -15,18 +15,18 @@ class DashboardController extends Controller
 {
     public function index()
     {
-//        $users = User::where('role', 'user')->get;
-//        $users = User::all();
         // Periksa apakah pengguna sudah login
         if (!Auth::check()) {
             // Jika belum, arahkan ke halaman login
             return redirect()->route('login');
         }
+
+        // Periksa apakah pengguna adalah admin
         if (Auth::user()->role !== 'admin') {
-            // Jika bukan admin, tampilkan pesan kesalahan atau arahkan ke halaman lain
-//            return abort(403, 'Unauthorized access');
+            // Jika bukan admin, arahkan ke halaman utama atau tampilkan pesan kesalahan
             return redirect()->route('/');
         }
+
         $today = Carbon::now();
         $startDateChart = $today->copy()->subDays(6);
         $endDateChart = $today;
@@ -34,34 +34,60 @@ class DashboardController extends Controller
         $endDate = Carbon::now()->endOfMonth();
         $startWeekDate = Carbon::now()->startOfWeek()->subWeek();
         $endWeekDate = Carbon::now()->endOfWeek()->subWeek();
+
+        // Mendapatkan pengguna dengan peran 'user' dan transaksi mereka
         $user = User::where('role', 'user')->with('transaction')->get();
-        $transactions = Transactions::whereBetween('created_at', [$startDate, $endDate])
-            ->get();
+
+        // Mendapatkan transaksi dalam bulan ini
+        $transactions = Transactions::whereBetween('created_at', [$startDate, $endDate])->get();
+
+        // Menghitung total transaksi sukses hari ini
         $totalSuccessfulTransactionsToday = Transactions::where('status', 'success')
             ->whereDate('created_at', $today)
             ->count();
+
+        // Menghitung total pendapatan hari ini dari transaksi sukses
         $totalRevenueToday = Transactions::whereDate('created_at', $today)
-            ->where('status', 'success') // Optionally, filter by successful transactions
+            ->where('status', 'success')
             ->sum('amount');
+
+        // Menghitung total pendapatan bulan ini dari transaksi sukses
         $totalRevenueThisMonth = Transactions::whereBetween('created_at', [$startDate, $endDate])
-            ->where('status', 'success') // Optionally, filter by successful transactions
+            ->where('status', 'success')
             ->sum('amount');
-        $totalTransactionsLastWeek = Transactions::whereBetween('created_at', [$startWeekDate, $today])
+
+        // Mendapatkan transaksi dalam minggu terakhir yang berstatus 'failed' atau 'success'
+        $totalTransactionsLastWeek = Transactions::whereBetween('created_at', [$startWeekDate->copy(), $today])
             ->where(function ($query) {
                 $query->where('status', 'failed')
                     ->orWhere('status', 'success');
             })
             ->get();
 
-        $groupedTransactionsSuccess = $totalTransactionsLastWeek->where('status','success')->groupBy(function($transaction) {
-            // Ambil tanggal dari setiap transaksi dan format ulang sebagai string 'Y-m-d'
-            return Carbon::parse($transaction->created_at)->format('Y-m-d');
-        });
-        $groupedTransactionsFailed = $totalTransactionsLastWeek->where('status','failed')->groupBy(function($transaction) {
-            // Ambil tanggal dari setiap transaksi dan format ulang sebagai string 'Y-m-d'
-            return Carbon::parse($transaction->created_at)->format('Y-m-d');
-        });
+        // Membuat array tanggal dalam minggu terakhir
+        $dates = [];
+        $current = $today->copy()->subDays(6);
+        while ($current->lte($today)) {
+            $dates[] = $current->timestamp;
+            $current->addDay();
+        }
 
+// Mengelompokkan transaksi sukses dan gagal berdasarkan tanggal
+        $groupedTransactionsSuccess = [];
+        $groupedTransactionsFailed = [];
+        foreach ($dates as $timestamp) {
+            $date = Carbon::createFromTimestamp($timestamp)->toDateString();
+            $groupedTransactionsSuccess[$date] = $totalTransactionsLastWeek->where('created_at', '>=', $date)
+                ->where('created_at', '<', Carbon::parse($date)->addDay())
+                ->where('status', 'success')
+                ->count();
+            $groupedTransactionsFailed[$date] = $totalTransactionsLastWeek->where('created_at', '>=', $date)
+                ->where('created_at', '<', Carbon::parse($date)->addDay())
+                ->where('status', 'failed')
+                ->count();
+        }
+
+        // Mengelompokkan transaksi berdasarkan brand produk dan menghitung jumlahnya
         $topProducts = $transactions->groupBy('product_brand')
             ->map(function ($transactions) {
                 return $transactions->count();
@@ -83,7 +109,7 @@ class DashboardController extends Controller
             }
         }
 
-
+        // Merender view dengan data yang telah diolah
         return Inertia::render('Admin/AdminDashboard', [
             'users' => $user,
             'totalSuccessfulTransactionsToday' => $totalSuccessfulTransactionsToday,
@@ -91,9 +117,10 @@ class DashboardController extends Controller
             'totalRevenueThisMonth' => $totalRevenueThisMonth,
             'totalTransactionsLastWeek' => $totalTransactionsLastWeek,
             'endDate' => $endDateChart,
-            'groupedTransactionsSuccess'=>$groupedTransactionsSuccess,
-            'groupedTransactionsFailed'=>$groupedTransactionsFailed,
+            'groupedTransactionsSuccess' => $groupedTransactionsSuccess,
+            'groupedTransactionsFailed' => $groupedTransactionsFailed,
             'topProductsDetails' => $topProducts,
+            'dates' => $dates
         ]);
     }
 }
