@@ -27,7 +27,7 @@ class DigiflazzController extends Controller
     }
     public function index(){
         $latestAuth = DigiAuth::latest()->first();
-        $ipAddress = $this->getClientIP();
+        $ipAddress = $this->getServerIP();
 
         $balance = null;
         if ($latestAuth) {
@@ -188,5 +188,12 @@ class DigiflazzController extends Controller
             $ip = $_SERVER['REMOTE_ADDR'];
         }
         return $ip;
+    }
+    function getServerIP() {
+        if (isset($_SERVER['SERVER_ADDR'])) {
+            return $_SERVER['SERVER_ADDR'];
+        } else {
+            return gethostbyname(gethostname());
+        }
     }
 }

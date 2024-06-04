@@ -145,7 +145,7 @@ class TransactionController extends Controller
                 'signature' => $signature,
             ];
 
-            Log::info('Sending transaction create request to Tripay', $request_data);
+            Log::info('Sending transaction create request to Tripay', ['request_data' => $request_data, 'url' => $this->url . 'transaction/create']);
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $tripay->api_key,
@@ -214,11 +214,18 @@ class TransactionController extends Controller
                 return redirect()->to(route('detail.transaction', $transaction->trx_id));
             } else {
                 $responseContent = $response->json();
-                if ($response->status() == 403) {
-                    Log::error('Forbidden: The server is refusing to respond to the request.', ['response' => $responseContent]);
+                $statusCode = $response->status();
+                $responseHeaders = $response->headers();
+                Log::error('Failed to create transaction', [
+                    'status' => $statusCode,
+                    'response' => $responseContent,
+                    'headers' => $responseHeaders
+                ]);
+
+                if ($statusCode == 403) {
                     return redirect()->back()->with(['flash' => ['message' => 'Akses ditolak, silakan hubungi admin.']]);
                 }
-                Log::error('Failed to create transaction', ['response' => $responseContent]);
+
                 return redirect()->back()->with(['flash' => ['message' => 'Transaksi gagal']]);
             }
         } catch (\Exception $e) {
@@ -228,6 +235,8 @@ class TransactionController extends Controller
             return redirect()->back()->with(['flash' => ['message' => 'Terjadi kesalahan, silakan coba lagi atau hubungi admin.']]);
         }
     }
+
+
 
 
     function generateOrderId($appName, $length = 8): string

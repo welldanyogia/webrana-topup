@@ -5,17 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\DigiAuth;
 use App\Models\Transactions;
 use App\Models\Tripay;
+use App\Services\FonnteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CallbackController extends Controller
 {
     protected $privateKey;
     protected $username;
     protected $apiKey;
+    protected $fonnteService;
 
-    public function __construct()
+    public function __construct(FonnteService $fonnteService)
     {
+        $this->fonnteService = $fonnteService;
         $this->privateKey = Tripay::latest()->first()->private_key;
         $this->username = DigiAuth::latest()->first()->username;
         $this->apiKey = DigiAuth::latest()->first()->api_key;
@@ -58,6 +62,16 @@ class CallbackController extends Controller
             case 'PAID':
                 $invoice->update(['status' => 'process']);
                 $invoice->update(['payment_status' => $status]);
+                try {
+                    $this->fonnteService->sendMessage([
+                        'target' => $invoice->phone_number,
+                        'message' => "Transaction successful for {$invoice->product_name}\nDengan Status *{$invoice->status}*\n",
+                    ]);
+                    Log::info('Message sent successfully to ' . $invoice->phone_number);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send message: ' . $e->getMessage());
+                }
+
                 $this->processDigiflazzTopup($invoice);
                 return $this->successResponse($invoice->user_id);
                 break;
