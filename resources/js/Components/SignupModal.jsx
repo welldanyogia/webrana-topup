@@ -49,7 +49,7 @@ function SignupModal({...props}) {
                                 Already have an account?
                                 <button type='button'
                                         data-hs-overlay="#hs-modal-signin"
-                                        className="text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500">
+                                        className="text-secondary-600 decoration-2 hover:underline font-medium dark:text-secondary-500">
                                     Sign in here
                                 </button>
                             </p>
@@ -71,9 +71,9 @@ function SignupModal({...props}) {
                                         <div className="relative">
                                             <input type="name" id="name" name="name"
                                                    onChange={(e) => setData('name', e.target.value)}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="py-3 px-4 block w-full bg-white border-secondary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="name-error"/>
-                                            <InputError message={errors.name} className="mt-2"/>
+                                            {/*<InputError message={errors.name} className="mt-2"/>*/}
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
                                                 <svg className="size-5 text-red-500" width="16" height="16"
                                                      fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
@@ -93,7 +93,7 @@ function SignupModal({...props}) {
                                         <div className="relative">
                                             <input type="email" id="email" name="email"
                                                    onChange={(e) => setData('email', e.target.value)}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="py-3 px-4 block w-full border-secondary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="email-error"/>
                                             <InputError message={errors.email} className="mt-2"/>
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
@@ -116,7 +116,7 @@ function SignupModal({...props}) {
                                         <div className="relative">
                                             <input type="password" id="password" name="password"
                                                    onChange={(e) => setData('password', e.target.value)}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="password-error"/>
                                             <InputError message={errors.password} className="mt-2"/>
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
@@ -139,7 +139,7 @@ function SignupModal({...props}) {
                                         <div className="relative">
                                             <input type="password" id="confirm-password" name="confirm-password"
                                                    onChange={(e) => setData('password_confirmation', e.target.value)}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="confirm-password-error"/>
                                             <InputError message={errors.password_confirmation} className="mt-2"/>
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
@@ -159,19 +159,19 @@ function SignupModal({...props}) {
                                     <div className="flex items-center">
                                         <div className="flex">
                                             <input id="remember-me" name="remember-me" type="checkbox" required={true}
-                                                   className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"/>
+                                                   className="shrink-0 mt-0.5 border-gray-200 rounded text-secondary-600 focus:ring-secondary-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-secondary-500 dark:checked:border-secondary-500 dark:focus:ring-offset-gray-800"/>
                                         </div>
                                         <div className="ms-3">
                                             <label htmlFor="remember-me" className="text-sm dark:text-white">I accept
                                                 the <a
-                                                    className="text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
+                                                    className="text-secondary-600 decoration-2 hover:underline font-medium dark:text-secondary-500"
                                                     href="#">Terms and Conditions</a></label>
                                         </div>
                                     </div>
                                     {/*<!-- End Checkbox */}
 
                                     <button type="submit" data-hs-overlay='#hs-modal-signup'
-                                            className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Sign
+                                            className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">Sign
                                         up
                                     </button>
                                 </div>

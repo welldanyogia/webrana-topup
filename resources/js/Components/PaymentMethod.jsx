@@ -44,7 +44,7 @@ export default function PaymentMethod({groupedChannels,paymentPrice}){
                     <div className="w-full bg-[#919191] dark:bg-white rounded-b-lg">
                         <button
                             type="button"
-                            className="payment-method-button flex items-center justify-end w-full p-5 font-medium hover:rounded-b-lg rtl:text-right focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-[#919191] gap-3"
+                            className="payment-method-button flex items-center justify-end w-full p-5 font-medium hover:rounded-b-lg rtl:text-right focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-primary-dark-700 dark:text-primary-dark-400 hover:bg-blue-100 dark:hover:bg-[#919191] gap-3"
                             onClick={() => handleToggle(group)}
                             aria-expanded={openGroup === group}
                             aria-controls={`accordion-color-body-${group.replace(/ /g, "-").toLowerCase()}`}
@@ -62,7 +62,7 @@ export default function PaymentMethod({groupedChannels,paymentPrice}){
                                 fill="none"
                                 viewBox="0 0 10 6"
                             >
-                                <path stroke="gray" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5L5 1 1 5" />
+                                <path stroke="primary" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5L5 1 1 5" />
                             </svg>
                             <input className="hidden" id="payment_type" value={group.replace(/ /g, "_").toLowerCase()} />
                         </button>
@@ -71,7 +71,7 @@ export default function PaymentMethod({groupedChannels,paymentPrice}){
                             className={` ${openGroup === group ? '' : 'hidden'}`}
                             aria-labelledby={`accordion-color-heading-${group.replace(/ /g, "-").toLowerCase()}`}
                         >
-                            <div className="grid grid-cols-3 flex-wrap rounded-b-lg gap-4 max-lg:grid-cols-2 max-sm:grid-cols-2 p-5 border border-b-0 -mt-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                            <div className="grid grid-cols-3 flex-wrap rounded-b-lg gap-4 max-lg:grid-cols-2 max-sm:grid-cols-2 p-5 border border-b-0 -mt-2 border-primary-200 dark:border-primary-dark-700 dark:bg-gray-900">
                                 {channels.map((channel) => (
                                     <div key={channel.code} className="bg-white rounded-xl hover:text-white transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300 paymentButton">
                                         <button

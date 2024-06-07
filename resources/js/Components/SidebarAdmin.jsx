@@ -24,7 +24,8 @@ export default function SidebarAdmin(){
                 <div className="px-8 pt-4">
                     <a className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
                        href="/admin" aria-label="Admin">
-                        <img src='/logo_dark.png' />
+                        <img className='hidden dark:flex w-40' src="/storage/logo_dark.png" alt="logo"/>
+                        <img className='flex dark:hidden w-40' src="/storage/logo_light.png" alt="logo"/>
                     </a>
                 </div>
 

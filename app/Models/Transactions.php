@@ -65,7 +65,8 @@ class Transactions extends Model
         'expired_time',
         'qr_url',
         'qr_string',
-        'digiflazz_status'
+        'digiflazz_status',
+        'data_trx'
     ];
 
     public function buyer()

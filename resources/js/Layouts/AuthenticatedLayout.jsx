@@ -6,12 +6,12 @@ export default function Authenticated({user, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen sm:justify-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+        <div className="min-h-screen sm:justify-center pt-6 sm:pt-0 bg-primary-100 dark:bg-primary-dark-900">
             <AuthNavbar
                 user={user}
             />
 
-            {/*<div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">*/}
+            {/*<div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-primary-dark-800 shadow-md overflow-hidden sm:rounded-lg">*/}
             {/*    {children}*/}
             {/*</div>*/}
             <main>

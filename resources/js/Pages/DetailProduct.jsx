@@ -45,7 +45,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     function formatRupiah(number) {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
-            currency: 'IDR'
+            currency: 'IDR',
+            maximumFractionDigits: 0
         }).format(number);
     }
 
@@ -58,11 +59,6 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
         }
     }
 
-    function handleCloseAlert(e) {
-        e.preventDefault()
-        setIsAlert(false)
-        setMessage("")
-    }
 
     function price(paymentPrice,feeFlat,feePercent) {
         // setPaymentPriceWithFee(paymentPrice + feeFlat + (paymentPrice*(feePercent/100)))
@@ -182,7 +178,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                         .filter(product => product.type_id === productType.type_id)
                         .map(product => (
                             <button
-                                className={`relative flex p-3 w-full rounded-lg hover:bg-lime-400 dark:hover:bg-lime-600 ${selectedProduct === product.id ? 'bg-lime-400 dark:bg-lime-400 border-4 border-[#72057D]' : 'dark:bg-lime-500 bg-lime-500'}`}
+                                className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'}`}
                                 key={product.id}
                                 onClick={(e) => handleProductButton(e,product)}
                             >
@@ -211,7 +207,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                 <button
                     type="button"
                     key={product.type_id}
-                    className={`hs-tab-active:bg-lime-600 hs-tab-active:text-white hs-tab-active:hover:text-white hs-tab-active:dark:text-white border-2 border-lime-400 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 hover:text-lime-600 rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-neutral-300 ${activeTab === product.type_id ? 'active' : ''}`}
+                    className={`hs-tab-active:bg-secondary-600 hs-tab-active:text-white hs-tab-active:hover:text-white hs-tab-active:dark:text-white border-2 border-secondary-400 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-primary-500 hover:text-secondary-600 rounded-full disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-neutral-300 ${activeTab === product.type_id ? 'active' : ''}`}
                     id={`pills-with-brand-color-item-${product.type_id}`}
                     data-hs-tab={`#pills-with-brand-color-${product.type_id}`}
                     aria-controls={`pills-with-brand-color-${product.type_id}`}
@@ -236,13 +232,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                 </div>
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 grid grid-cols-6  text-gray-900 dark:text-gray-100 gap-6">
+                        <div className="p-6 grid grid-cols-6  text-primary-900 dark:text-primary-dark-100 gap-6">
                             <div
-                                className='hidden  col-span-6 bg-gray-200 shadow-md rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800 h-40'>01
+                                className='hidden  col-span-6 bg-primary-200 shadow-md rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800 h-40'>01
                             </div>
                             <div className='col-span-2 max-md:col-span-6'>
                                 <div
-                                    className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-md shadow-lime-400">
+                                    className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-primary-200 dark:bg-primary-dark-800 rounded-lg shadow-md shadow-secondary-400">
                                     <div className="flex flex-row gap-6 md:grid max-sm:grid">
                                         <img className="rounded-xl"
                                              src={brand.image_url ? brand.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
@@ -252,7 +248,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         </div>
                                     </div>
                                     <div
-                                        className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b-2 border-lime-400 py-2">
+                                        className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b-2 border-secondary-400 py-2">
                                         <div className="flex flex-row items-center gap-1">
                                             <div className='hidden dark:block'>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16"
@@ -393,8 +389,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                             </div>
                             <div className='col-span-4 gap-6 flex flex-col max-md:col-span-6'>
                                 <div id='values-input'
-                                     className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
-                                    <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
+                                     className='bg-primary-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800'>
+                                    <div className="flex mx-auto w-full border-b-2 border-secondary-500 py-2 gap-4">
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">1
                                         </div>
@@ -435,8 +431,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     </div>
                                 </div>
                                 <div id='productSection'
-                                     className='bg-gray-200 shadow-md rounded-md dark:shadow dark:shadow-lime-400 space-y-2 dark:bg-gray-800 p-4'>
-                                    <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
+                                     className='bg-primary-200 shadow-md rounded-md dark:shadow dark:shadow-secondary-400 space-y-2 dark:bg-primary-dark-800 p-4'>
+                                    <div className="flex mx-auto w-full border-b-2 border-secondary-500 py-2 gap-4">
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-1.5 text-sm dark:text-white">2
                                         </div>
@@ -455,8 +451,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
 
                                 </div>
                                 <div id='paymentSection'
-                                     className='bg-gray-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
-                                    <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
+                                     className='bg-primary-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800'>
+                                    <div className="flex mx-auto w-full border-b-2 border-secondary-500 py-2 gap-4">
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">3
                                         </div>
@@ -469,13 +465,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         {Object.entries(sortedGroupedChannels).map(([group, channels]) => (
                                             <div className="flex flex-col mx-auto w-full py-2" key={group}>
                                                 <div
-                                                    className="w-full bg-lime-500 rounded-t-lg text-lg font-bold py-2 px-4 capitalize text-white">
+                                                    className="w-full bg-secondary-500 rounded-t-lg text-lg font-bold py-2 px-4 capitalize text-white">
                                                     {group}
                                                 </div>
-                                                <div className="w-full bg-lime-400 dark:bg-white rounded-b-lg">
+                                                <div className="w-full bg-secondary-400 dark:bg-white rounded-b-lg">
                                                     <button
                                                         type="button"
-                                                        className="payment-method-button flex items-center justify-end w-full p-5 font-medium hover:rounded-b-lg rtl:text-right focus:ring-4 focus:ring-lime-200 dark:focus:ring-lime-800 dark:border-gray-700 dark:text-gray-400 hover:bg-lime-100 dark:hover:bg-lime-500 gap-3"
+                                                        className="payment-method-button flex items-center justify-end w-full p-5 font-medium hover:rounded-b-lg rtl:text-right focus:ring-4 focus:ring-secondary-200 dark:focus:ring-secondary-800 dark:border-primary-dark-700 dark:text-primary-dark-400 hover:bg-secondary-100 dark:hover:bg-secondary-500 gap-3"
                                                         onClick={() => {
                                                             if (selectedProduct === null) {
                                                                 setMessage('Please select a product first.');
@@ -502,7 +498,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                             fill="none"
                                                             viewBox="0 0 10 6"
                                                         >
-                                                            <path stroke="gray" strokeLinecap="round"
+                                                            <path stroke="primary" strokeLinecap="round"
                                                                   strokeLinejoin="round" strokeWidth="2"
                                                                   d="M9 5 5 1 1 5"/>
                                                         </svg>
@@ -513,13 +509,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                     {activeGroup === group && (
                                                         <div
                                                             id={`accordion-color-body-${group.replace(/\s+/g, '-').toLowerCase()}`}
-                                                            className="grid grid-cols-3 flex-wrap rounded-b-lg gap-4 max-lg:grid-cols-2 max-sm:grid-cols-2 p-5 border border-b-0 -mt-2 border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+                                                            className="grid grid-cols-3 flex-wrap rounded-b-lg gap-4 max-lg:grid-cols-2 max-sm:grid-cols-2 p-5 border border-b-0 -mt-2 border-primary-200 dark:border-primary-dark-700 dark:bg-primary-dark-900"
                                                             aria-labelledby={`accordion-color-heading-${group.replace(/\s+/g, '-').toLowerCase()}`}
                                                         >
                                                             {Array.isArray(channels) && channels.map((channel) => (
                                                                 <div
                                                                     key={channel.id}
-                                                                    className={`${selectedPayment === channel.id ? 'bg-white border-4 border-[#72057D]' : 'dark:bg-white bg-white'} rounded-xl col-span-1 hover:text-white transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-lime-500 duration-300 paymentButton`}
+                                                                    className={`${selectedPayment === channel.id ? 'bg-white border-4 border-[#72057D]' : 'dark:bg-white bg-white'} rounded-xl col-span-1 hover:text-white transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-secondary-500 duration-300 paymentButton`}
                                                                 >
                                                                     <button
                                                                         type="button"
@@ -572,8 +568,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     </div>
                                 </div>
                                 <div
-                                    className='bg-gray-200 shadow-md p-6 space-y-4 rounded-md dark:shadow dark:shadow-lime-400 dark:bg-gray-800'>
-                                    <div className="flex mx-auto w-full border-b-2 border-lime-500 py-2 gap-4">
+                                    className='bg-primary-200 shadow-md p-6 space-y-4 rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800'>
+                                    <div className="flex mx-auto w-full border-b-2 border-secondary-500 py-2 gap-4">
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">4
                                         </div>
@@ -588,10 +584,10 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                        className="block text-sm font-medium mb-2 dark:text-white">Nomor
                                                     Whatsapp</label>
                                                 <input type="number" id="input-wa" onChange={handlePhone}
-                                                       className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                       className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                        placeholder="+628xxxxxxx"
                                                        aria-describedby="hs-input-helper-text"/>
-                                                <p className="mt-2 text-sm text-gray-500 dark:text-neutral-500"
+                                                <p className="mt-2 text-sm text-primary-500 dark:text-neutral-500"
                                                    id="hs-input-helper-text">Invoice akan kami kirimkan ke nomor
                                                     whatsapp.</p>
                                             </div>
@@ -600,17 +596,17 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                     <label htmlFor="with-corner-hint"
                                                            className="block text-sm font-medium mb-2 dark:text-white">Email</label>
                                                     <span
-                                                        className="block mb-2 text-sm text-gray-500 dark:text-neutral-500">Optional</span>
+                                                        className="block mb-2 text-sm text-primary-500 dark:text-neutral-500">Optional</span>
                                                 </div>
                                                 <input type="email" id="with-corner-hint" onChange={handleEmail}
-                                                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-lime-500 focus:ring-lime-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                       className="py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                        placeholder="email@example.com"/>
                                             </div>
                                         </div>
                                         <button type="button"
                                                 onClick={handleConfirm}
                                                 data-hs-overlay={`#hs-vertically-centered-modal-order-confirmation`}
-                                                className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-lime-600 text-white hover:bg-lime-700 disabled:opacity-50 disabled:pointer-events-none">
+                                                className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">
                                             Konfirmasi Pesanan
                                             <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                  width="24" height="24" viewBox="0 0 24 24" fill="none"

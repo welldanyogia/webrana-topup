@@ -9,7 +9,7 @@ const Breadcrumb = ({ items }) => {
                     <li key={index} className="inline-flex items-center">
                         {index !== 0 && (
                             <svg
-                                className="flex-shrink-0 mx-3 overflow-visible size-2.5 text-gray-400 dark:text-neutral-500"
+                                className="flex-shrink-0 mx-3 overflow-visible size-2.5 text-primary-400 dark:text-neutral-500"
                                 width="16" height="16" viewBox="0 0 16 16" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14"
@@ -18,12 +18,12 @@ const Breadcrumb = ({ items }) => {
                         )}
                         {item.href ? (
                             <Link href={item.href}
-                                  className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-neutral-200">
+                                  className="text-sm font-medium text-primary-700 hover:text-primary-900 dark:text-neutral-400 dark:hover:text-neutral-200">
                                 {item.label}
                             </Link>
                         ) : (
                             <span
-                                className="text-sm font-medium text-gray-500 dark:text-neutral-400">{item.label}</span>
+                                className="text-sm font-medium text-primary-500 dark:text-neutral-400">{item.label}</span>
                         )}
                     </li>
                 ))}

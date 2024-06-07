@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Brand;
+use App\Models\Fonnte;
 use App\Models\Transactions;
 use App\Models\Tripay;
 use App\Services\FonnteService;
+use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -15,10 +18,17 @@ use Inertia\Inertia;
 class TransactionController extends Controller
 {
     protected $url;
+    protected $wa_owner;
     protected $fonnteService;
 
     public function __construct(FonnteService $fonnteService)
     {
+        $latestFonnte = Fonnte::latest()->first();
+        if ($latestFonnte) {
+            $this->wa_owner = $latestFonnte->wa_owner;
+        } else {
+            $this->wa_owner = null;
+        }
         $this->fonnteService = $fonnteService;
         if (Tripay::latest()->first()->is_production === 0){
             $this->url = "https://tripay.co.id/api-sandbox/";
@@ -48,6 +58,10 @@ class TransactionController extends Controller
     public function show(string $id)
     {
         $transaction = Transactions::where('trx_id',$id)->first();
+
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
         $tripay = Tripay::latest()->first();
         $data = [
             'code' => $transaction->payment_method,
@@ -112,6 +126,7 @@ class TransactionController extends Controller
             $product_name = $request->get('product_name');
             $product_brand = $request->get('product_brand');
             $product_price = $request->get('product_price');
+            $data_trx = $request->get('values');
             $buyer_id = auth()->check() ? auth()->user()->id : null;
 
             $tripay = Tripay::latest()->first();
@@ -124,7 +139,7 @@ class TransactionController extends Controller
             $merchantCode = $tripay->merchant_code;
             $apiKey = $tripay->api_key;
             $privateKey = $tripay->private_key;
-            $order_id = UuidController::generateCustomUuid($product_name);
+            $order_id = UuidController::generateCustomUuid($product_brand);
             $signature = $this->generateSignature($order_id, $amount);
 
             $request_data = [
@@ -197,18 +212,17 @@ class TransactionController extends Controller
                     'qr_url' => $qr_url,
                     'qr_string' => $qr_string,
                     'no_va' => $no_va,
+                    'data_trx' => json_encode($data_trx)
                 ]);
 
                 Log::info('Transaction created in database', ['transaction_id' => $transaction->id]);
+//                $process = Brand::where('name',$product_brand)->processed_by;
 
                 try {
-                    $this->fonnteService->sendMessage([
-                        'target' => $phone_number,
-                        'message' => 'Transaction successful for ' . $product_name,
-                    ]);
-                    Log::info('Message sent successfully to ' . $phone_number);
+                    $this->sendInvoiceToWhatsApp($transaction, $transaction->phone_number);
+                    Log::info('Message sent successfully to ' . $transaction->phone_number);
                 } catch (\Exception $e) {
-                    Log::error('Failed to send message: ' . $e->getMessage());
+                    Log::error('Failed to send message to '.$transaction->phone_number .': ' . $e->getMessage());
                 }
 
                 return redirect()->to(route('detail.transaction', $transaction->trx_id));
@@ -273,4 +287,54 @@ class TransactionController extends Controller
         // Return the signature as a response
         return $signature;
     }
+
+    private function sendInvoiceToWhatsApp($transaction, $phone_number)
+    {
+        Carbon::setLocale('id');
+        $appNameFull = config('app.name');
+        $appNameParts = explode(' |', $appNameFull);
+        $appName = $appNameParts[0];
+        $appUrl = config('app.url');
+//        $appUrl = "http://webranastore.com";
+        $expiredTime = Carbon::parse($transaction->expired_time);
+        $formattedExpiredTime = $expiredTime->translatedFormat('d F Y, H:i:s');
+        $dataTrxArray = json_decode($transaction->data_trx, true);
+
+        // Format the decoded JSON data into a readable string
+        $formattedDataTrx = '';
+        foreach ($dataTrxArray as $key => $value) {
+            $formattedDataTrx .= ucwords(str_replace('_', ' ', $key)) . ": " . $value . "\n";
+        }
+
+        $message = "Halo {$transaction->user_name},\n\n";
+        $message .= "Terima kasih telah melakukan transaksi. Berikut adalah detail transaksi Anda:\n\n";
+        $message .= "ID Transaksi: *{$transaction->trx_id}*\n";
+        $message .= "Status Transaksi: *".ucwords($transaction->status)."*\n";
+        $message .= "{$formattedDataTrx}";
+        if ($transaction->user_name) {
+            $message .= "Username: *{$transaction->user_name}*\n";
+        }
+        $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";
+        $message .= "Merek Produk: *".strtoupper($transaction->product_brand)."*\n";
+        $message .= "Harga Produk: *Rp" . number_format($transaction->product_price, 0, ',', '.') . "*\n";
+        $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount, 0, ',', '.') . "*\n";
+        $message .= "Status Pembayaran: *Menunggu Pembayaran*\n";
+        $message .= "Metode Pembayaran: *{$transaction->payment_name}*\n";
+
+        if ($transaction->no_va) {
+            $message .= "Kode Pembayaran: *{$transaction->no_va}*\n";
+        }
+
+        $message .= "\n\nLakukan pembayaran sebelum *{$formattedExpiredTime}*\n\n";
+        $message .= "Detail Pembayaran : {$appUrl}/transaction/{$transaction->trx_id}\n\n";
+        $message .= "Jika ada pertanyaan, silakan hubungi kami.\n\n";
+        $message .= "Terima kasih,\n";
+        $message .= "Tim {$appName}";
+
+        $this->fonnteService->sendMessage([
+            'target' => $phone_number,
+            'message' => $message,
+        ]);
+    }
+
 }

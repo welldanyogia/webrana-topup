@@ -4,6 +4,7 @@ import {Head, Link, useForm} from "@inertiajs/react";
 import {format} from 'date-fns';
 import SigninModal from "@/Components/SigninModal.jsx";
 import React from "react";
+import SignupModal from "@/Components/SignupModal.jsx";
 
 export default function TransactionHistory({auth, latestTransaction, searchResult, searchMessage}) {
     const isAuthenticated = auth?.user && auth.user.role === 'user';
@@ -39,6 +40,7 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
             header={<h2 className="text-xl font-semibold leading-tight text-white">Transaction Detail</h2>}
         >
             <SigninModal />
+            <SignupModal />
             <Head title="Riwayat Pesanan"/>
             <div className="w-3/4 mx-auto space-y-6">
                 <div className="font-bold text-xl dark:text-white text-neutral-900">
@@ -50,7 +52,7 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                             <div className="relative">
                                 <div
                                     className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
-                                    <svg className="flex-shrink-0 size-4 text-gray-400 dark:text-white/60"
+                                    <svg className="flex-shrink-0 size-4 text-primary-400 dark:text-white/60"
                                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
                                          strokeLinejoin="round">
@@ -59,7 +61,7 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                                     </svg>
                                 </div>
                                 <input
-                                    className="py-3 ps-10 pe-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                    className="py-3 ps-10 pe-4 block w-full border-primary-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                     type="text"
                                     placeholder="Masukkan Transaksi ID"
                                     value={data.trx_id}
@@ -68,7 +70,7 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                             </div>
                             {errors.trx_id && <div className="text-red-500 mt-2">{errors.trx_id}</div>}
                         </div>
-                        <button type="submit" className="mt-4 px-4 py-2 bg-lime-500 text-white rounded-lg">
+                        <button type="submit" className="mt-4 px-4 py-2 bg-secondary-500 text-white rounded-lg">
                             Search
                         </button>
                     </form>
@@ -84,46 +86,46 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                         <div className="-m-1.5 overflow-x-auto">
                             <div className="p-1.5 min-w-full inline-block align-middle">
                                 <div className="overflow-hidden">
-                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                    <table className="min-w-full divide-y divide-primary-200 dark:divide-neutral-700">
                                         <thead>
                                         <tr>
                                             <th scope="col"
-                                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Tanggal
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Tanggal
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Transaksi
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Transaksi
                                                 ID
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Nomor
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Nomor
                                                 Handphone
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Harga
+                                                className="px-6 py-3 text-end text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Harga
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Status
+                                                className="px-6 py-3 text-end text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Status
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Action
+                                                className="px-6 py-3 text-end text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Action
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {/*{*/}
                                         {/*    // latestTransaction && latestTransaction.map((transaction, index) => (*/}
-                                        <tr className="odd:bg-white even:bg-gray-100 dark:odd:bg-neutral-900 dark:even:bg-neutral-800">
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                        <tr className="odd:bg-white even:bg-primary-100 dark:odd:bg-neutral-900 dark:even:bg-neutral-800">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-800 dark:text-neutral-200">
                                                 {formatDate(searchResult.created_at)}
 
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
                                                 <Link className='hover:underline'
                                                       href={route('detail.transaction', searchResult.trx_id)}>
                                                     {searchResult.trx_id}
                                                 </Link>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
                                                 {searchResult.phone_number}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
@@ -191,41 +193,41 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                         <div className="-m-1.5 overflow-x-auto">
                             <div className="p-1.5 min-w-full inline-block align-middle">
                                 <div className="overflow-hidden">
-                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                    <table className="min-w-full divide-y divide-primary-200 dark:divide-neutral-700">
                                         <thead>
                                         <tr>
                                             <th scope="col"
-                                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Tanggal
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Tanggal
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Transaksi
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Transaksi
                                                 ID
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Nomor
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Nomor
                                                 Handphone
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Harga
+                                                className="px-6 py-3 text-end text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Harga
                                             </th>
                                             <th scope="col"
-                                                className="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Status
+                                                className="px-6 py-3 text-end text-xs font-medium text-primary-500 uppercase dark:text-neutral-500">Status
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {
                                             latestTransaction && latestTransaction.map((transaction, index) => (
-                                                <tr className="odd:bg-white even:bg-gray-100 dark:odd:bg-neutral-900 dark:even:bg-neutral-800"
+                                                <tr className="odd:bg-white even:bg-primary-100 dark:odd:bg-neutral-900 dark:even:bg-neutral-800"
                                                     key={index}>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-800 dark:text-neutral-200">
                                                         {formatDate(transaction.created_at)}
 
                                                     </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
                                                         {maskValue(transaction.trx_id)}
                                                     </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
                                                         {maskValue(transaction.phone_number)}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">

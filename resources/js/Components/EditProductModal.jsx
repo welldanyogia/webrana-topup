@@ -53,11 +53,11 @@ export default function EditProductModal({product}) {
                 <div
                     className="flex flex-col w-1/2 bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
                     <div className="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-                        <h3 className="font-bold text-gray-800 dark:text-white">
+                        <h3 className="font-bold text-primary-800 dark:text-white">
                             Edit {product.product_name}
                         </h3>
                         <button type="button"
-                                className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
+                                className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-primary-800 hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
                                 data-hs-overlay={`#hs-static-backdrop-modal-edit-product-${product.id}`}>
                             <span className="sr-only">Close</span>
                             <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -74,7 +74,7 @@ export default function EditProductModal({product}) {
                                 <label htmlFor="category-name"
                                        className="block text-sm font-medium mb-2 dark:text-white">Nama Product</label>
                                 <input type="text" id="category-name"
-                                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                       className="py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                        placeholder="Nama Product"
                                        value={productName}
                                        onChange={(e) => setProductName(e.target.value)}
@@ -84,7 +84,7 @@ export default function EditProductModal({product}) {
                                 <label htmlFor="category-name"
                                        className="block text-sm font-medium mb-2 dark:text-white">Harga Modal</label>
                                 <input type="text" id="category-name"
-                                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                       className="py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                        placeholder="Harga Modal"
                                        value={productPrice}
                                        onChange={(e) => {
@@ -97,7 +97,7 @@ export default function EditProductModal({product}) {
                                 <label htmlFor="category-name"
                                        className="block text-sm font-medium mb-2 dark:text-white">Harga Jual</label>
                                 <input type="number" id="category-name"
-                                       className="py-3 text-white px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                       className="py-3 text-white px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                        placeholder="Harga Jual"
                                        value={productSellingPrice}
                                        onChange={(e) => {
@@ -111,7 +111,7 @@ export default function EditProductModal({product}) {
                                        className="block text-sm font-medium mb-2 dark:text-white">Keuntungan</label>
                                 <input type="text" id="category-name"
                                        disabled={true}
-                                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                       className="py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                        placeholder="Keuntungan"
                                        value={formatRupiah(profit)}
                                     // onChange={(e) => setProfit()}
@@ -123,9 +123,9 @@ export default function EditProductModal({product}) {
                                 <select data-hs-select='{
                                           "placeholder": "Select option...",
                                           "toggleTag": "<button type=\"button\"></button>",
-                                          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
-                                          "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto dark:bg-neutral-900 dark:border-neutral-700",
-                                          "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                                          "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-primary-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",
+                                          "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-primary-200 rounded-lg overflow-hidden overflow-y-auto dark:bg-neutral-900 dark:border-neutral-700",
+                                          "optionClasses": "py-2 px-4 w-full text-sm text-primary-800 cursor-pointer hover:bg-primary-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
                                           "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"flex-shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
                                         }' id='category_status'
                                         value={productStatus}

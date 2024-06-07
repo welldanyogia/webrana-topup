@@ -14,6 +14,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
     }
 
     const transactionData = {
+        values:values,
         user_id: concatenatedValues,
         price:price,
         method_code:paymentMethodCode,
@@ -51,11 +52,11 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                 <div
                     className="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-neutral-800 dark:border-neutral-700 dark:shadow-neutral-700/70">
                     <div className="flex justify-between items-center py-3 px-4 border-b dark:border-neutral-700">
-                        <h3 className="font-bold text-gray-800 dark:text-white">
+                        <h3 className="font-bold text-primary-800 dark:text-white">
                             Konfirmasi Pesanan
                         </h3>
                         <button type="button"
-                                className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
+                                className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-primary-800 hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700"
                                 data-hs-overlay="#hs-vertically-centered-modal-order-confirmation">
                             <span className="sr-only">Close</span>
                             <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -115,7 +116,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                     </p>
                     <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-neutral-700">
                         <button type="button"
-                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-primary-200 bg-white text-primary-800 shadow-sm hover:bg-primary-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
                                 data-hs-overlay="#hs-vertically-centered-modal-order-confirmation">
                             Batalkan
                         </button>
@@ -123,7 +124,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                                 // data-hs-overlay="#hs-vertically-centered-modal-order-confirmation"
                                 data-hs-overlay="#hs-vertically-centered-modal-order-confirmation"
                                 onClick={handleSubmit}
-                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-lime-600 text-white hover:bg-lime-700 disabled:opacity-50 disabled:pointer-events-none">
+                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">
                             Bayar sekarang
                             <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                  width="24" height="24" viewBox="0 0 24 24" fill="none"

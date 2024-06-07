@@ -44,7 +44,7 @@ function SigninModal({...props}) {
                             <h2 className="block text-2xl font-bold text-gray-800 dark:text-neutral-200">Sign in</h2>
                             <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
                                 Don't have an account yet?
-                                <button type='button' className="text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
+                                <button type='button' className="text-secondary-600 decoration-2 hover:underline font-medium dark:text-secondary-500"
                                    data-hs-overlay="#hs-modal-signup">
                                     Sign up here
                                 </button>
@@ -67,7 +67,7 @@ function SigninModal({...props}) {
                                         <div className="relative">
                                             <input type="email" id="email" name="email" value={data.email}
                                                    onChange={(e) => setData('email', e.target.value)}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="email-error"/>
                                             {errors.email && <div>{errors.email}</div>}
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
@@ -89,14 +89,14 @@ function SigninModal({...props}) {
                                         <div className="flex justify-between items-center">
                                             <label htmlFor="password"
                                                    className="block text-sm mb-2 dark:text-white">Password</label>
-                                            <a className="text-sm text-blue-600 decoration-2 hover:underline font-medium"
+                                            <a className="text-sm text-secondary-600 decoration-2 hover:underline font-medium"
                                                href="../examples/html/modal-recover-account.html">Forgot password?</a>
                                         </div>
                                         <div className="relative">
                                             <input type="password" id="password" name="password"
                                                    value={data.password}
                                                    onChange={(e) => setData('password', e.target.value)}
-                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                   className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="password-error"/>
                                             {errors.password && <div>{errors.password}</div>}
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
@@ -118,7 +118,7 @@ function SigninModal({...props}) {
                                             <input id="remember-me" name="remember" type="checkbox"
                                                    checked={data.remember}
                                                    onChange={(e) => setData('remember', e.target.value)}
-                                                   className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-800 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"/>
+                                                   className="shrink-0 mt-0.5 border-gray-200 rounded text-secondary-600 focus:ring-secondary-500 dark:bg-neutral-800 dark:border-neutral-800 dark:checked:bg-secondary-500 dark:checked:border-secondary-500 dark:focus:ring-offset-gray-800"/>
                                         </div>
                                         <div className="ms-3">
                                             <label htmlFor="remember-me" className="text-sm dark:text-white">Remember
@@ -127,13 +127,13 @@ function SigninModal({...props}) {
                                     </div>
                                     {/*<!-- End Checkbox */}
                                     {/*<button type="submit"*/}
-                                    {/*        className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Sign*/}
+                                    {/*        className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">Sign*/}
                                     {/*    in*/}
                                     {/*</button>*/}
 
                                     {/*<button type="submit" disabled={processing}*/}
                                     {/*        data-hs-overlay="#hs-modal-signin"*/}
-                                    {/*        className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Sign*/}
+                                    {/*        className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">Sign*/}
                                     {/*    in*/}
                                     {/*</button>*/}
                                     <PrimaryButton className="ms-4" disabled={processing} data-hs-overlay="#hs-modal-signin">

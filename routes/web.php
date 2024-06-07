@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionHistoryController;
@@ -51,6 +52,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/admin/store/product', [ProductController::class, 'store']);
         Route::post('/admin/product/{id}/destroy', [ProductController::class, 'destroy'])->name('admin.product.destroy');
         Route::get('/admin/transaction',[\App\Http\Controllers\Admin\TransactionController::class,'index']);
+        Route::post('/admin/transaction/{id}/update-status', [TransactionController::class, 'updateStatus'])->name('admin.transactions.update-status');
         Route::get('/admin/product',[\App\Http\Controllers\Admin\ProductController::class,'index']);
         Route::post('/admin/storeOption',[\App\Http\Controllers\Admin\BrandController::class,'storeOption']);
         Route::post('/admin/deleteForm/{id}',[\App\Http\Controllers\Admin\BrandController::class,'deleteForm']);
@@ -59,6 +61,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('/admin/settings/{id}', [SettingController::class, 'destroy'])->name('admin.settings.destroy');
         Route::get('/admin/whatsapp',[\App\Http\Controllers\Admin\WhatsappGatewayController::class,'index']);
         Route::post('/admin/whatsapp/store',[\App\Http\Controllers\Admin\WhatsappGatewayController::class,'store']);
+        Route::post('/admin/store-logo-light', [SettingController::class, 'storeLogoLight'])->name('store.logoLight');
+        Route::post('/admin/store-logo-dark', [SettingController::class, 'storeLogoDark'])->name('store.logoDark');
+        Route::post('/admin/store-favicon', [SettingController::class, 'storeFavicon'])->name('store.favicon');
 
     });
     Route::group(['middleware' => ['checkRole:guest,user']], function() {

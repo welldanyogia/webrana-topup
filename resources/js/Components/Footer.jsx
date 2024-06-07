@@ -7,30 +7,30 @@ function Footer() {
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-10">
                 <div className="col-span-full hidden lg:col-span-1 lg:block">
                     <a className="flex-none text-xl font-semibold dark:text-white" href="#" aria-label="Brand">{import.meta.env.ENV_APP_NAME}</a>
-                    <p className="mt-3 text-xs sm:text-sm text-gray-600 dark:text-neutral-400">© 2024 Webrana.</p>
+                    <p className="mt-3 text-xs sm:text-sm text-primary-600 dark:text-neutral-400">© 2024 Webrana.</p>
                 </div>
                 {/*<!-- End Col --*/}
 
                 <div>
-                    <h4 className="text-xs font-semibold text-gray-900 uppercase dark:text-neutral-100">Product</h4>
+                    <h4 className="text-xs font-semibold text-primary-900 uppercase dark:text-neutral-100">Product</h4>
 
                     <div className="mt-3 grid space-y-3 text-sm">
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Pricing</a></p>
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Changelog</a></p>
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Docs</a></p>
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Download</a></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Pricing</a></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Changelog</a></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Docs</a></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Download</a></p>
                     </div>
                 </div>
                 {/*<!-- End Col */}
 
                 <div>
-                    <h4 className="text-xs font-semibold text-gray-900 uppercase dark:text-neutral-100">Company</h4>
+                    <h4 className="text-xs font-semibold text-primary-900 uppercase dark:text-neutral-100">Company</h4>
 
                     <div className="mt-3 grid space-y-3 text-sm">
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">About us</a></p>
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Blog</a></p>
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Careers</a> <span className="inline text-blue-600 dark:text-blue-500">— We're hiring</span></p>
-                        <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Customers</a></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">About us</a></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Blog</a></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Careers</a> <span className="inline text-blue-600 dark:text-blue-500">— We're hiring</span></p>
+                        <p><a className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Customers</a></p>
                         <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Newsroom</a></p>
                         <p><a className="inline-flex gap-x-2 text-gray-600 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-200" href="#">Sitemap</a></p>
                     </div>

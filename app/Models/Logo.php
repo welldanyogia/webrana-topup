@@ -5,9 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Fonnte extends Model
+class Logo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['acc_token','wa_owner'];
+    protected $fillable = [
+        'logo_light',
+        'logo_dark',
+        'favicon',
+    ];
 }

@@ -19,7 +19,7 @@ export default function PaymentInstruction({paymentInstruction, transaction}) {
             {paymentInstruction.success && paymentInstruction.data.map((tutor, index) => (
                 <div className="hs-accordion" id={`hs-basic-with-arrow-heading-${index}`} key={index}>
                     <button
-                        className="hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
+                        className="hs-accordion-toggle hs-accordion-active:text-primary-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-primary-800 hover:text-primary-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-primary-dark-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:outline-none dark:focus:text-neutral-400"
                         aria-controls={`hs-basic-with-arrow-collapse-${index}`}
                         aria-expanded={openAccordionIndex === index}
                         onClick={() => toggleAccordion(index)}
@@ -69,7 +69,7 @@ export default function PaymentInstruction({paymentInstruction, transaction}) {
                     <div id={`hs-basic-with-arrow-collapse-${index}`}
                          className={`hs-accordion-content w-full overflow-hidden transition-[height] duration-300 ${openAccordionIndex === index ? 'block' : 'hidden'}`}
                          aria-labelledby={`hs-basic-with-arrow-heading-${index}`}>
-                        <ol className="list-decimal list-inside text-gray-800 dark:text-white">
+                        <ol className="list-decimal list-inside text-primary-800 dark:text-white">
                             {tutor.steps && tutor.steps.map((step, stepIndex) => (
                                 <li key={stepIndex}
                                     dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(replacePlaceholders(step, transaction.no_va))}}></li>

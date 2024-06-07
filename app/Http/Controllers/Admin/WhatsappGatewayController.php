@@ -12,6 +12,7 @@ use Inertia\Inertia;
 class WhatsappGatewayController extends Controller
 {
     protected $acc_token;
+    protected $wa_owner;
     protected $fonnteService;
 
     public function __construct(FonnteService $fonnteService){
@@ -20,8 +21,10 @@ class WhatsappGatewayController extends Controller
 
         if ($latestFonnte) {
             $this->acc_token = $latestFonnte->acc_token;
+            $this->wa_owner = $latestFonnte->wa_owner;
         } else {
             $this->acc_token = null;
+            $this->wa_owner = null;
         }
     }
     /**
@@ -32,6 +35,7 @@ class WhatsappGatewayController extends Controller
         $device = $this->getDevices();
         return Inertia::render('Admin/WhatsappGateway',[
             'acc_token' => $this->acc_token,
+            'wa_owner' => $this->wa_owner,
             'devices' => $device
         ]);
     }
@@ -45,11 +49,13 @@ class WhatsappGatewayController extends Controller
             // Validasi input
             $validatedData = $request->validate([
                 'acc_token' => 'required|string|max:255',
+                'wa_owner' => 'required|string|max:255',
             ]);
 
             // Membuat record baru dalam tabel fonntes
             $fonnte = Fonnte::create([
                 'acc_token' => $validatedData['acc_token'],
+                'wa_owner' => $validatedData['wa_owner'],
             ]);
 
             // Kembalikan respons sukses
@@ -116,26 +122,24 @@ class WhatsappGatewayController extends Controller
         }
     }
 
-    public function sendMessage(Request $request): \Illuminate\Http\JsonResponse
+    public function sendMessage(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
-            'target' => 'required|string',
-            'message' => 'required|string',
-            // Add other validations as needed
-        ]);
+//        $request->validate([
+//            'target' => $this->wa_owner,
+//            'message' => 'Test Whatsapp Gateway Message',
+//            // Add other validations as needed
+//        ]);
+        $data = [
+            'target' => $this->wa_owner,
+            'message' => 'Test Whatsapp Gateway Message',
+        ];
 
         try {
-            $response = $this->fonnteService->sendMessage($request->all());
+            $this->fonnteService->sendMessage($data);
 
-            return response()->json([
-                'status' => true,
-                'data' => $response,
-            ]);
+            return redirect()->back()->with(['flash' => ['success' => 'Successfully test send message to '. $data->target]]);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return redirect()->back()->withErrors(['error' => 'Failed to test send message. '. $e->getMessage()]);
         }
     }
 }

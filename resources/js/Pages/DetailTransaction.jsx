@@ -9,6 +9,7 @@ import {useLocation} from "react-router-dom";
 import DOMPurify from 'dompurify';
 import PaymentInstruction from "@/Components/PaymentInstruction.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
+import SignupModal from "@/Components/SignupModal.jsx";
 
 export default function DetailTransaction({auth, transaction,paymentInstruction,data}) {
     const isAuthenticated = auth?.user && auth.user.role === 'user';
@@ -76,6 +77,7 @@ export default function DetailTransaction({auth, transaction,paymentInstruction,
         >
             <Head title={transaction.trx_id}/>
             <SigninModal />
+            <SignupModal />
             <div className="grid text-neutral-800 dark:text-white gap-6 w-3/4 mb-10 mx-auto md:grid max-sm:flex max-sm:flex-col">
                 <div className="grid grid-cols-2 dark:border-white md:grid-cols-2 sm:grid-cols-1 max-sm:grid-cols-1 border-b-2 w-full space-y-2 p-4">
                     {
@@ -258,11 +260,11 @@ export default function DetailTransaction({auth, transaction,paymentInstruction,
                                                 <div className="flex font-bold">
                                                     <div className="inline-flex items-center gap-x-3">
                                                         <div id="hs-clipboard-basic"
-                                                             className="text-sm font-medium text-gray-800 dark:text-white">
+                                                             className="text-sm font-medium text-primary-800 dark:text-white">
                                                             {transaction.no_va}
                                                         </div>
                                                         <button type="button"
-                                                                className="js-clipboard-example p-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                                                className="js-clipboard-example p-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-primary-200 bg-white text-primary-800 shadow-sm hover:bg-primary-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
                                                                 data-clipboard-target="#hs-clipboard-basic"
                                                                 data-clipboard-action="copy"
                                                                 data-clipboard-success-text="Copied">
@@ -315,15 +317,15 @@ export default function DetailTransaction({auth, transaction,paymentInstruction,
                                     {/*{{--                            <div class="font-bold font-bold text-blue-600">Rp. 20.000</div>--}}*/}
                                     <div className="inline-flex items-center gap-x-3">
                                         <div id="hs-clipboard-basic-total"
-                                             className="hidden text-sm font-medium text-gray-800 dark:text-white">
+                                             className="hidden text-sm font-medium text-primary-800 dark:text-white">
                                             {transaction.amount}
                                         </div>
                                         <div
-                                             className="text-sm font-medium text-gray-800 dark:text-white">
+                                             className="text-sm font-medium text-primary-800 dark:text-white">
                                             {formatRupiah(transaction.amount)}
                                         </div>
                                         <button type="button"
-                                                className="js-clipboard-example p-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                                className="js-clipboard-example p-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-primary-200 bg-white text-primary-800 shadow-sm hover:bg-primary-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
                                                 data-clipboard-target="#hs-clipboard-basic-total" data-clipboard-action="copy"
                                                 data-clipboard-success-text="Copied">
                                             <svg className="js-clipboard-default size-4 group-hover:rotate-6 transition"
