@@ -15,10 +15,13 @@ class PaymentGatewayController extends Controller
 
     public function __construct()
     {
-        if (Tripay::latest()->first()->is_production === 0){
-            $this->url = "https://tripay.co.id/api-sandbox/";
-        }elseif (Tripay::latest()->first()->is_production === 1){
-            $this->url = "https://tripay.co.id/api/";
+        $latest = Tripay::latest()->first();
+        if ($latest) {
+            if ($latest->is_production === 0) {
+                $this->url = "https://tripay.co.id/api-sandbox/";
+            } elseif ($latest->is_production === 1) {
+                $this->url = "https://tripay.co.id/api/";
+            }
         }
     }
     /**

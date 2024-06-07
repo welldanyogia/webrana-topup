@@ -19,10 +19,13 @@ class DigiflazzController extends Controller
 
     public function __construct()
     {
-        if (DigiAuth::latest()->first()->is_production === 0){
-            $this->url = "https://api.digiflazz.com/v1";
-        }elseif (DigiAuth::latest()->first()->is_production === 1){
-            $this->url = "https://api.digiflazz.com/v1";
+        $latest = DigiAuth::latest()->first();
+        if ($latest) {
+            if ($latest->is_production === 0) {
+                $this->url = "https://api.digiflazz.com/v1";
+            } elseif ($latest->is_production === 1) {
+                $this->url = "https://api.digiflazz.com/v1";
+            }
         }
     }
     public function index(){
