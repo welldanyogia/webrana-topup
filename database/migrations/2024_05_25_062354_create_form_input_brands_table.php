@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type',['number','text','select']);
-            $table->uuid('brand_id')->constrained('brands')->references('brand_id')->onDelete('cascade')->onUpdate('cascade');
+            $table->uuid('brand_id')->constrained('brands')->references('brand_id')->onDelete('cascade');
             $table->timestamps();
         });
     }

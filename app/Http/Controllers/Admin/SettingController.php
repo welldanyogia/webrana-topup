@@ -7,13 +7,8 @@ use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-//use Intervention\Image\Image;
-//use Intervention\Image\Image;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
-use Intervention\Image\Laravel\Facades\Image;
-//use Intervention\Image\ImageManager;
-use Laravel\Reverb\Loggers\Log;
 
 class SettingController extends Controller
 {
