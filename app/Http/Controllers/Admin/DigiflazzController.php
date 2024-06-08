@@ -139,7 +139,7 @@ class DigiflazzController extends Controller
         );
 
         $brandId = $brand->brand_id;
-        $selling_price = '';
+        $selling_price = 0;
         if ($brand->mass_profit_status === 1){
             $selling_price = $item['price']+($item['price']*($brand->mass_profit/100));
         }
