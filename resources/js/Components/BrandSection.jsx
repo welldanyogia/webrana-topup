@@ -65,9 +65,9 @@ function BrandSection() {
                                     <div
                                         className="absolute flex-col gap-y-5 rounded-xl border-secondary-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
                                         {/*<ApplicationLogo className="w-16 h-16" /> /!* Icon di tengah saat dihover *!/*/}
-                                        <img className='hidden dark:flex max-sm:w-14' src="/logo_dark.png"
+                                        <img className='hidden dark:flex max-sm:w-14' src="/storage/logo_dark.png"
                                              alt="logo"/>
-                                        <img className='flex dark:hidden max-sm:w-14' src="/logo_dark.png"
+                                        <img className='flex dark:hidden max-sm:w-14' src="/storage/logo_dark.png"
                                              alt="logo"/>
                                         <h2 className='text-black dark:text-white text-center'>{card.brand_name}</h2>
                                     </div>
