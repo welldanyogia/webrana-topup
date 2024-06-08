@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {TailSpin} from 'react-loader-spinner';
 import {format} from "date-fns";
 import {CSSProperties} from "react";
 import {ClipLoader, SyncLoader} from "react-spinners"; // Importing a spinner from react-loader-spinner
