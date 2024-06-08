@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\DigiAuth;
+use App\Models\Fonnte;
+use App\Models\Tripay;
 use App\Models\TripayPaymentChannel;
 use App\Models\WebIndetity;
 use Illuminate\Http\Request;
@@ -52,6 +55,9 @@ class HandleInertiaRequests extends Middleware
                     : (object) [];
             },
             'banners' => Banner::all(),
+            'digi_auth' => DigiAuth::latest()->first(),
+            'fonntes' => Fonnte::latest()->first(),
+            'tripays' => Tripay::latest()->first(),
         ];
     }
 }

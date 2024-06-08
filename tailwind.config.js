@@ -20,9 +20,9 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                'primary' : colors.blue,
-                'primary-dark' : colors.blue,
-                'secondary' : colors.cyan,
+                'primary' : colors.gray,
+                'primary-dark' : colors.gray,
+                'secondary' : colors.lime,
                 'blue': {
                     '50': '#e8efff',
                     '100': '#d5e1ff',
@@ -36,9 +36,16 @@ export default {
                     '900': '#14109f',
                     '950': '#0e0a5c',
                 },
-
-
             },
+            animation: {
+                'infinite-scroll': 'infinite-scroll 25s linear infinite',
+            },
+            keyframes: {
+                'infinite-scroll': {
+                    from: { transform: 'translateX(0)' },
+                    to: { transform: 'translateX(-100%)' },
+                }
+            }
         },
     },
 

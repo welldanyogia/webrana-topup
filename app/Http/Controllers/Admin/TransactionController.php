@@ -92,16 +92,17 @@ class TransactionController extends Controller
                 $this->sendInvoiceToWhatsApp($transaction,$transaction->phone_number);
                 Log::info('Message sent successfully to ' . $transaction->phone_number);
             } catch (\Exception $e) {
-                Log::error('Failed to send message: ' . $e->getMessage());
+                Log::error('Failed to send message '. $transaction->phone_number. ' : ' . $e->getMessage()."\n" .$transaction);
             }
             $this->processDigiflazzTopup($transaction);
         }
         if ($request->status === 'process' && $process->processed_by === 'manual') {
             try {
                 $this->sendInvoiceToWhatsAppManual($transaction,$transaction->phone_number);
-                $this->sendInvoiceToWhatsAppOwner($transaction);
+//                $this->sendInvoiceToWhatsAppOwner($transaction);
                 Log::info('Message sent successfully to ' . $transaction->phone_number);
             } catch (\Exception $e) {
+                Log::error('Failed to send message '. $transaction->phone_number. ' : ' . $e->getMessage()."\n" .$transaction);
                 Log::error('Failed to send message: ' . $e->getMessage());
             }
         }
@@ -168,7 +169,7 @@ class TransactionController extends Controller
         }
     }
 
-    private function sendInvoiceToWhatsApp($transaction, $phone_number)
+    private function sendInvoiceToWhatsApp($transaction, $phone_number): void
     {
         Carbon::setLocale('id');
         $appNameFull = config('app.name');
@@ -220,7 +221,7 @@ class TransactionController extends Controller
         ]);
     }
 
-    private function sendInvoiceToWhatsAppManual($transaction, $phone_number)
+    private function sendInvoiceToWhatsAppManual($transaction, $phone_number): void
     {
         Carbon::setLocale('id');
         $appNameFull = config('app.name');
@@ -297,7 +298,7 @@ class TransactionController extends Controller
     }
 
 
-    private function sendInvoiceToWhatsAppOwner($transaction)
+    private function sendInvoiceToWhatsAppOwner($transaction): void
     {
         Carbon::setLocale('id');
         $appNameFull = config('app.name');
@@ -308,7 +309,7 @@ class TransactionController extends Controller
         $expiredTime = Carbon::parse($transaction->expired_time);
         $formattedExpiredTime = $expiredTime->translatedFormat('d F Y, H:i:s');
 
-        // Decode the JSON data
+//         Decode the JSON data
         $dataTrxArray = json_decode($transaction->data_trx, true);
 
         // Format the decoded JSON data into a readable string
@@ -339,7 +340,7 @@ class TransactionController extends Controller
         $message .= "Tim {$appName}";
 
         $this->fonnteService->sendMessage([
-            'target' => '6282233232246',
+            'target' => $this->wa_owner,
             'message' => $message,
         ]);
     }

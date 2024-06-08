@@ -156,7 +156,13 @@ class CallbackController extends Controller
         } else {
             // Handle the error accordingly
             // Log the error or take appropriate actions
+            $responseBody = json_decode($response->body(), true);
+            $messageError = "Failed to send request to Digiflazz\n";
+            if (isset($responseBody['message'])) {
+                $messageError .= $responseBody['message'];
+            }
             Log::error('Failed to send request to Digiflazz', ['response' => $response->body()]);
+            $this->sendErrorWhatsAppOwner($messageError);
             $invoice->update(['status' => 'failed']);
         }
     }
@@ -320,4 +326,21 @@ class CallbackController extends Controller
             'message' => $message,
         ]);
     }
+
+    private function sendErrorWhatsAppOwner($messageError): void
+    {
+        $appNameFull = config('app.name');
+        $appNameParts = explode(' |', $appNameFull);
+        $appName = $appNameParts[0];
+
+        $message = "Halo {$appName}, ada orderan nih,\n\n";
+        $message .= "{$messageError}";
+        $message .= "Terima kasih,\n\n";
+
+        $this->fonnteService->sendMessage([
+            'target' => $this->wa_owner,
+            'message' => $message,
+        ]);
+    }
 }
+

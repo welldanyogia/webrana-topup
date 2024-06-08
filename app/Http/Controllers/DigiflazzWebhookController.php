@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fonnte;
 use App\Models\Transactions;
 use App\Services\FonnteService;
 use Carbon\Carbon;
@@ -11,10 +12,17 @@ use Illuminate\Support\Facades\Log;
 class DigiflazzWebhookController extends Controller
 {
     protected $fonnteService;
+    protected $wa_owner;
 
     public function __construct(FonnteService $fonnteService)
     {
         $this->fonnteService = $fonnteService;
+        $latestFonnte = Fonnte::latest()->first();
+        if ($latestFonnte) {
+            $this->wa_owner = $latestFonnte->wa_owner;
+        } else {
+            $this->wa_owner = null;
+        }
     }
     public function handle(Request $request)
     {
@@ -103,6 +111,22 @@ class DigiflazzWebhookController extends Controller
         }else {
             Log::error('Missing transaction data', $transactionData);
         }
+    }
+
+    private function sendErrorWhatsAppOwner($messageError): void
+    {
+        $appNameFull = config('app.name');
+        $appNameParts = explode(' |', $appNameFull);
+        $appName = $appNameParts[0];
+
+        $message = "Halo {$appName}, ada orderan nih,\n\n";
+        $message .= "{$messageError}";
+        $message .= "Terima kasih,\n\n";
+
+        $this->fonnteService->sendMessage([
+            'target' => $this->wa_owner,
+            'message' => $message,
+        ]);
     }
 
     private function sendSuccessInvoiceToWhatsApp($transaction, $phone_number)

@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"  rel="stylesheet" />
 {{--        <link rel="stylesheet" href="../assets/vendor/apexcharts/dist/apexcharts.css">--}}
-        <link rel="stylesheet" href="../../node_modules/apexcharts/dist/apexcharts.css">
+{{--        <link rel="stylesheet" href="../../node_modules/apexcharts/dist/apexcharts.css">--}}
 {{--        <link href="../node_modules/froala-editor/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />--}}
         <style type="text/css">
             .apexcharts-tooltip.apexcharts-theme-light {
@@ -31,7 +31,7 @@
         @inertia
 {{--        <script src="../../node_modules/clipboard/dist/clipboard.min.js"></script>--}}
         <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
-        <script src="../../node_modules/flowbite/dist/flowbite.min.js"></script>
+{{--        <script src="../../node_modules/flowbite/dist/flowbite.min.js"></script>--}}
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- Apexcharts -->
 {{--        <script src="../../node_modules/preline/dist/index.js"></script>--}}

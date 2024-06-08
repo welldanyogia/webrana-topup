@@ -3,8 +3,10 @@ import SidebarAdmin from "@/Components/SidebarAdmin.jsx";
 import {Head, usePage} from "@inertiajs/react";
 import React from "react";
 import Breadcrumb from "@/Components/BreadCrumb.jsx";
+import DigiflazzConfigurationAlert from "@/Components/DigiflazzConfigurationAlert.jsx";
+import PaymentGatewayConfigurationAlert from "@/Components/PaymentGatewayConfigurationAlert.jsx";
 
-export default function AuthenticatedAdmin({auth, user, header, children}) {
+export default function AuthenticatedAdmin({auth, user, digi_auths,fonntes,tripays, children}) {
     return (
         <div className="min-h-screen sm:justify-center pt-6 sm:pt-0 bg-primary-100 dark:bg-neutral-900 text-neutral-800 dark:text-white">
             <Head title="Admin Dashboard"/>
@@ -35,6 +37,21 @@ export default function AuthenticatedAdmin({auth, user, header, children}) {
             <main>
                 <div className="w-full lg:ps-64">
                     <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                        {
+                            digi_auths === null && (
+                                <DigiflazzConfigurationAlert/>
+                            )
+                        }
+                        {
+                            fonntes === null && (
+                                <PaymentGatewayConfigurationAlert/>
+                            )
+                        }
+                        {
+                            tripays === null && (
+                                <PaymentGatewayConfigurationAlert/>
+                            )
+                        }
                         {children}
                     </div>
                 </div>

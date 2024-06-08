@@ -73,7 +73,7 @@ function SignupModal({...props}) {
                                                    onChange={(e) => setData('name', e.target.value)}
                                                    className="py-3 px-4 block w-full bg-white border-secondary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="name-error"/>
-                                            {/*<InputError message={errors.name} className="mt-2"/>*/}
+                                            <InputError message={errors.name} className="mt-2"/>
                                             <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
                                                 <svg className="size-5 text-red-500" width="16" height="16"
                                                      fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
@@ -170,7 +170,8 @@ function SignupModal({...props}) {
                                     </div>
                                     {/*<!-- End Checkbox */}
 
-                                    <button type="submit" data-hs-overlay='#hs-modal-signup'
+                                    <button type="submit"
+                                            // data-hs-overlay='#hs-modal-signup'
                                             className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">Sign
                                         up
                                     </button>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useForm, router} from '@inertiajs/react';
 import AuthenticatedAdmin from "@/Layouts/AuthenticatedAdminLayout.jsx";
 import ErrorAlert from "@/Components/ErrorAlert.jsx";
+import {Inertia} from "@inertiajs/inertia";
 
 export default function Setting({banners, flash}) {
     const [logoLight, setLogoLight] = useState(null);
@@ -31,12 +32,17 @@ export default function Setting({banners, flash}) {
         formData.append(name, file);
 
         try {
-            await axios.post(endpoint, formData, {
+            router.post(endpoint, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
-                }
+                },
+                onSuccess: () => {
+                    reset()
+                    Inertia.reload()
+                },
             });
-            alert('File uploaded successfully');
+            // alert('File uploaded successfully');
+            // router.reload()
         } catch (error) {
             alert(flash.error);
         }

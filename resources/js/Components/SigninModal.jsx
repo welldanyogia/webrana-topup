@@ -62,10 +62,10 @@ function SigninModal({...props}) {
                                 <div className="grid gap-y-4">
                                     {/*<!-- Form Group */}
                                     <div>
-                                        <label htmlFor="email" className="block text-sm mb-2 dark:text-white">Email
+                                        <label htmlFor="email-signin" className="block text-sm mb-2 dark:text-white">Email
                                             address</label>
                                         <div className="relative">
-                                            <input type="email" id="email" name="email" value={data.email}
+                                            <input type="email" id="email-signin" name="email-signin" value={data.email}
                                                    onChange={(e) => setData('email', e.target.value)}
                                                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                    required aria-describedby="email-error"/>
@@ -87,13 +87,13 @@ function SigninModal({...props}) {
                                     {/*<!-- Form Group */}
                                     <div>
                                         <div className="flex justify-between items-center">
-                                            <label htmlFor="password"
+                                            <label htmlFor="password-signin"
                                                    className="block text-sm mb-2 dark:text-white">Password</label>
                                             <a className="text-sm text-secondary-600 decoration-2 hover:underline font-medium"
-                                               href="../examples/html/modal-recover-account.html">Forgot password?</a>
+                                               href={route('password.request')}>Forgot password?</a>
                                         </div>
                                         <div className="relative">
-                                            <input type="password" id="password" name="password"
+                                            <input type="password" id="password-signin" name="password-signin"
                                                    value={data.password}
                                                    onChange={(e) => setData('password', e.target.value)}
                                                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
@@ -115,13 +115,13 @@ function SigninModal({...props}) {
                                     {/*<!-- Checkbox */}
                                     <div className="flex items-center">
                                         <div className="flex">
-                                            <input id="remember-me" name="remember" type="checkbox"
+                                            <input id="remember-me-signin" name="remember" type="checkbox"
                                                    checked={data.remember}
                                                    onChange={(e) => setData('remember', e.target.value)}
                                                    className="shrink-0 mt-0.5 border-gray-200 rounded text-secondary-600 focus:ring-secondary-500 dark:bg-neutral-800 dark:border-neutral-800 dark:checked:bg-secondary-500 dark:checked:border-secondary-500 dark:focus:ring-offset-gray-800"/>
                                         </div>
                                         <div className="ms-3">
-                                            <label htmlFor="remember-me" className="text-sm dark:text-white">Remember
+                                            <label htmlFor="remember-me-signin" className="text-sm dark:text-white">Remember
                                                 me</label>
                                         </div>
                                     </div>

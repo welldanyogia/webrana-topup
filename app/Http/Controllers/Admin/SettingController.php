@@ -123,7 +123,7 @@ class SettingController extends Controller
 
                 // Convert image to .ico if it's not already
                 if ($image->getClientOriginalExtension() !== 'ico') {
-                    $image = $manager->read($image)->resize(32, 32)->encodeByExtension('png');
+                    $image = $manager->read($image)->resize(48, 48)->encodeByExtension('png');
                     Storage::put($imagePath, (string)$image);
                 } else {
                     $image->storeAs('public', $imageName);

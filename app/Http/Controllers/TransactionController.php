@@ -133,6 +133,7 @@ class TransactionController extends Controller
 
             if (!$tripay) {
                 Log::error('API key not found');
+                $this->sendErrorWhatsAppOwner('API key not found');
                 return redirect()->back()->with(['flash' => ['message' => 'Transaksi Gagal, Segera hubungi admin.']]);
             }
 
@@ -222,6 +223,7 @@ class TransactionController extends Controller
                     $this->sendInvoiceToWhatsApp($transaction, $transaction->phone_number);
                     Log::info('Message sent successfully to ' . $transaction->phone_number);
                 } catch (\Exception $e) {
+                    $this->sendErrorWhatsAppOwner($e->getMessage());
                     Log::error('Failed to send message to '.$transaction->phone_number .': ' . $e->getMessage());
                 }
 
@@ -235,6 +237,7 @@ class TransactionController extends Controller
                     'response' => $responseContent,
                     'headers' => $responseHeaders
                 ]);
+                $this->sendErrorWhatsAppOwner($responseContent);
 
                 if ($statusCode == 403) {
                     return redirect()->back()->with(['flash' => ['message' => 'Akses ditolak, silakan hubungi admin.']]);
@@ -246,6 +249,7 @@ class TransactionController extends Controller
             Log::error('An error occurred during transaction creation: ' . $e->getMessage(), [
                 'exception' => $e,
             ]);
+            $this->sendErrorWhatsAppOwner($e->getMessage());
             return redirect()->back()->with(['flash' => ['message' => 'Terjadi kesalahan, silakan coba lagi atau hubungi admin.']]);
         }
     }
@@ -288,7 +292,7 @@ class TransactionController extends Controller
         return $signature;
     }
 
-    private function sendInvoiceToWhatsApp($transaction, $phone_number)
+    private function sendInvoiceToWhatsApp($transaction, $phone_number): void
     {
         Carbon::setLocale('id');
         $appNameFull = config('app.name');
@@ -333,6 +337,22 @@ class TransactionController extends Controller
 
         $this->fonnteService->sendMessage([
             'target' => $phone_number,
+            'message' => $message,
+        ]);
+    }
+
+    private function sendErrorWhatsAppOwner($messageError): void
+    {
+        $appNameFull = config('app.name');
+        $appNameParts = explode(' |', $appNameFull);
+        $appName = $appNameParts[0];
+
+        $message = "Halo {$appName}, ada orderan nih,\n\n";
+        $message .= "{$messageError}";
+        $message .= "Terima kasih,\n\n";
+
+        $this->fonnteService->sendMessage([
+            'target' => $this->wa_owner,
             'message' => $message,
         ]);
     }
