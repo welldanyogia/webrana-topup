@@ -63,13 +63,13 @@ function BrandSection() {
                                      alt={card.title}/>
                                 {hoveredButton === index && (
                                     <div
-                                        className="absolute flex-col rounded-xl border-secondary-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
+                                        className="absolute flex-col gap-4 rounded-xl border-secondary-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
                                         {/*<ApplicationLogo className="w-16 h-16" /> /!* Icon di tengah saat dihover *!/*/}
                                         <img className='hidden dark:flex w-24 max-sm:w-14' src="/storage/logo_dark.png"
                                              alt="logo"/>
                                         <img className='flex dark:hidden w-24 max-sm:w-14' src="/storage/logo_dark.png"
                                              alt="logo"/>
-                                        <h2 className='text-black dark:text-white text-center'>{card.brand_name}</h2>
+                                        <h2 className='text-black dark:text-white text-center font-bold'>{card.brand_name}</h2>
                                     </div>
                                 )}
                                 {/*<h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-neutral-400 text-center`}>{card.brand_name}</h1>*/}
