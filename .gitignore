@@ -3,8 +3,6 @@
 /public/build
 /public/hot
 /public/storage
-/public/storage/banners/
-/public/storage/images/
 /storage/*.key
 /vendor
 .env
@@ -21,3 +19,4 @@ yarn-error.log
 /.idea
 /.vscode
 /public/storage/banners/
+/public/storage/
