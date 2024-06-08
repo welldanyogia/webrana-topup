@@ -2,9 +2,9 @@
 /node_modules
 /public/build
 /public/hot
-#/public/storage
-/public/storage/banners/*
-/public/storage/images/*
+/public/storage
+/public/storage/banners/
+/public/storage/images/
 /storage/*.key
 /vendor
 .env
@@ -20,3 +20,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/public/storage/banners/
