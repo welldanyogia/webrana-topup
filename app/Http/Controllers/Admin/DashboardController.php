@@ -123,4 +123,21 @@ class DashboardController extends Controller
             'dates' => $dates
         ]);
     }
+
+    public function getRecentTransactions(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $recentTransactions = Transactions::orderBy('created_at', 'desc')->take(10)->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $recentTransactions,
+            ], 200);
+        } catch (\Exception $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
+    }
 }

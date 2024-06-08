@@ -239,11 +239,6 @@ export default function Transaction({transactions, transactionsPaginate}) {
             </>
         );
     };
-
-    console.log(transactionsPaginate)
-    console.log(keyword)
-    console.log(filteredTransactions)
-    // console.log(transactions)
     return (
         <AuthenticatedAdmin>
             <div className='w-full'>

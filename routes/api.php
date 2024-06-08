@@ -20,3 +20,4 @@ Route::post('/checkusername',[\App\Http\Controllers\CheckUserNameController::cla
 Route::post('/payment-callback', [\App\Http\Controllers\CallbackController::class, 'handle']);
 Route::post('/digiflazz/webhook', [\App\Http\Controllers\DigiflazzWebhookController::class, 'handle']);
 Route::post('/send-message', [\App\Http\Controllers\Admin\WhatsappGatewayController::class, 'sendMessage']);
+Route::get('/recent-transactions', [\App\Http\Controllers\Admin\DashboardController::class, 'getRecentTransactions']);

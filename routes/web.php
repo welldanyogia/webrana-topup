@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/admin/store-logo-light', [SettingController::class, 'storeLogoLight'])->name('store.logoLight');
         Route::post('/admin/store-logo-dark', [SettingController::class, 'storeLogoDark'])->name('store.logoDark');
         Route::post('/admin/store-favicon', [SettingController::class, 'storeFavicon'])->name('store.favicon');
+        Route::get('/admin/users',[\App\Http\Controllers\Admin\UsersController::class,'index']);
 
     });
     Route::group(['middleware' => ['checkRole:guest,user']], function() {
