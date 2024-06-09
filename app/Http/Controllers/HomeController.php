@@ -14,7 +14,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = Category::where('category_status',1)->with('brands')->get();
+        $categories = Category::where('category_status', 1)
+            ->with(['brands' => function($query) {
+                $query->where('brand_status', 1);
+            }])
+            ->get();
         return Inertia::render('Components/BrandSection', [
             'categories' => $categories,
         ]);

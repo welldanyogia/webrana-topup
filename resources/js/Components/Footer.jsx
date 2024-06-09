@@ -3,12 +3,15 @@ import {usePage} from "@inertiajs/react";
 
 function Footer() {
     const {tripayPaymentChannel} = usePage().props
-    const appName = import.meta.env.VITE_APP_NAME || 'Webrana';
+    const appName = import.meta.env.APP_NAME || 'Webrana';
     return (
         // <!-- ========== FOOTER ========== -->
         <footer className="mt-20 w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
             {/*<!-- Grid */}
             <div className="grid grid-cols-3  md:grid-cols-3 lg:grid-cols-3 gap-x-20 gap-y-5 mb-10">
+                {/*<div className="col-span-full hidden lg:col-span-1 lg:block py-6">*/}
+                {/*    <img className='hidden dark:flex w-1/2 mx-auto' src="/storage/logo_dark.png" alt="logo"/>*/}
+                {/*    <img className='flex dark:hidden w-1/2 mx-auto' src="/storage/logo_light.png" alt="logo"/>*/}
                 <div className="col-span-full  hidden lg:col-span-1 lg:block">
                     <img className='hidden dark:flex' src="/storage/logo_dark.png" alt="logo"/>
                     <img className='flex dark:hidden' src="/storage/logo_light.png" alt="logo"/>

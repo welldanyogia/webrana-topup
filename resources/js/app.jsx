@@ -92,11 +92,11 @@ observer.observe(document.body, {
     characterData: true,
 });
 
-const appName = import.meta.env.VITE_APP_NAME || 'Webrana';
+const appName = import.meta.env.APP_NAME || 'Webrana';
 
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} - ${appName} | Topup Game Terpercaya`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`,  import.meta.glob('./Pages/**/*.jsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);

@@ -61,7 +61,26 @@ export default function DetailBrand() {
             try {
                 await router.post(`/admin/product/${productId}/destroy`, {
                     onSuccess: () => {
-                        Inertia.reload({ only: ['flash'] });
+                        Inertia.reload({only: ['flash']});
+                        // Inertia.flash('success', 'Product deleted successfully!');
+                    },
+                    onError: (error) => {
+                        console.error('Error deleting product:', error);
+                        // Inertia.flash('error', 'Failed to delete product.');
+                    }
+                });
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                Inertia.flash('error', 'Failed to delete product.');
+            }
+        }
+    };
+    const handleDeleteImage = async (brandId) => {
+        if (confirm("Are you sure you want to delete this image?")) {
+            try {
+                await router.delete(`/admin/brand/${brandId}/delete-image`, {
+                    onSuccess: () => {
+                        Inertia.reload({only: ['flash']});
                         // Inertia.flash('success', 'Product deleted successfully!');
                     },
                     onError: (error) => {
@@ -261,10 +280,10 @@ export default function DetailBrand() {
 
     function handleSave(e, product) {
         e.preventDefault()
-        router.post(`/admin/product/${product.id}`,{
+        router.post(`/admin/product/${product.id}`, {
             product_name: productNames[product.id],
-            price:product.price,
-            product_status:product.product_status,
+            price: product.price,
+            product_status: product.product_status,
             selling_price: productSellingPrices[product.id]
         })
     }
@@ -347,10 +366,23 @@ export default function DetailBrand() {
                                             <label htmlFor="image_url"
                                                    className="block text-sm font-medium mb-2 dark:text-white">Brand
                                                 Image</label>
+                                            {
+                                                brand.image_url && (
+                                                    <div className='flex'>
+                                                        <img src={`/${brand.image_url}`} alt="Banner" className="h-20"/>
+                                                        <button
+                                                            onClick={() => handleDeleteImage(brand.brand_id)}
+                                                            className="ml-4 py-2 p px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 disabled:pointer-events-none"
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                )
+                                            }
                                             <input type="file" id='image_url'
                                                    accept="image/*"
                                                    onChange={handleBrandImageChange}
-                                                   className="block w-full text-sm text-gray-500
+                                                   className="block w-full mt-2 text-sm text-gray-500
                                                     file:me-4 file:py-2 file:px-4
                                                     file:rounded-lg file:border-0
                                                     file:text-sm file:font-semibold
@@ -685,7 +717,7 @@ export default function DetailBrand() {
             {/*                        <option value='digiflazz'>Digiflazz</option>*/}
             {/*                        <option value='manual'>Manual</option>*/}
             {/*                    </select>*/}
-                                {/*// <!-- End Select -->*/}
+            {/*// <!-- End Select -->*/}
             {/*                </div>*/}
             {/*                <div className="max-w-sm">*/}
             {/*                    <label htmlFor="brand_status"*/}
@@ -710,7 +742,7 @@ export default function DetailBrand() {
             {/*                        <option value={1}>Active</option>*/}
             {/*                        <option value={0}>NonActive</option>*/}
             {/*                    </select>*/}
-                                {/*// <!-- End Select -->*/}
+            {/*// <!-- End Select -->*/}
             {/*                </div>*/}
             {/*                <div>*/}
             {/*                    <button type="button"*/}
@@ -989,9 +1021,9 @@ export default function DetailBrand() {
                                                 </div>
                                                 <div>
                                                     <button type="button"
-                                                        onClick={(e) => {
-                                                            handleDelete(product.id)
-                                                        }}
+                                                            onClick={(e) => {
+                                                                handleDelete(product.id)
+                                                            }}
                                                             className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
                                                         Delete
                                                     </button>

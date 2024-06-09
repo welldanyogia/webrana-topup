@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
@@ -65,6 +66,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/admin/store-logo-dark', [SettingController::class, 'storeLogoDark'])->name('store.logoDark');
         Route::post('/admin/store-favicon', [SettingController::class, 'storeFavicon'])->name('store.favicon');
         Route::get('/admin/users',[\App\Http\Controllers\Admin\UsersController::class,'index']);
+        Route::delete('/admin/brand/{id}/delete-image', [BrandController::class, 'deleteImageUrl'])->name('admin.brand.deleteImageUrl');
 
     });
     Route::group(['middleware' => ['checkRole:guest,user']], function() {

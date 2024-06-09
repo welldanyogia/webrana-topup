@@ -287,7 +287,7 @@ export default function WhatsappGateway(props) {
                                                     handleToken(e, data.token)
                                                 }}
                                                 data-hs-overlay="#hs-slide-down-animation-modal"
-                                                className='bg-green-600 flex gap-2 items-center p-2 rounded-xl hover:bg-green-400 text-sm'>
+                                                className='bg-green-500 flex gap-2 text-white items-center p-2 rounded-xl hover:bg-green-400 text-sm'>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                  strokeWidth={1.5} stroke="currentColor" className="size-4">
                                                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -300,7 +300,7 @@ export default function WhatsappGateway(props) {
                                                 onClick={(e) => {
                                                     disconnectDevice(data.token)
                                                 }}
-                                                className='bg-red-600 flex gap-2 items-center p-2 rounded-xl hover:bg-red-400 text-sm'>
+                                                className='bg-red-600 flex text-white gap-2 items-center p-2 rounded-xl hover:bg-red-400 text-sm'>
                                             <VscDebugDisconnect />
 
                                             Disconnect

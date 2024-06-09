@@ -8,6 +8,7 @@ function BrandSection() {
     const [activeTab, setActiveTab] = useState(null);
     const [hoveredButton, setHoveredButton] = useState(null);
     // const history = useHistory();
+    console.log(categories)
 
     useEffect(() => {
         if (categories && categories.length > 0) {
@@ -15,7 +16,12 @@ function BrandSection() {
         }
     }, [categories]);
 
-    const filteredCategories = categories.filter(tab => tab.brands.length > 0);
+    const filteredCategories = categories
+        // Filter categories based on category_status and brands with brand_status 1
+        .filter(tab =>
+            tab.category_status === 1 && // Filter categories with category_status 1
+            tab.brands.some(brand => brand.brand_status === 1) // Filter categories with at least one brand with brand_status 1
+        );
     return (
         <div className="w-full rounded-lg shadow-md">
             <div className="border-b border-primary-200 px-4 dark:border-neutral-700">
@@ -46,37 +52,34 @@ function BrandSection() {
                         role="tabpanel"
                         aria-labelledby={`basic-tabs-item-${tab.category_id}`}
                     >
-                        {tab.brands.map((card, index) => (
-                            <div>
-                            <Link
-                                // onClick={() => history.push('/product')}
-
-                                key={card.brand_id}
-                                className="relative shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-secondary-500"
-                                href={`/brand/${card.brand_id}`}
-                                style={{backdropFilter: 'blur(10px)'}} // Efek blur pada latar belakang
-                                onMouseEnter={() => setHoveredButton(index)}
-                                onMouseLeave={() => setHoveredButton(null)}
-                            >
-                                <img className="rounded-xl"
-                                     src={card.image_url ? card.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
-                                     alt={card.title}/>
-                                {hoveredButton === index && (
-                                    <div
-                                        className="absolute flex-col gap-4 rounded-xl border-secondary-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
-                                        {/*<ApplicationLogo className="w-16 h-16" /> /!* Icon di tengah saat dihover *!/*/}
-                                        <img className='hidden dark:flex w-24 max-sm:w-14' src="/storage/logo_dark.png"
-                                             alt="logo"/>
-                                        <img className='flex dark:hidden w-24 max-sm:w-14' src="/storage/logo_dark.png"
-                                             alt="logo"/>
-                                        <h2 className='text-black dark:text-white text-center font-bold'>{card.brand_name}</h2>
-                                    </div>
-                                )}
-                                {/*<h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-neutral-400 text-center`}>{card.brand_name}</h1>*/}
-                            </Link>
-                            <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-white text-center`}>{card.brand_name}</h1>
-                            </div>
-                ))}
+                        {tab.brands
+                            .filter(card => card.brand_status === 1) // Filter hanya brand dengan brand_status 1
+                            .map((card, index) => (
+                                <div>
+                                    <Link
+                                        key={card.brand_id}
+                                        className="relative shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-secondary-500"
+                                        href={`/brand/${card.brand_id}`}
+                                        style={{backdropFilter: 'blur(10px)'}} // Efek blur pada latar belakang
+                                        onMouseEnter={() => setHoveredButton(index)}
+                                        onMouseLeave={() => setHoveredButton(null)}
+                                    >
+                                        <img
+                                            className="rounded-xl"
+                                            src={card.image_url ? card.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
+                                            alt={card.title}
+                                        />
+                                        {hoveredButton === index && (
+                                            <div className="absolute flex-col gap-4 rounded-xl border-secondary-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
+                                                <img className='hidden dark:flex w-24 max-sm:w-10' src="/storage/logo_dark.png" alt="logo"/>
+                                                <img className='flex dark:hidden w-24 max-sm:w-10' src="/storage/logo_dark.png" alt="logo"/>
+                                                <h2 className='text-black dark:text-white text-center font-bold max-sm:hidden'>{card.brand_name}</h2>
+                                            </div>
+                                        )}
+                                    </Link>
+                                    <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-white text-center max-sm:hidden`}>{card.brand_name}</h1>
+                                </div>
+                            ))}
             </div>
             ))}
         </div>

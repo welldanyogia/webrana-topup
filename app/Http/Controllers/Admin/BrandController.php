@@ -9,6 +9,7 @@ use App\Models\FormInputBrand;
 use App\Models\OptionSelectInput;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -191,5 +192,22 @@ class BrandController extends Controller
         }catch (\Exception $exception){
             return redirect()->back()->with(['flash'=>['message' => $exception->getMessage()]]);
         }
+    }
+    public function deleteImageUrl(string $id)
+    {
+        // Temukan Brand berdasarkan ID
+        $brand = Brand::findOrFail($id);
+
+        // Hapus file gambar dari storage jika ada
+        if ($brand->image_url && Storage::exists($brand->image_url)) {
+            Storage::delete($brand->image_url);
+        }
+
+        // Hapus URL gambar dari kolom image_url
+        $brand->image_url = null;
+        $brand->save();
+
+        // Redirect back dengan flash message sukses
+        return redirect()->back()->with(['flash' => ['success' => 'Image URL deleted successfully']]);
     }
 }

@@ -5,6 +5,7 @@ import React from "react";
 import Breadcrumb from "@/Components/BreadCrumb.jsx";
 import DigiflazzConfigurationAlert from "@/Components/DigiflazzConfigurationAlert.jsx";
 import PaymentGatewayConfigurationAlert from "@/Components/PaymentGatewayConfigurationAlert.jsx";
+import WhatsappGatewayConfigurationAlert from "@/Components/WhatsappGatewayConfigurationAlert.jsx";
 
 export default function AuthenticatedAdmin({auth, user, digi_auths,fonntes,tripays, children}) {
     return (
@@ -44,7 +45,7 @@ export default function AuthenticatedAdmin({auth, user, digi_auths,fonntes,tripa
                         }
                         {
                             fonntes === null && (
-                                <PaymentGatewayConfigurationAlert/>
+                                <WhatsappGatewayConfigurationAlert/>
                             )
                         }
                         {

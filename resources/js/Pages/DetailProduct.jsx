@@ -32,6 +32,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     const [username, setUsername] = useState("")
     const [isAlert, setIsAlert] = useState(false)
     const [message,setMessage] = useState("")
+    const appName = import.meta.env.APP_NAME || 'Webrana';
+
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
 
@@ -175,7 +177,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
             .map(productType => (
                 <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 max-sm:grid-cols-2 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
                     {products
-                        .filter(product => product.type_id === productType.type_id)
+                        .filter(product => product.type_id === productType.type_id && product.product_status ===1)
                         .map(product => (
                             <button
                                 className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'}`}
@@ -202,7 +204,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     const renderUniqueTypeButtons = (products) => {
         const uniqueTypes = {};
         return products
-            .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
+            .filter(product => product && !uniqueTypes[product.type_id]&& product.product_status===1 && (uniqueTypes[product.type_id] = true))
             .map(product => (
                 <button
                     type="button"
@@ -241,7 +243,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-primary-200 dark:bg-primary-dark-800 rounded-lg shadow-md shadow-secondary-400">
                                     <div className="flex flex-row gap-6 md:grid max-sm:grid">
                                         <img className="rounded-xl"
-                                             src={brand.image_url ? brand.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
+                                             src={brand.image_url ? `/${brand.image_url}` : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
                                              alt={brand.brand_name}/>
                                         <div className="text-xl dark:text-white font-bold items-center h-auto">
                                             <h1>{brand.brand_name}</h1>
@@ -367,23 +369,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         </div>
                                     </div>
                                     <div className="text-sm dark:text-white space-y-2">
-                                        <h4 className="text-sm font-bold">Top Up Diamond Mobile Legends Hanya Dalam
+                                        <h4 className="text-sm font-bold">Order Produk {brand.brand_name} di {appName} Hanya Dalam
                                             Hitungan Detik!</h4>
-                                        <ul className="list-decimal list-inside">
-                                            <li>
-                                                Cukup Masukan User ID dan Zone ID MLBB Anda.
-                                            </li>
-                                            <li>
-                                                Pilih Jumlah Diamond Yang Anda inginkan.
-                                            </li>
-                                            <li>
-                                                Pilih Pembayaran Yang Anda Gunakan Dan Selesaikan Pembayaran.
-                                            </li>
-                                            <li>
-                                                Dan Diamond Akan Secara Langsung Ditambahkan Ke Akun Mobile Legends
-                                                Anda.
-                                            </li>
-                                        </ul>
+                                        <p className="mt-3 text-sm font-sans text-primary-900 dark:text-neutral-100">{appName} adalah
+                                            platform digital yang menyediakan berbagai produk digital seperti game,
+                                            pulsa, paket data, dan e-money. Kami menawarkan layanan cepat, mudah, dan
+                                            aman untuk memenuhi
+                                            kebutuhan digital Anda.</p>
                                     </div>
                                 </div>
                             </div>
@@ -605,6 +597,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         </div>
                                         <button type="button"
                                                 onClick={handleConfirm}
+                                                disabled={!phone || !selectedProduct || !selectedPayment || !values}
                                                 data-hs-overlay={`#hs-vertically-centered-modal-order-confirmation`}
                                                 className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">
                                             Konfirmasi Pesanan

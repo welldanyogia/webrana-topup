@@ -47,7 +47,7 @@ export default function NavbarAdmin({user}){
                                     className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 dark:bg-neutral-900 dark:border dark:border-neutral-700"
                                     aria-labelledby="hs-dropdown-with-header">
                                     <div className="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg dark:bg-neutral-800">
-                                        <p className="text-sm text-gray-500 dark:text-neutral-400">Signed in as</p>
+                                        <p className="text-sm text-gray-500 dark:text-neutral-400">Signed in as <b>{user?.name}</b></p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-neutral-300">{user?.email}</p>
                                     </div>
                                     <div className="mt-2 py-2 first:pt-0 last:pb-0">
