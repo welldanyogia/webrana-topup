@@ -201,7 +201,7 @@ class TransactionController extends Controller
                     'buyer_sku_code' => $responseData['data']['order_items'][0]['sku'],
                     'product_brand' => $product_brand,
                     'product_name' => $responseData['data']['order_items'][0]['name'],
-//                    'product_price' => $responseData['data']['order_items'][0]['price'],
+                    'product_price' => $responseData['data']['order_items'][0]['price'],
                     'amount' => $responseData['data']['amount'],
                     'fee' => $responseData['data']['total_fee'],
                     'status' => $status,
