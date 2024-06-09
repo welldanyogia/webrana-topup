@@ -119,7 +119,7 @@ class DigiflazzWebhookController extends Controller
         $appNameParts = explode(' |', $appNameFull);
         $appName = $appNameParts[0];
 
-        $message = "Halo {$appName}, ada orderan nih,\n\n";
+        $message = "Halo {$appName},\n\n";
         $message .= "{$messageError}";
         $message .= "Terima kasih,\n\n";
 

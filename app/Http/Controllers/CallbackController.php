@@ -255,7 +255,9 @@ class CallbackController extends Controller
         $message .= "ID Transaksi: *{$transaction->trx_id}*\n";
         $message .= "Status Transaksi: *".ucwords($transaction->status)."*\n";
         $message .= "\n\nDetail Order " .strtoupper($transaction->product_brand). " :\n";
-        $message .= "{$formattedDataTrx}\n\n";
+        if ($formattedDataTrx) {
+            $message .= "{$formattedDataTrx}";
+        }
         $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";
         $message .= "Merek Produk: *".strtoupper($transaction->product_brand)."*\n";
         $message .= "Harga Produk: *Rp" . number_format($transaction->product_price, 0, ',', '.') . "*\n";
