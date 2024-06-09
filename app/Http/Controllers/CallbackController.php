@@ -241,12 +241,13 @@ class CallbackController extends Controller
         $expiredTime = Carbon::parse($transaction->expired_time);
         $formattedExpiredTime = $expiredTime->translatedFormat('d F Y, H:i:s');
 
-        $dataTrxArray = json_decode($transaction->data_trx, true);
-
-        // Format the decoded JSON data into a readable string
         $formattedDataTrx = '';
-        foreach ($dataTrxArray as $key => $value) {
-            $formattedDataTrx .= ucwords(str_replace('_', ' ', $key)) . ": " . $value . "\n";
+        if (!is_null($transaction->data_trx)) {
+            $dataTrxArray = json_decode($transaction->data_trx, true) ?? [];
+            // Format the decoded JSON data into a readable string
+            foreach ($dataTrxArray as $key => $value) {
+                $formattedDataTrx .= ucwords(str_replace('_', ' ', $key)) . ": " . $value . "\n";
+            }
         }
 
         $message = "Halo {$transaction->user_name},\n\n";
@@ -254,8 +255,8 @@ class CallbackController extends Controller
         $message .= "Berikut adalah detail transaksi Anda:\n\n";
         $message .= "ID Transaksi: *{$transaction->trx_id}*\n";
         $message .= "Status Transaksi: *".ucwords($transaction->status)."*\n";
-        $message .= "\n\nDetail Order " .strtoupper($transaction->product_brand). " :\n";
         if ($formattedDataTrx) {
+        $message .= "\n\nDetail Order " .strtoupper($transaction->product_brand). " :\n";
             $message .= "{$formattedDataTrx}";
         }
         $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";

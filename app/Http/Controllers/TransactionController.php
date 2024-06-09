@@ -302,24 +302,24 @@ class TransactionController extends Controller
 //        $appUrl = "http://webranastore.com";
         $expiredTime = Carbon::parse($transaction->expired_time);
         $formattedExpiredTime = $expiredTime->translatedFormat('d F Y, H:i:s');
-        if ($transaction->data_trx !== null){
-        $dataTrxArray = json_decode($transaction->data_trx, true);
-            $formattedDataTrx = '';
+
+
+        $formattedDataTrx = '';
+        if (!is_null($transaction->data_trx)) {
+            $dataTrxArray = json_decode($transaction->data_trx, true) ?? [];
+            // Format the decoded JSON data into a readable string
             foreach ($dataTrxArray as $key => $value) {
                 $formattedDataTrx .= ucwords(str_replace('_', ' ', $key)) . ": " . $value . "\n";
             }
         }
 
-        // Format the decoded JSON data into a readable string
 
 
         $message = "Halo {$transaction->user_name},\n\n";
         $message .= "Terima kasih telah melakukan transaksi. Berikut adalah detail transaksi Anda:\n\n";
         $message .= "ID Transaksi: *{$transaction->trx_id}*\n";
         $message .= "Status Transaksi: *".ucwords($transaction->status)."*\n";
-        if ($formattedDataTrx) {
-            $message .= "{$formattedDataTrx}";
-        }
+        $message .= "{$formattedDataTrx}";
         if ($transaction->user_name) {
             $message .= "Username: *{$transaction->user_name}*\n";
         }
