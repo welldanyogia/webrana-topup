@@ -5,7 +5,6 @@ import {router} from "@inertiajs/react";
 
 function AddProduct({ brand, categories, handleReset,dataStore,setDataStore }) {
     const handleStoreValue = (e) => {
-        console.log(dataStore)
         const { id, value, type, checked } = e.target;
         setDataStore(prevState => ({
             ...prevState,
@@ -13,12 +12,8 @@ function AddProduct({ brand, categories, handleReset,dataStore,setDataStore }) {
         }));
     };
 
-    console.log(brand)
-    console.log(categories)
-
     const handleStore = async (event) => {
         event.preventDefault();
-        console.log(dataStore)
 
         try {
             router.post('/admin/store/product', dataStore, {

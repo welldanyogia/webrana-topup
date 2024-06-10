@@ -8,7 +8,7 @@ function BrandSection() {
     const [activeTab, setActiveTab] = useState(null);
     const [hoveredButton, setHoveredButton] = useState(null);
     // const history = useHistory();
-    console.log(categories)
+    (categories)
 
     useEffect(() => {
         if (categories && categories.length > 0) {

@@ -144,7 +144,7 @@ export default function DetailTransaction({auth, transaction,paymentInstruction,
                             </div>
 
                         </h1>
-                        <div className="grid grid-cols-2 max-sm:grid-cols-1 dark:border-white border-2 divide-x-2">
+                        <div className="grid grid-cols-2 max-sm:grid-cols-1 dark:border-white border-2 rounded-b-lg divide-x">
                         <div className="grid p-2">
                                 <div className="flex justify-between font-bold">
                                     <div className="flex">

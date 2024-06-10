@@ -19,7 +19,7 @@ export default function PaymentGateway(props) {
     const updateStatus = (gatewayId, status) => {
         Inertia.patch(`/payment-gateways/${gatewayId}/status`, { status }, {
             onSuccess: () => {
-                console.log('Payment gateway status updated successfully');
+                ('Payment gateway status updated successfully');
             },
             onError: (errors) => {
                 console.error('Failed to update payment gateway status:', errors);

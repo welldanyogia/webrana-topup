@@ -27,7 +27,6 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
         product_price:price,
         fee:fee
     }
-    console.log(transactionData)
 
 
     function handleSubmit(e) {
@@ -35,15 +34,6 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
         router.post('/pay', transactionData)
     }
 
-    // for (const [key, value] of Object.entries(transactionData)) {
-    //     if (key === 'email_customer') {
-    //         continue; // Skip the email_customer key
-    //     }
-    //     if (value === null || value === '') {
-    //         // alert(`Field ${key} tidak boleh kosong`);
-    //         return; // Stop further execution if any value is null or empty
-    //     }
-    // }
     return (
         <div id={`hs-vertically-centered-modal-order-confirmation`}
              className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">

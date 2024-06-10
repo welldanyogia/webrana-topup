@@ -22,7 +22,7 @@ export default function AddFormInputModal({brand, brandId}) {
         //     brand_id: brandId
         // })
         // if (response.success) {
-        //     console.log(response)
+        //     (response)
         // }
     }
 

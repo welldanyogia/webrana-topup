@@ -69,7 +69,7 @@ export default function Category() {
         })
     }
 
-    // console.log(flash)
+    // (flash)
     return (
         <AuthenticatedAdmin>
             Kategori

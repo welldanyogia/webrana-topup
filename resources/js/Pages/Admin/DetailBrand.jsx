@@ -140,7 +140,7 @@ export default function DetailBrand() {
         const value = e.target.value
 
         if (key === 'mass_profit_status') {
-            // console.log(e.target.checked)
+            // (e.target.checked)
             setValues({
                 ...values,
                 [key]: e.target.checked ? 1 : 0,
@@ -155,8 +155,8 @@ export default function DetailBrand() {
     }
 
 
-    // console.log(brand)
-    // console.log(brand.mass_profit_status === 1)
+    // (brand)
+    // (brand.mass_profit_status === 1)
     const handleEditClick = (product) => {
         setSelectedProduct(product);
     };
@@ -178,7 +178,7 @@ export default function DetailBrand() {
                     image_url: brand.image_url
                 });
 
-            // console.log('Response:', response.data);
+            // ('Response:', response.data);
             // setAlertMessage('Brand successfully saved.');
             // Handle success, e.g., show success message or redirect
         } catch (error) {
@@ -209,13 +209,13 @@ export default function DetailBrand() {
 
     function openAddModal() {
         setIsAddModalOpen(true)
-        // console.log('category : ' + isAddModalOpen)
+        // ('category : ' + isAddModalOpen)
     }
 
     // Function to close the modal
     function closeAddModal() {
         setIsAddModalOpen(false);
-        // console.log(isAddModalOpen)
+        // (isAddModalOpen)
     }
 
     function formatRupiah(number) {
@@ -268,7 +268,7 @@ export default function DetailBrand() {
 
     function handleCheckboxProductChange(e, product) {
         e.preventDefault()
-        console.log(product)
+        (product)
         setIsCheckboxChecked(e.target.checked);
         router.post(`/admin/product/${product.id}`, {
             product_name: product.product_name,

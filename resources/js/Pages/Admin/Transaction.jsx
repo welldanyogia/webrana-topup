@@ -7,7 +7,7 @@ import {router} from "@inertiajs/react";
 export default function Transaction({transactions, transactionsPaginate}) {
     const [keyword, setKeyword] = useState('');
 
-    // console.log(transactionsPaginate)
+    // (transactionsPaginate)
 
     const filteredTransactions = transactions && keyword.length > 0 ? transactions.filter(transaction => {
         // Memastikan setiap nilai yang akan diakses tidak null

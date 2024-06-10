@@ -52,7 +52,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
         ? `${formNames.slice(0, -1).join(', ')} & ${formNames[formNames.length - 1]}`
         : formNames[0] || '';
 
-    // console.log(formNamesString);
+    // (formNamesString);
     function formatRupiah(number) {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -183,7 +183,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     }
 
     const renderProductTabs = (products) => {
-        console.log(products)
+        (products)
         const uniqueTypes = {};
         return products
             .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
@@ -270,10 +270,12 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                             <div className='col-span-2 max-md:col-span-6'>
                                 <div
                                     className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-primary-200 dark:bg-primary-dark-800 rounded-lg shadow-md shadow-secondary-400">
-                                    <div className="flex flex-row gap-6 md:grid max-sm:grid">
-                                        <img className="rounded-xl"
+                                    <div className="flex flex-col gap-6 max-sm:grid">
+                                        <div>
+                                            <img className="rounded-xl"
                                              src={brand.image_url ? `/${brand.image_url}` : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
                                              alt={brand.brand_name}/>
+                                        </div>
                                         <div className="text-xl dark:text-white font-bold items-center h-auto">
                                             <h1>{brand.brand_name}</h1>
                                         </div>
@@ -607,10 +609,10 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                        className="block text-sm font-medium mb-2 dark:text-white">Nomor
                                                     Whatsapp</label>
                                                 <input type="number" id="input-wa" onChange={handlePhone}
-                                                       className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                       className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none peer py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-primary-dark-900 dark:border-primary-dark-700 dark:text-white dark:placeholder-white/50 dark:focus:ring-primary-dark-600"
                                                        placeholder="+628xxxxxxx"
                                                        aria-describedby="hs-input-helper-text"/>
-                                                <p className="mt-2 text-sm text-primary-500 dark:text-neutral-500"
+                                                <p className="mt-2 text-sm text-primary-500 dark:text-white"
                                                    id="hs-input-helper-text">Invoice akan kami kirimkan ke nomor
                                                     whatsapp.</p>
                                             </div>
@@ -619,10 +621,10 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                     <label htmlFor="with-corner-hint"
                                                            className="block text-sm font-medium mb-2 dark:text-white">Email</label>
                                                     <span
-                                                        className="block mb-2 text-sm text-primary-500 dark:text-neutral-500">Optional</span>
+                                                        className="block mb-2 text-sm text-primary-500 dark:text-white">Optional</span>
                                                 </div>
                                                 <input type="email" id="with-corner-hint" onChange={handleEmail}
-                                                       className="py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                       className="py-3 px-4 block w-full border-primary-200 rounded-lg text-sm focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-primary-dark-900 dark:border-primary-dark-700 dark:text-white dark:placeholder-white/50 dark:focus:ring-primary-dark-600"
                                                        placeholder="email@example.com"/>
                                             </div>
                                         </div>

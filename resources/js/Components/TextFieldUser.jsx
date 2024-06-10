@@ -1,7 +1,7 @@
 export default function TextFieldUser({form,handleChange}){
     return (
         <div className="relative">
-            <input type="text" id={`hs-floating-gray-input-${form.id}`} className="peer p-4 block w-full bg-gray-100 border-transparent rounded-lg text-sm placeholder:text-transparent focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-transparent dark:text-neutral-400 dark:focus:ring-neutral-600
+            <input type="text" id={`hs-floating-gray-input-${form.id}`} className="peer p-4 block w-full bg-gray-100 border-transparent rounded-lg text-sm placeholder:text-transparent focus:border-secondary-500 focus:ring-secondary-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-primary-dark-900 dark:border-transparent dark:text-white dark:focus:ring-primary-dark-600
                                                     focus:pt-6
                                                     focus:pb-2
                                                     [&:not(:placeholder-shown)]:pt-6

@@ -21,7 +21,7 @@ export default function Brand() {
         image_url: ""
     })
 
-    console.log(brands)
+    (brands)
 
     useEffect(() => {
         // Inisialisasi state dengan nama kategori dari props
@@ -30,7 +30,7 @@ export default function Brand() {
             initialBrandNames[brand.brand_id] = brand.brand_name;
         });
         setBrandNames(initialBrandNames);
-        console.log(brandNames)
+        (brandNames)
     }, [brands]);
 
     const handleInputChange = (e, brandId) => {
@@ -87,7 +87,7 @@ export default function Brand() {
                 processed_by: brand.processed_by,
                 image_url: ""
             });
-            // console.log('Response:', response);
+            // ('Response:', response);
         } catch (error) {
             // console.error('Error:', error);
         }

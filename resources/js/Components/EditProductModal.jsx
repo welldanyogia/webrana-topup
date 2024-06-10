@@ -35,7 +35,7 @@ export default function EditProductModal({product}) {
            // alert(data.message);
            // onClose();
        }catch (er){
-           // console.log(er)
+           // (er)
            // alert(er.message)
        }
     };

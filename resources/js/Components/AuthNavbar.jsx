@@ -4,7 +4,6 @@ import {useState} from "react";
 
 export default function AuthNavbar({user, auth}) {
     const [activePage, setActivePage] = useState('');
-    console.log(user)
     return (
         // ========== HEADER =========
         <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 py-7 max-sm:py-1 w-full">

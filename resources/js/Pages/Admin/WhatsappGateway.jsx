@@ -18,7 +18,7 @@ export default function WhatsappGateway(props) {
         status: false
     });
 
-    console.log(devices)
+    (devices)
     const disconnectDevice = async (tkn) => {
         try {
             const response = await axios.post('https://api.fonnte.com/disconnect', null, {
