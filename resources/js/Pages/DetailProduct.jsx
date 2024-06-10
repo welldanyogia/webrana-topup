@@ -75,6 +75,10 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
         // setPaymentPriceWithFee(paymentPrice + feeFlat + (paymentPrice*(feePercent/100)))
         return parseFloat(paymentPrice) + parseFloat(feeFlat) + parseFloat((paymentPrice*(feePercent/100)))
     }
+    function totalFee(paymentPrice,feeFlat,feePercent) {
+        // setPaymentPriceWithFee(paymentPrice + feeFlat + (paymentPrice*(feePercent/100)))
+        return parseFloat(feeFlat) + parseFloat((paymentPrice*(feePercent/100)))
+    }
     const handleToggle = (group) => {
         // e.preventDefault()
         setActiveGroup(activeGroup === group ? null : group);
@@ -551,14 +555,16 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                                     >
                                                                         {/*<input className="hidden" id="payment-method-name" value={channel.name} readOnly />*/}
                                                                         {/*<input className="hidden" id="payment-method-code" value={channel.code} readOnly />*/}
-                                                                        <div className="w-1/2">
+                                                                        <div className="w-full grid grid-cols-2">
                                                                             <img src={channel.icon_url}
                                                                                  alt={channel.name}/>
+                                                                            <span className='text-red-500 text-xs font-bold'>+Biaya Admin {formatRupiah(totalFee(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}</span>
                                                                         </div>
                                                                         <div>
                                                                             <p id="product-price"
                                                                                className="paymentMethod text-start max-sm:text-xs">
-                                                                                {formatRupiah(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}
+                                                                                {/*{formatRupiah(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}*/}
+                                                                                {formatRupiah(paymentPrice)}
                                                                             </p>
                                                                         </div>
                                                                         <div className="border-t-2">
