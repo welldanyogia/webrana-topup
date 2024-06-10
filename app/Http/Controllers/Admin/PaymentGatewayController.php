@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentGateway;
 use App\Models\Tripay;
 use App\Models\TripayPaymentChannel;
+use App\Models\Xendit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
@@ -31,9 +33,15 @@ class PaymentGatewayController extends Controller
     {
         $tripay = Tripay::latest()->first();
         $tripayPaymentChannel = TripayPaymentChannel::all();
-        return Inertia::render('Admin/PaymentGateway', [
+        $paymentGateways = PaymentGateway::all();
+        $ipAddress = $this->getServerIP();
+        $xendit = Xendit::latest()->first();
+        return Inertia::render('Admin/PaymentGateway/PaymentGateway', [
             'tripay' => $tripay,
             'tripayPaymentChannel' => $tripayPaymentChannel,
+            'paymentGateways' => $paymentGateways,
+            'ipAddress' => $ipAddress,
+            'xendit' => $xendit,
             'flash' => session('flash')
         ]);
     }
@@ -149,6 +157,37 @@ class PaymentGatewayController extends Controller
         } else {
             // Handle the case where the API request failed
             return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'Failed to fetch payment channels']]);
+        }
+    }
+
+    public function updateStatus(Request $request, $id): \Illuminate\Http\RedirectResponse
+    {
+        // Validate the request to ensure 'status' field is present
+        $request->validate([
+            'status' => 'required|boolean',
+        ]);
+
+        // Find the specified payment gateway by ID
+        $gateway = PaymentGateway::findOrFail($id);
+
+        if ($request->status) {
+            // If the new status is true, set all other gateways to false
+            PaymentGateway::where('payment_gateway_id', '!=', $id)->update(['payment_gateway_status' => false]);
+        }
+
+        // Update the status of the specified payment gateway
+        $gateway->payment_gateway_status = $request->status;
+        $gateway->save();
+
+        // Optionally, you can return a response or redirect
+        return redirect()->back()->with(['flash' => ['success' => true, 'message' => 'Payment gateway status updated successfully']]);
+    }
+
+    function getServerIP() {
+        if (isset($_SERVER['SERVER_ADDR'])) {
+            return $_SERVER['SERVER_ADDR'];
+        } else {
+            return gethostbyname(gethostname());
         }
     }
 

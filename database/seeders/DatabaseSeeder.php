@@ -15,22 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        $this->call([
+            PaymentGatewaySeeder::class,
+            UserSeeder::class,
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-        User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@admin.com',
-            'role' => 'admin',
-            'password' => Hash::make('12341234'),
-        ]);
-        User::factory()->create([
-            'name' => 'user',
-            'email' => 'user@user.com',
-            'role' => 'user',
-            'password' => Hash::make('12341234'),
-        ]);
     }
 }

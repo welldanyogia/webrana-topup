@@ -118,7 +118,7 @@ class DigiflazzController extends Controller
     private function storeProduct($item,$status)
     {
         $category = Category::firstOrCreate(
-            ['category_name' => $item['category']],
+            ['code' => $item['category']],
             [
                 'category_id' => Str::uuid(),
                 'category_name' => $item['category'],
@@ -129,7 +129,7 @@ class DigiflazzController extends Controller
         $categoryId = $category->category_id;
 
         $brand = Brand::firstOrCreate(
-            ['brand_name' => $item['brand']],
+            ['code' => $item['brand']],
             [
                 'brand_id' => Str::uuid(),
                 'brand_name' => $item['brand'],

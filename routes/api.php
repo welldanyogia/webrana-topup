@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\XenditController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ Route::post('/settings/app-name', [\App\Http\Controllers\WebIdentityController::
 Route::post('/brands/{id}',[BrandController::class,'update']);
 Route::get('/tripay/getpaymentmethod',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'paymentChannel'])->name('tripay.update.paymentChannel');
 Route::post('/addform',[\App\Http\Controllers\FormInputController::class,'store']);
+Route::get('/xendit/payment-methods', [XenditController::class, 'getAllPaymentMethods']);
 
 Route::post('/createTransaction',[\App\Http\Controllers\TransactionController::class,'createTransaction'])->name('tripay.create.transaction');
 Route::post('/checkusername',[\App\Http\Controllers\CheckUserNameController::class,'checkUserName']);

@@ -15,6 +15,7 @@ class PaymentMethod extends Model
 
     protected $fillable = ['payment_method_id','payment_method_name', 'payment_gateway_id','payment_method_status','payment_method_type'];
 
+
     public function category()
     {
         return $this->belongsTo(Category::class);

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PaymentGatewayController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
@@ -36,6 +37,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin',[\App\Http\Controllers\Admin\DashboardController::class,'index']);
         Route::get('/admin/digiflazz',[\App\Http\Controllers\Admin\DigiflazzController::class,'index']);
         Route::get('/admin/paymentgateway',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'index']);
+        Route::patch('/payment-gateways/{id}/status', [PaymentGatewayController::class, 'updateStatus'])->name('payment-gateways.updateStatus');
+        Route::post('/admin/paymentgateway/xendit/store',[\App\Http\Controllers\Admin\XenditController::class,'store']);
         Route::post('/admin/digiflazz/store',[\App\Http\Controllers\Admin\DigiflazzController::class,'store']);
         Route::post('/admin/paymentgateway/store',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'store']);
         Route::post('/admin/digiflazz/fetch',[\App\Http\Controllers\Admin\DigiflazzController::class,'fetchAndStorePriceList']);

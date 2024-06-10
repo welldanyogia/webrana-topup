@@ -44,6 +44,15 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
         }, {});
         setValues(initialValues);
     }, [formInputs]);
+
+
+    const formNames = formInputs.map(form => form.name);
+
+    const formNamesString = formNames.length > 1
+        ? `${formNames.slice(0, -1).join(', ')} & ${formNames[formNames.length - 1]}`
+        : formNames[0] || '';
+
+    // console.log(formNamesString);
     function formatRupiah(number) {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -177,7 +186,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
             .map(productType => (
                 <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 max-sm:grid-cols-2 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
                     {products
-                        .filter(product => product.type_id === productType.type_id && product.product_status ===1)
+                        .filter(product => product.type_id === productType.type_id && product.product_status ===1 && product.selling_price !== 0)
                         .map(product => (
                             <button
                                 className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'}`}
@@ -386,13 +395,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">1
                                         </div>
-                                        <div className="dark:text-white font-bold text-center text-sm">Masukkan UserID
+                                        <div className="dark:text-white font-bold text-center text-sm">Masukkan {formNamesString}
                                         </div>
                                     </div>
                                     <div className="text-xs text-start my-4 dark:text-white mx-auto">
-                                        Silahkan Masukkan User ID & Server Anda Dan Pastikan Benar.
+                                        Silahkan Masukkan {formNamesString} Anda Dan Pastikan Benar.
                                     </div>
-                                    <div className="grid grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-3 gap-4 max-sm:grid-cols-1">
                                         {
                                             formInputs && formInputs.map((form) => {
                                                 if (form.type === 'text') {
