@@ -187,14 +187,30 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                 <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 max-sm:grid-cols-2 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
                     {products
                         .filter(product => product.type_id === productType.type_id && product.product_status ===1 && product.selling_price !== 0)
-                        .map(product => (
+                        .map(product => {
+                            let productName = product.product_name;
+                            if (productName.includes('- ')) {
+                                productName = productName.split('- ')[1];
+                            }
+                            // else if (productName.includes(product.brand_name)) {
+                            //     const brandNameIndex = productName.indexOf(product.brand_name);
+                            //     productName = productName.slice(brandNameIndex + product.brand_name.length).trim();
+                            // }
+                            // else if (productName.includes(brand.brand_name)) {
+                            //     const brandNamePattern = new RegExp(`\\b${brand.brand_name}\\b`);
+                            //     const matchIndex = productName.search(brandNamePattern);
+                            //     if (matchIndex !== -1) {
+                            //         productName = productName.slice(matchIndex + brand.brand_name.length).trim();
+                            //     }
+                            // }
+                            return (
                             <button
                                 className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'}`}
                                 key={product.id}
                                 onClick={(e) => handleProductButton(e,product)}
                             >
                                 <div className='flex flex-col max-sm:text-xs text-start'>
-                                    <div className='font-semibold'>{product.product_name}</div>
+                                    <div className='font-semibold'>{productName}</div>
                                     <div className='font-bold'>{formatRupiah(product.selling_price)}</div>
                                 </div>
                                 {selectedProduct === product.id ? <span
@@ -204,7 +220,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     </span> : ''}
 
                             </button>
-                        ))
+                        )})
                     }
                 </div>
             ));

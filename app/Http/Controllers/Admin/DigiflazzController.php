@@ -86,36 +86,40 @@ class DigiflazzController extends Controller
             // Mendapatkan data dari response
             $priceList = $response->json()['data'];
 
+            // Ambil semua produk yang ada di database sebelum memproses response
+            $existingProducts = Product::pluck('buyer_sku_code')->all();
+
             // Menyimpan data brand, category, dan type ke dalam database
             $products = [];
             foreach ($priceList as $item) {
                 $status = $item['seller_product_status'] && $item['buyer_product_status'];
                 // Menyimpan hanya jika seller_product_status dan buyer_product_status bernilai true
                 if ($status) {
-                    // Lakukan penyimpanan data produk
-//                    $this->storeProduct(['product_status'=> $status]);
-                    $this->storeProduct($item,$status);
+                    $this->storeProduct($item, $status);
                 } else {
                     // Jika salah satu status bernilai false, cek apakah data sudah tersimpan sebelumnya
-                    $existingProduct = Product::where('product_name', $item['product_name'])->first();
+                    $existingProduct = Product::where('buyer_sku_code', $item['buyer_sku_code'])->first();
                     if ($existingProduct) {
                         // Jika sudah tersimpan, hapus data atau ubah status produk menjadi false
-//                        $existingProduct->delete();
-                        // atau
-                        $this->storeProduct($item,$status);
-//                        $existingProduct->update(['product_status' => false]);
+                        $this->storeProduct($item, $status);
                     }
                 }
+
+                // Simpan SKU yang diproses ke dalam array
+                $products[] = $item['buyer_sku_code'];
             }
 
-//            return response()->json($priceList);
-            return redirect()->back()->with(['flash'=>['success' =>'Price list fetched and stored successfully.']]);
+            // Cari produk yang ada di database tapi tidak ada di response dan hapus
+            $productsToDelete = array_diff($existingProducts, $products);
+            Product::whereIn('buyer_sku_code', $productsToDelete)->delete();
+
+            return redirect()->back()->with(['flash' => ['success' => 'Price list fetched and stored successfully.']]);
         } else {
-            return redirect()->back()->with(['flash'=>['error'=>'Failed to fetch price list.']]);
+            return redirect()->back()->with(['flash' => ['error' => 'Failed to fetch price list.']]);
         }
     }
 
-    private function storeProduct($item,$status)
+    private function storeProduct($item, $status)
     {
         $category = Category::firstOrCreate(
             ['code' => $item['category']],
@@ -142,8 +146,8 @@ class DigiflazzController extends Controller
 
         $brandId = $brand->brand_id;
         $selling_price = 0;
-        if ($brand->mass_profit_status === 1){
-            $selling_price = $item['price']+($item['price']*($brand->mass_profit/100));
+        if ($brand->mass_profit_status === 1) {
+            $selling_price = $item['price'] + ($item['price'] * ($brand->mass_profit / 100));
         }
 
         $type = Type::firstOrCreate(
@@ -151,7 +155,7 @@ class DigiflazzController extends Controller
             [
                 'type_id' => Str::uuid(),
                 'type_name' => $item['type'],
-                'type_status' => true
+                'type_status' => true,
             ]
         );
         $typeId = $type->type_id;
@@ -179,6 +183,7 @@ class DigiflazzController extends Controller
             ]
         );
     }
+
     function getServerIP() {
         if (isset($_SERVER['SERVER_ADDR'])) {
             return $_SERVER['SERVER_ADDR'];
