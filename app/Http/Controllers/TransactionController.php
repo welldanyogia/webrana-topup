@@ -149,6 +149,7 @@ class TransactionController extends Controller
                 'amount' => $amount,
                 'customer_name' => $customer_name,
                 'customer_email' => $email_customer,
+                'customer_phone' => $phone_number,
                 'order_items' => [
                     [
                         'sku' => $product_code,
