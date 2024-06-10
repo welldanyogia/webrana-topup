@@ -122,6 +122,7 @@ class DigiflazzController extends Controller
             [
                 'category_id' => Str::uuid(),
                 'category_name' => $item['category'],
+                'code' => $item['category'],
                 'category_status' => true,
             ]
         );
@@ -133,6 +134,7 @@ class DigiflazzController extends Controller
             [
                 'brand_id' => Str::uuid(),
                 'brand_name' => $item['brand'],
+                'code' => $item['brand'],
                 'brand_status' => true,
                 'category_id' => $categoryId,
             ]
@@ -176,21 +178,6 @@ class DigiflazzController extends Controller
                 'desc' => $item['desc'],
             ]
         );
-    }
-    function getClientIP() {
-        // Check for shared Internet connections
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        }
-        // Check for IPs passing through proxies
-        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        // Otherwise, use the remote address
-        else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        return $ip;
     }
     function getServerIP() {
         if (isset($_SERVER['SERVER_ADDR'])) {
