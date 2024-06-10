@@ -84,13 +84,7 @@ class PaymentGatewayController extends Controller
 
         // Check if the tripay entry is found
         if (!$tripay) {
-            return response()->json([
-                'success' => true,
-                'message' => 'API key not found',
-                'api_key' => $tripay->api_key,
-//                'data' => $paymentChannels
-            ]);
-//            return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'API key not found']]);
+            return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'API key not found']]);
         }
 
         // Make the API request with the Authorization header
@@ -141,33 +135,20 @@ class PaymentGatewayController extends Controller
                 // Mark inactive records that are not in the API response
                 TripayPaymentChannel::whereNotIn('code', $receivedCodes)->update(['active' => false]);
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Payment channels fetched and saved successfully',
-                    'api_key' => $tripay->api_key,
-                    'data' => $paymentChannels
-                ]);
-//                return redirect()->back()->with(['flash'=>['success' => true,'message' => 'Payment channels fetched and saved successfully']]);
+//                return response()->json([
+//                    'success' => true,
+//                    'message' => 'Payment channels fetched and saved successfully',
+//                    'api_key' => $tripay->api_key,
+//                    'data' => $paymentChannels
+//                ]);
+                return redirect()->back()->with(['flash'=>['success' => true,'message' => 'Payment channels fetched and saved successfully']]);
             } else {
                 // Handle the case where the expected data structure is not found
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unexpected response structure',
-                    'api_key' => $tripay->api_key,
-//                    'data' => $paymentChannels
-                ]);
-//                return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'Unexpected response structure']]);
+                return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'Unexpected response structure']]);
             }
         } else {
             // Handle the case where the API request failed
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch payment channels',
-                'api_key' => $tripay->api_key,
-                $response
-//                    'data' => $paymentChannels
-            ]);
-//            return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'Failed to fetch payment channels']]);
+            return redirect()->back()->with(['flash' => ['success' => false, 'message' => 'Failed to fetch payment channels']]);
         }
     }
 
