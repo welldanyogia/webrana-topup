@@ -34,6 +34,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     const [message,setMessage] = useState("")
     const appName = import.meta.env.APP_NAME || 'Webrana';
 
+    console.log(sortedGroupedChannels)
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
 
@@ -170,7 +171,6 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     }
 
     const renderProductTabs = (products) => {
-        console.log(products)
         const uniqueTypes = {};
         return products
             .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
@@ -511,11 +511,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                                 >
                                                                     <button
                                                                         type="button"
+                                                                        disabled={paymentPrice > channel.maximum_fee || paymentPrice < channel.minimum_fee}
                                                                         className="payment-btn text-neutral-800 relative grid gap-2 p-4 hover:text-white border-2 rounded-xl w-full h-full"
-                                                                        // data-fee-flat={channel.total_fee_flat}
-                                                                        // data-fee-percent={channel.total_fee_percent}
-                                                                        // data-payment-method-name={channel.name}
-                                                                        // data-payment-method-type={channel.code}
                                                                         onClick={(e) => {
                                                                             e.preventDefault()
                                                                             setSelectedPayment(channel.id)
@@ -524,8 +521,6 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                                             setFee(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))
                                                                         }}
                                                                     >
-                                                                        {/*<input className="hidden" id="payment-method-name" value={channel.name} readOnly />*/}
-                                                                        {/*<input className="hidden" id="payment-method-code" value={channel.code} readOnly />*/}
                                                                         <div className="w-1/2">
                                                                             <img src={channel.icon_url}
                                                                                  alt={channel.name}/>
