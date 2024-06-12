@@ -2,7 +2,8 @@ import {router} from "@inertiajs/react";
 import {useNavigate} from "react-router-dom";
 
 export default function OrderConfirmationModal({formInputs,values,product,brand,price,email,phoneNumber,
-                                                   paymentMethod,paymentMethodCode,productCode,fee,username}){
+                                                   paymentMethod,paymentMethodCode,productCode,fee,username,
+                                               unique_code,bankID}){
 
     const concatenatedValues = Object.values(values).join('');
 
@@ -17,6 +18,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
         values:values,
         user_id: concatenatedValues,
         price:price,
+        unique_code:unique_code,
         method_code:paymentMethodCode,
         email_customer:email,
         phone_number:phoneNumber,
@@ -25,7 +27,8 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
         product_name:product,
         product_brand:brand,
         product_price:price,
-        fee:fee
+        fee:fee,
+        bankID:bankID
     }
 
 
@@ -79,10 +82,6 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                             <div className='text-start'>{product}</div>
                         </div>
                         <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
-                            <div className='text-start'>Harga</div>
-                            <div className='text-start'>{formatRupiah(price)}</div>
-                        </div>
-                        <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
                             <div className='text-start'>Nomor Whatsapp</div>
                             <div className='text-start'>{phoneNumber}</div>
                         </div>
@@ -95,6 +94,27 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                                 </div>
                             )
                         }
+                        <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
+                            <div className='text-start'>Harga</div>
+                            <div className='text-start'>{formatRupiah(price)}</div>
+                        </div>
+                        {
+                           unique_code !== null && (
+                                <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
+                                    <div className='text-start'>Kode Unik</div>
+                                    <div className='text-start'>{unique_code}</div>
+                                </div>
+                            )
+                        }
+                        {
+                            unique_code !== null && (
+                                <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
+                                    <div className='text-start'>Total</div>
+                                    <div className='text-start'>{formatRupiah(price+unique_code)}</div>
+                                </div>
+                            )
+                        }
+
                         <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
                             <div className='text-start'>Metode Pembayaran</div>
                             <div className='text-start'>{paymentMethod}</div>

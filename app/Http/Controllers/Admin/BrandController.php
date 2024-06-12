@@ -134,7 +134,7 @@ class BrandController extends Controller
             if ($brand->mass_profit_status == 1) {
                 $products = Product::where('brand_id', $brand->brand_id)->get();
                 foreach ($products as $product) {
-                    $product->selling_price = $product->price + ($product->price * ($brand->mass_profit / 100));
+                    $product->selling_price = intval($product->price + ($product->price * ($brand->mass_profit / 100)));
                     $product->save();
                 }
             }

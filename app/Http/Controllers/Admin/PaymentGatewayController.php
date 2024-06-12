@@ -191,4 +191,9 @@ class PaymentGatewayController extends Controller
         }
     }
 
+    public function registerTripay()
+    {
+        return redirect()->away('https://tripay.co.id/?ref=TP1084');
+    }
+
 }

@@ -10,6 +10,13 @@ export default function PaymentInstruction({paymentInstruction, transaction}) {
         return text.replace(/{{pay_code}}/g, noVa);
     };
 
+    let payCode = ''
+    if (transaction.no_rekening !== null){
+        payCode = transaction.no_rekening
+    }else if (transaction.no_va !== null){
+        payCode = transaction.no_va
+    }
+
     // Toggle accordion open/close
     const toggleAccordion = (index) => {
         setOpenAccordionIndex(openAccordionIndex === index ? null : index);
@@ -49,21 +56,6 @@ export default function PaymentInstruction({paymentInstruction, transaction}) {
                                 </svg>
                             )
                         }
-                        {/*<svg*/}
-                        {/*    className={`hs-accordion-active:${openAccordionIndex !== index ? 'block' : 'hidden'} size-4`}*/}
-                        {/*    xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
-                        {/*    viewBox="0 0 24 24"*/}
-                        {/*    fill="none" stroke="red" strokeWidth="2" strokeLinecap="round"*/}
-                        {/*    strokeLinejoin="round">*/}
-                        {/*    <path d="m18 15-6-6-6 6"></path>*/}
-                        {/*</svg>*/}
-                        {/*<svg className={`hs-accordion-active:${openAccordionIndex === index ? 'hidden' : 'block'} size-4`}*/}
-                        {/*     xmlns="http://www.w3.org/2000/svg" width="24" height="24"*/}
-                        {/*     viewBox="0 0 24 24"*/}
-                        {/*     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"*/}
-                        {/*     strokeLinejoin="round">*/}
-                        {/*    <path d="m6 9 6 6 6-6"></path>*/}
-                        {/*</svg>*/}
                         {tutor.title}
                     </button>
                     <div id={`hs-basic-with-arrow-collapse-${index}`}
@@ -72,7 +64,7 @@ export default function PaymentInstruction({paymentInstruction, transaction}) {
                         <ol className="list-decimal list-inside text-primary-800 dark:text-white">
                             {tutor.steps && tutor.steps.map((step, stepIndex) => (
                                 <li key={stepIndex}
-                                    dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(replacePlaceholders(step, transaction.no_va))}}></li>
+                                    dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(replacePlaceholders(step, payCode))}}></li>
                             ))}
                         </ol>
                     </div>

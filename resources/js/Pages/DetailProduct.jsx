@@ -32,6 +32,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     const [username, setUsername] = useState("")
     const [isAlert, setIsAlert] = useState(false)
     const [message,setMessage] = useState("")
+    const [bankID, setBankID] = useState(null);
+    const [uniqueCode, setUniqueCode] = useState(null);
     const appName = import.meta.env.APP_NAME || 'Webrana';
 
 
@@ -51,6 +53,40 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     const formNamesString = formNames.length > 1
         ? `${formNames.slice(0, -1).join(', ')} & ${formNames[formNames.length - 1]}`
         : formNames[0] || '';
+
+    const generateUniqueCode = () => {
+        return Math.floor(100 + Math.random() * 900);
+    };
+
+    const findSelectedPaymentGroup = () => {
+        let selectedGroup = null;
+        Object.entries(sortedGroupedChannels).forEach(([group, channels]) => {
+            channels.forEach(channel => {
+                if (channel.id === selectedPayment || channel.name === selectedPaymentMethod) {
+                    selectedGroup = group;
+                }
+            });
+        });
+        return selectedGroup;
+    };
+
+    const handlePaymentGroupCheck = () => {
+        const selectedGroup = findSelectedPaymentGroup();
+        if (selectedGroup === 'Bank Transfer') {
+            const uniqueCode = generateUniqueCode();
+            setUniqueCode(uniqueCode);
+            setBankID(selectedPayment)
+        }else {
+            setUniqueCode(null)
+            setBankID(null)
+        }
+    };
+
+    console.log(uniqueCode)
+
+    useEffect(() => {
+        handlePaymentGroupCheck();
+    }, [selectedPayment, selectedPaymentMethod]);
 
     // (formNamesString);
     function formatRupiah(number) {
@@ -487,8 +523,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     <div className='grid'>
                                         {Object.entries(sortedGroupedChannels).map(([group, channels]) => (
                                             <div className="flex flex-col mx-auto w-full py-2" key={group}>
-                                                <div
-                                                    className="w-full bg-secondary-500 rounded-t-lg text-lg font-bold py-2 px-4 capitalize text-white">
+                                                <div className="w-full bg-secondary-500 rounded-t-lg text-lg font-bold py-2 px-4 capitalize text-white">
                                                     {group}
                                                 </div>
                                                 <div className="w-full bg-secondary-400 dark:bg-white rounded-b-lg">
@@ -499,13 +534,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                             if (selectedProduct === null) {
                                                                 setMessage('Please select a product first.');
                                                                 setIsAlert(true)
-                                                                document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
+                                                                document.getElementById('productSection').scrollIntoView({ behavior: 'smooth' });
                                                             } else {
                                                                 handleToggle(group);
                                                             }
                                                         }}
                                                         aria-expanded={activeGroup === group}
-                                                        disabled={!selectedProduct === null}
+                                                        disabled={selectedProduct === null}
                                                         aria-controls={`accordion-color-body-${group.replace(/\s+/g, '-').toLowerCase()}`}
                                                     >
                                                         {Array.isArray(channels) && channels.map((channel) => (
@@ -521,13 +556,9 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                             fill="none"
                                                             viewBox="0 0 10 6"
                                                         >
-                                                            <path stroke="primary" strokeLinecap="round"
-                                                                  strokeLinejoin="round" strokeWidth="2"
-                                                                  d="M9 5 5 1 1 5"/>
+                                                            <path stroke="primary" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
                                                         </svg>
-                                                        <input className="hidden" id="payment_type"
-                                                               value={group.replace(/\s+/g, '_').toLowerCase()}
-                                                               readOnly/>
+                                                        <input className="hidden" id="payment_type" value={group.replace(/\s+/g, '_').toLowerCase()} readOnly />
                                                     </button>
                                                     {activeGroup === group && (
                                                         <div
@@ -543,45 +574,33 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                                     <button
                                                                         type="button"
                                                                         className="payment-btn text-neutral-800 relative grid gap-2 p-4 hover:text-white border-2 rounded-xl w-full h-full"
-                                                                        // data-fee-flat={channel.total_fee_flat}
-                                                                        // data-fee-percent={channel.total_fee_percent}
-                                                                        // data-payment-method-name={channel.name}
-                                                                        // data-payment-method-type={channel.code}
                                                                         onClick={(e) => {
-                                                                            e.preventDefault()
-                                                                            setSelectedPayment(channel.id)
-                                                                            setSelectedPaymentMethod(channel.name)
-                                                                            setSelectedPaymentCode(channel.code)
-                                                                            setFee(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))
+                                                                            e.preventDefault();
+                                                                            setSelectedPayment(channel.id);
+                                                                            setSelectedPaymentMethod(channel.name);
+                                                                            setSelectedPaymentCode(channel.code);
+                                                                            setFee(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent));
                                                                         }}
                                                                     >
-                                                                        {/*<input className="hidden" id="payment-method-name" value={channel.name} readOnly />*/}
-                                                                        {/*<input className="hidden" id="payment-method-code" value={channel.code} readOnly />*/}
                                                                         <div className="w-full grid grid-cols-2">
-                                                                            <img src={channel.icon_url}
-                                                                                 alt={channel.name}/>
-                                                                            <span className='text-red-500 text-xs font-bold'>+Biaya Admin {formatRupiah(totalFee(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}</span>
+                                                                            <img src={channel.icon_url} alt={channel.name} />
+                                                                            <span className="text-red-500 text-xs font-bold">+Biaya Admin {formatRupiah(totalFee(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}</span>
                                                                         </div>
                                                                         <div>
-                                                                            <p id="product-price"
-                                                                               className="paymentMethod text-start max-sm:text-xs">
-                                                                                {/*{formatRupiah(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}*/}
+                                                                            <p id="product-price" className="paymentMethod text-start max-sm:text-xs">
                                                                                 {formatRupiah(paymentPrice)}
                                                                             </p>
                                                                         </div>
                                                                         <div className="border-t-2">
                                                                             <h2 className="text-xs font-bold uppercase text-start">{channel.name}</h2>
                                                                         </div>
-                                                                        {selectedPayment === channel.id ? <span
-                                                                            className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white"><svg
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            viewBox="0 0 24 24"
-                                                                            fill="currentColor" className="size-6">
-                                                                              <path fillRule="evenodd"
-                                                                                    d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                                                                                    clipRule="evenodd"/>
-                                                                            </svg>
-                                                                            </span> : ''}
+                                                                        {selectedPayment === channel.id ? (
+                                                                            <span className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                                                                    <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                                                                                </svg>
+                                                                            </span>
+                                                                        ) : ''}
                                                                     </button>
                                                                 </div>
                                                             ))}
@@ -590,6 +609,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                 </div>
                                             </div>
                                         ))}
+
                                     </div>
                                 </div>
                                 <div
@@ -657,7 +677,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     phoneNumber={phone} productCode={selectedProductCode}
                                     paymentMethodCode={selectedPaymentCode}
                                     priceWithFee={paymentPriceWithFee} brand={selectedProductBrand}
-                                    fee={fee} username={username}
+                                    fee={fee} username={username} unique_code={uniqueCode} bankID={bankID}
             />
             <SignupModal/>
             <SigninModal/>

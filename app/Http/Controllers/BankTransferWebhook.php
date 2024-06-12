@@ -10,12 +10,12 @@ use App\Models\Tripay;
 use App\Services\FonnteService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class CallbackController extends Controller
+class BankTransferWebhook extends Controller
 {
-    protected $privateKey;
     protected $username;
     protected $apiKey;
     protected $is_production;
@@ -31,83 +31,62 @@ class CallbackController extends Controller
             $this->wa_owner = null;
         }
         $this->fonnteService = $fonnteService;
-        $this->privateKey = Tripay::latest()->first()->private_key;
         $this->username = DigiAuth::latest()->first()->username;
         $this->apiKey = DigiAuth::latest()->first()->api_key;
         $this->is_production = DigiAuth::latest()->first()->is_production;
     }
-
     public function handle(Request $request)
     {
-        $callbackSignature = $request->server('HTTP_X_CALLBACK_SIGNATURE');
-        $json = $request->getContent();
-        $signature = hash_hmac('sha256', $json, $this->privateKey);
+        if ($request->header('Content-Type') == 'application/json') {
+            $data = $request->json()->all();
+            Log::info('Data diterima:', $data);
 
-        if ($signature !== (string) $callbackSignature) {
-            return $this->errorResponse('Invalid signature');
-        }
+            $dataMutasi = $data['data_mutasi'];
 
-        if ('payment_status' !== (string) $request->server('HTTP_X_CALLBACK_EVENT')) {
-            return $this->errorResponse('Unrecognized callback event, no action was taken');
-        }
+            foreach ($dataMutasi as $mutasi) {
+                $amount = intval($mutasi['amount']);
 
-        $data = json_decode($json);
+                // Pencarian transaksi dengan amount dan unique_code yang sesuai
+                $transaction = Transactions::whereRaw('amount + unique_code = ?', [$amount])
+                    ->where('payment_status', '!=', 'PAID')
+                    ->first();
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return $this->errorResponse('Invalid data sent by Tripay');
-        }
-
-        $invoiceId = $data->merchant_ref;
-        $tripayReference = $data->reference;
-        $status = strtoupper((string) $data->status);
-
-        $invoice = Transactions::where('trx_id', $invoiceId)
-//            ->where('tripay_reference', $tripayReference)
-            ->where('payment_status', '=', 'UNPAID')
-            ->first();
-
-        if (! $invoice) {
-            return $this->errorResponse('No invoice found or already paid: ' . $invoiceId);
-        }
-        $process = Brand::where('brand_name', $invoice->product_brand)->first();
-        Log::info($process);
-
-        switch ($status) {
-            case 'PAID':
-                $invoice->update(['status' => 'process']);
-                $invoice->update(['payment_status' => $status]);
-
-                if ($process->processed_by === 'digiflazz') {
-                    try {
-                        $this->sendInvoiceToWhatsApp($invoice,$invoice->phone_number);
-                        Log::info('Message sent successfully to ' . $invoice->phone_number);
-                    } catch (\Exception $e) {
-                        Log::error('Failed to send message: ' . $e->getMessage());
-                    }
-                    $this->processDigiflazzTopup($invoice);
-                }
-                if ($process->processed_by === 'manual'){
-                    try {
-                        $this->sendInvoiceToWhatsAppManual($invoice,$invoice->phone_number);
-                        if ($this->wa_owner !== null) {
-                            $this->sendInvoiceToWhatsAppOwner($invoice);
+                if ($transaction) {
+                    // Update status pembayaran menjadi PAID
+                    $transaction->payment_status = 'PAID';
+                    $transaction->save();
+                    $process = Brand::where('brand_name', $transaction->product_brand)->first();
+                    if ($process->processed_by === 'digiflazz') {
+                        try {
+                            $this->sendInvoiceToWhatsApp($transaction,$transaction->phone_number);
+                            Log::info('Message sent successfully to ' . $transaction->phone_number);
+                        } catch (\Exception $e) {
+                            Log::error('Failed to send message: ' . $e->getMessage());
                         }
-                        Log::info('Message sent successfully to ' . $invoice->phone_number);
-                    } catch (\Exception $e) {
-                        Log::error('Failed to send message: ' . $e->getMessage());
+                        $this->processDigiflazzTopup($transaction);
                     }
-                }
-                return $this->successResponse($invoice->user_id);
-                break;
-            case 'FAILED':
-            case 'EXPIRED':
-                $invoice->update(['status' => 'failed']);
-                $invoice->update(['payment_status' => $status]);
-                return $this->successResponse($invoice->user_id);
-                break;
+                    if ($process->processed_by === 'manual'){
+                        try {
+                            $this->sendInvoiceToWhatsAppManual($transaction,$transaction->phone_number);
+                            if ($this->wa_owner !== null) {
+                                $this->sendInvoiceToWhatsAppOwner($transaction);
+                            }
+                            Log::info('Message sent successfully to ' . $transaction->phone_number);
+                        } catch (\Exception $e) {
+                            Log::error('Failed to send message: ' . $e->getMessage());
+                        }
+                    }
 
-            default:
-                return $this->errorResponse('Unrecognized payment status');
+                    Log::info('Pembayaran ditemukan dan diperbarui:', ['transaction_id' => $transaction->trx_id]);
+                } else {
+                    Log::warning('Tidak ada transaksi yang cocok dengan jumlah:', ['amount' => $amount]);
+                }
+            }
+
+            return response()->json(['status' => 'success', 'message' => 'Callback received'], 200);
+        } else {
+            // Kembalikan respons error jika konten tipe tidak sesuai
+            return response()->json(['status' => 'error', 'message' => 'Invalid content type'], 400);
         }
     }
 
@@ -162,17 +141,6 @@ class CallbackController extends Controller
             $this->sendErrorWhatsAppOwner($responseBody['data']['message']);
             $invoice->update(['status' => 'failed']);
         }
-    }
-
-
-    protected function successResponse($message)
-    {
-        return response()->json(['success' => true,'message' => $message]);
-    }
-
-    protected function errorResponse($message)
-    {
-        return response()->json(['success' => false, 'message' => $message]);
     }
 
     private function sendInvoiceToWhatsApp($transaction, $phone_number)
@@ -253,7 +221,7 @@ class CallbackController extends Controller
         $message .= "ID Transaksi: *{$transaction->trx_id}*\n";
         $message .= "Status Transaksi: *".ucwords($transaction->status)."*\n";
         if ($formattedDataTrx) {
-        $message .= "\n\nDetail Order " .strtoupper($transaction->product_brand). " :\n";
+            $message .= "\n\nDetail Order " .strtoupper($transaction->product_brand). " :\n";
             $message .= "{$formattedDataTrx}";
         }
         $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";
@@ -343,4 +311,3 @@ class CallbackController extends Controller
         ]);
     }
 }
-

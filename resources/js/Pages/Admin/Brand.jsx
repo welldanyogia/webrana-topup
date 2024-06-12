@@ -21,8 +21,6 @@ export default function Brand() {
         image_url: ""
     })
 
-    (brands)
-
     useEffect(() => {
         // Inisialisasi state dengan nama kategori dari props
         const initialBrandNames = {};

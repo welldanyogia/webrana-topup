@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
+use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionHistoryController;
 use Illuminate\Foundation\Application;
@@ -70,6 +71,14 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/admin/store-favicon', [SettingController::class, 'storeFavicon'])->name('store.favicon');
         Route::get('/admin/users',[\App\Http\Controllers\Admin\UsersController::class,'index']);
         Route::delete('/admin/brand/{id}/delete-image', [BrandController::class, 'deleteImageUrl'])->name('admin.brand.deleteImageUrl');
+        Route::get('/admin/banktransfer',[\App\Http\Controllers\BankAccountController::class,'index']);
+        Route::get('/admin/banktransfer/register',[\App\Http\Controllers\BankAccountController::class,'registerMutasiBank'])->name('admin.banktransfer.register');
+        Route::get('/admin/payment/register',[PaymentGatewayController::class,'registerTripay'])->name('admin.payment.register');
+        Route::post('/admin/bank/store',[\App\Http\Controllers\BankAccountController::class,'store'])->name('admin.bank.store');
+        Route::post('/admin/bank/sync',[\App\Http\Controllers\BankAccountController::class,'getAllAccounts'])->name('admin.bank.sync');
+        Route::post('/admin/bankaccount/update-status', [BankAccountController::class, 'updateStatus'])->name('admin.bankaccount.updateStatus');
+
+
 
     });
     Route::group(['middleware' => ['checkRole:guest,user']], function() {

@@ -55,6 +55,7 @@ class Transactions extends Model
         'product_name',
         'product_price',
         'amount',
+        'unique_code',
         'fee',
         'status',
         'payment_method',

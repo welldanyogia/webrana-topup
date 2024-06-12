@@ -92,7 +92,7 @@ observer.observe(document.body, {
     characterData: true,
 });
 
-const appName = import.meta.env.APP_NAME || 'Webrana';
+const appName = import.meta.env.VITE_APP_NAME;
 
 
 createInertiaApp({

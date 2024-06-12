@@ -258,16 +258,29 @@ export default function Tripay({tripay,ipAddress}){
 
                 </div>
                 {/*<!-- End Grid */}
-                <div className="mt-5 flex justify-end gap-x-2">
-                    <button type="submit"
-                            className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
-                        Save changes
-                    </button>
+                <div className="mt-5 flex justify-start gap-x-2">
+                        <span className='text-sm'>
+                            Jika belum memiliki akun Tripay, silahkan daftar{' '}
+                            <a
+                                href={route('admin.payment.register')}
+                                className='underline text-blue-400 hover:text-blue-700'
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                disini
+                            </a>
+                        </span>
                 </div>
+                    <div className="mt-5 flex justify-end gap-x-2">
+                        <button type="submit"
+                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                            Save changes
+                        </button>
+                    </div>
             </form>
         </div>
 
         <TripayTable/>
     </div>
-    )
+)
 }
