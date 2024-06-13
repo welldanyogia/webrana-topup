@@ -280,10 +280,10 @@ export default function DetailTransaction({auth, transaction,bank_account ,payme
                                 </div>
                                 <div className="flex justify-between font-bold">
                                     <div className="flex">
-                                        UserID
+                                        No Handphone
                                     </div>
                                     <div className="flex">
-                                        {transaction.user_id}
+                                        {transaction.phone_number}
                                     </div>
                                 </div>
                                 {
