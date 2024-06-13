@@ -71,6 +71,7 @@ class DigiflazzController extends Controller
 
     public function fetchAndStorePriceList()
     {
+        Log:info('test '.now());
         // Validasi request
         $latestAuth = DigiAuth::latest()->first();
         $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');

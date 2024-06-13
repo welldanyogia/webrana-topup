@@ -28,6 +28,7 @@ export default function DetailBrand() {
     const [isOpen, setIsOpen] = useState(true)
     const [productNames, setProductNames] = useState({})
     const [productSellingPrices, setProductSellingPrices] = useState({})
+    const [keyword, setKeyword] = useState('');
     const [values, setValues] = useState({
         brand_name: brand.brand_name,
         category_id: brand.category.category_id,
@@ -154,13 +155,6 @@ export default function DetailBrand() {
         }
     }
 
-
-    // (brand)
-    // (brand.mass_profit_status === 1)
-    const handleEditClick = (product) => {
-        setSelectedProduct(product);
-    };
-
     function handleBrandImageChange(e) {
         setBrandImage(e.target.files[0]);
     }
@@ -193,29 +187,9 @@ export default function DetailBrand() {
         setSelectValue(event.target.value);
     };
 
-
-    function handleBrandNameChange(e) {
-        setBrandName(e.target.value);
-    }
-
     function handleSync(e) {
         e.preventDefault()
         router.post('/admin/digiflazz/fetch')
-    }
-
-    function handleDismiss() {
-        setAlertVisible(false);
-    }
-
-    function openAddModal() {
-        setIsAddModalOpen(true)
-        // ('category : ' + isAddModalOpen)
-    }
-
-    // Function to close the modal
-    function closeAddModal() {
-        setIsAddModalOpen(false);
-        // (isAddModalOpen)
     }
 
     function formatRupiah(number) {
@@ -287,6 +261,170 @@ export default function DetailBrand() {
             selling_price: productSellingPrices[product.id]
         })
     }
+
+    const filteredProducts = products && keyword.length > 0 ? products.data.filter(product => {
+        return (
+            product.product_name &&
+            product.buyer_sku_code
+        ) && (
+            product.product_name.toLowerCase().includes(keyword.toLowerCase()) ||
+            product.buyer_sku_code.toLowerCase().includes(keyword.toLowerCase())
+        );
+    }) : [];
+
+    function renderProductRow(product, index) {
+        return (
+            <tr key={product.id}>
+                <td className="size-px whitespace-nowrap">
+                    <div className="ps-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{index + 1}</span>
+                    </div>
+                </td>
+                <td className="whitespace-nowrap">
+                    <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                        <div className="flex items-center gap-x-3">
+                            <div className="max-w-sm space-y-3">
+                                <input type="text"
+                                       value={productNames[product.id] || ''}
+                                       onChange={(e) => handleInputNameChange(e, product.id)}
+                                       className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                       placeholder="This is placeholder"/>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td className="h-px w-72 whitespace-nowrap">
+                    <div className="px-6 py-3">
+                                                <span
+                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.buyer_sku_code}</span>
+                    </div>
+                </td>
+                <td className="h-px w-72 whitespace-nowrap">
+                    <div className="px-6 py-3">
+                                                <span
+                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.price)}</span>
+                    </div>
+                </td>
+                <td className="whitespace-nowrap">
+                    <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                        <div className="flex items-center gap-x-3">
+                            <div className="max-w-sm space-y-3">
+                                <input type="text"
+                                       value={productSellingPrices[product.id] || ''}
+                                       onChange={(e) => handleInputSellingPriceChange(e, product.id)}
+                                       className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                       placeholder="Masukkan harga jual"/>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td className="h-px w-72 whitespace-nowrap">
+                    <div className="px-6 py-3">
+                                                <span
+                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.selling_price - product.price)}</span>
+                    </div>
+                </td>
+                {
+                    brand.processed_by === 'digiflazz' && (
+                        <td className="h-px w-72 whitespace-nowrap">
+                            <div className="px-6 py-3">
+                                                <span
+                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.seller_name}</span>
+                            </div>
+                        </td>
+                    )
+                }
+                <td className="size-px whitespace-nowrap">
+                    <div className="px-6 py-3">
+                                                <span
+                                                    className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${product.product_status ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
+                                                    <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
+                                                         width="16" height="16" fill="currentColor"
+                                                         viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                                    </svg>
+                                                    {product.product_status ? 'Active' : 'Nonactive'}
+                                                </span>
+                    </div>
+                </td>
+                <td className="size-px whitespace-nowrap">
+                    <div className="px-6 py-3">
+                                            <span
+                                                className="text-sm text-gray-500 dark:text-neutral-500">{new Date(product.updated_at).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: 'numeric',
+                                                minute: 'numeric',
+                                                second: 'numeric'
+                                            })}</span>
+                    </div>
+                </td>
+                <td className="size-px whitespace-nowrap">
+                    <div className="px-6 py-1.5 flex space-x-4">
+                        <div className="hs-tooltip flex items-center">
+                            <input type="checkbox" checked={product.product_status}
+                                   onChange={(e) => {
+                                       handleCheckboxProductChange(e, product)
+                                   }}
+                                   id="hs-small-switch"
+                                   className="relative w-[35px] h-[21px] bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
+                                                           before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"/>
+                            {/*<label htmlFor="hs-tooltip-example"*/}
+                            {/*       className="text-sm text-gray-500 ms-3 dark:text-neutral-400">*/}
+                            {/*    {category.category_status === true ? "Brand Active" : "Brand Nonactive"}*/}
+                            {/*</label>*/}
+                            <div
+                                className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                                role="tooltip">
+                                {product.product_status === true ? "Nonactive Brand" : "Activated Brand"}
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button"
+                                    onClick={(e) => {
+                                        handleSave(e, product)
+                                    }}
+                                    className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
+                                Save
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button"
+                                    onClick={(e) => {
+                                        handleDelete(product.id)
+                                    }}
+                                    className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                {/*<EditProductModal product={product}/>*/}
+
+            </tr>
+        )
+    }
+
+    const ProductsTable = () => {
+        const hasFilteredProducts = keyword.length > 0 && filteredProducts.length > 0;
+
+        return (
+            <>
+                {hasFilteredProducts ? (
+                    filteredProducts.map((product, index) => (
+                        renderProductRow(product, index)
+                    ))
+                ) : (
+                    products.data.map((product, index) => (
+                        renderProductRow(product, index)
+                    ))
+                )}
+            </>
+        );
+    };
 
     return (
         <AuthenticatedAdmin>
@@ -644,120 +782,6 @@ export default function DetailBrand() {
                     </div>
                 </div>
             </div>
-            {/*<div className="-m-1.5 overflow-x-auto">*/}
-            {/*    <div className="p-1.5 min-w-full inline-block align-middle">*/}
-            {/*        <div id="hs-basic-collapse-heading"*/}
-            {/*             className="hs-collapse hidden w-full overflow-y-scroll transition-[height] duration-300 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-neutral-800 dark:border-neutral-700">*/}
-            {/*            /!*<!-- Header >*!/*/}
-            {/*            /!*<div *!/*/}
-            {/*            /!*     className=""*!/*/}
-            {/*            /!*     aria-labelledby="hs-basic-collapse">*!/*/}
-            {/*            <div*/}
-            {/*                className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">*/}
-            {/*                <div>*/}
-            {/*                    <h2 className="text-xl font-semibold capitalize text-gray-800 dark:text-neutral-200">*/}
-            {/*                        Add Product {brand.brand_name}*/}
-            {/*                    </h2>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*            <div className="p-6 space-y-2">*/}
-            {/*                <div className="max-w-sm">*/}
-            {/*                    <label htmlFor="brand_name"*/}
-            {/*                           className="block text-sm font-medium mb-2 dark:text-white">Name</label>*/}
-            {/*                    <input type="text" id="brand_name"*/}
-            {/*                           // value={dataAddProduct.brand_name}*/}
-            {/*                           // onChange={(e) => handleStoreValue(e)}*/}
-            {/*                           className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"*/}
-            {/*                           placeholder="Name"/>*/}
-            {/*                </div>*/}
-            {/*                <div className="max-w-sm">*/}
-            {/*                    <label htmlFor="category_id"*/}
-            {/*                           className="block text-sm font-medium mb-2 dark:text-white">Category</label>*/}
-            {/*                    <select data-hs-select='{*/}
-            {/*                                              "placeholder": "Select option...",*/}
-            {/*                                              "toggleTag": "<button type=\"button\"></button>",*/}
-            {/*                                              "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",*/}
-            {/*                                              "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",*/}
-            {/*                                              "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",*/}
-            {/*                                              "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"flex-shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",*/}
-            {/*                                              "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"flex-shrink-0 size-3.5 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"*/}
-            {/*                                            }' className="hidden"*/}
-            {/*                            id='category_id'*/}
-            {/*                            // onChange={(e) => handleStoreValue(e)}*/}
-            {/*                            // value={dataAddProduct.category_id}*/}
-            {/*                        // onChange={(e) => handleCategoryChange(e, brand)}*/}
-            {/*                    >*/}
-            {/*                        <option value="">Choose</option>*/}
-            {/*                        {categories.map((category) => (*/}
-            {/*                            <option key={category.category_id} value={category.category_id}>*/}
-            {/*                                {category.category_name}*/}
-            {/*                            </option>*/}
-            {/*                        ))}*/}
-            {/*                    </select>*/}
-            {/*                </div>*/}
-            {/*                <div className="max-w-sm">*/}
-            {/*                    <label htmlFor="processed_by"*/}
-            {/*                           className="block text-sm font-medium mb-2 dark:text-white">Processed*/}
-            {/*                        By</label>*/}
-            {/*                    /!*<!-- Select *!/*/}
-            {/*                    <select data-hs-select='{*/}
-            {/*                                  "placeholder": "Select option...",*/}
-            {/*                                  "toggleTag": "<button type=\"button\"></button>",*/}
-            {/*                                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",*/}
-            {/*                                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",*/}
-            {/*                                  "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",*/}
-            {/*                                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"flex-shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",*/}
-            {/*                                  "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"flex-shrink-0 size-3.5 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"*/}
-            {/*                                }' className="hidden" id='processed_by'*/}
-            {/*                            // onChange={(e) => handleStoreValue(e)}*/}
-            {/*                            // value={dataAddProduct.processed_by}*/}
-
-            {/*                    >*/}
-            {/*                        <option value="">Choose</option>*/}
-            {/*                        <option value='digiflazz'>Digiflazz</option>*/}
-            {/*                        <option value='manual'>Manual</option>*/}
-            {/*                    </select>*/}
-            {/*// <!-- End Select -->*/}
-            {/*                </div>*/}
-            {/*                <div className="max-w-sm">*/}
-            {/*                    <label htmlFor="brand_status"*/}
-            {/*                           className="block text-sm font-medium mb-2 dark:text-white">*/}
-            {/*                        Status*/}
-            {/*                    </label>*/}
-            {/*                    /!*<!-- Select *!/*/}
-            {/*                    <select id='brand_status'*/}
-            {/*                            data-hs-select='{*/}
-            {/*                                  "placeholder": "Select option...",*/}
-            {/*                                  "toggleTag": "<button type=\"button\"></button>",*/}
-            {/*                                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-blue-500 focus:ring-blue-500 before:absolute before:inset-0 before:z-[1] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400",*/}
-            {/*                                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",*/}
-            {/*                                  "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",*/}
-            {/*                                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"flex-shrink-0 size-3.5 text-blue-600 dark:text-blue-500\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",*/}
-            {/*                                  "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"flex-shrink-0 size-3.5 text-gray-500 dark:text-neutral-500\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"*/}
-            {/*                                }' className="hidden"*/}
-            {/*                            // onChange={(e) => handleStoreValue(e)}*/}
-            {/*                            // value={dataAddProduct.brand_status}*/}
-            {/*                    >*/}
-            {/*                        <option value="">Choose</option>*/}
-            {/*                        <option value={1}>Active</option>*/}
-            {/*                        <option value={0}>NonActive</option>*/}
-            {/*                    </select>*/}
-            {/*// <!-- End Select -->*/}
-            {/*                </div>*/}
-            {/*                <div>*/}
-            {/*                    <button type="button"*/}
-            {/*                            // onClick={event => handleStore(event)}*/}
-            {/*                            className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">*/}
-            {/*                        Save*/}
-            {/*                    </button>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*            /!*</div>*!/*/}
-
-
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
             <AddProduct brand={brand} categories={categories}
                         handleReset={handleReset} setDataStore={setDataStore}
                         dataStore={dataStore}/>
@@ -781,6 +805,28 @@ export default function DetailBrand() {
 
                     <div>
                         <div className="inline-flex gap-x-2">
+                            <div className="sm:block">
+                                <label htmlFor="icon" className="sr-only">Search</label>
+                                <div className="relative min-w-72 md:min-w-80">
+                                    <div
+                                        className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                                        <svg
+                                            className="flex-shrink-0 size-4 text-gray-400 dark:text-neutral-400"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round">
+                                            <circle cx="11" cy="11" r="8"/>
+                                            <path d="m21 21-4.3-4.3"/>
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="icon" name="icon"
+                                           className="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                           placeholder="Search"
+                                           onChange={(e) => setKeyword(e.target.value)}/>
+                                </div>
+                            </div>
                             <a className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
                                href="#" onClick={handleSync}>
                                 Sync with Digiflazz
@@ -828,7 +874,7 @@ export default function DetailBrand() {
                                     </th>
 
                                     <th scope="col" className="px-6 py-3 text-start">
-                                        <div className="flex items-center gap-x-2">
+                                    <div className="flex items-center gap-x-2">
                                           <span
                                               className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
                                             Product Code
@@ -901,140 +947,9 @@ export default function DetailBrand() {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {products && products.data.map((product, index) => (
-                                    <tr key={product.id}>
-                                        <td className="size-px whitespace-nowrap">
-                                            <div className="ps-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{index + 1}</span>
-                                            </div>
-                                        </td>
-                                        <td className="whitespace-nowrap">
-                                            <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
-                                                <div className="flex items-center gap-x-3">
-                                                    <div className="max-w-sm space-y-3">
-                                                        <input type="text"
-                                                               value={productNames[product.id] || ''}
-                                                               onChange={(e) => handleInputNameChange(e, product.id)}
-                                                               className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                               placeholder="This is placeholder"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="h-px w-72 whitespace-nowrap">
-                                            <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.buyer_sku_code}</span>
-                                            </div>
-                                        </td>
-                                        <td className="h-px w-72 whitespace-nowrap">
-                                            <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.price)}</span>
-                                            </div>
-                                        </td>
-                                        <td className="whitespace-nowrap">
-                                            <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
-                                                <div className="flex items-center gap-x-3">
-                                                    <div className="max-w-sm space-y-3">
-                                                        <input type="text"
-                                                               value={productSellingPrices[product.id] || ''}
-                                                               onChange={(e) => handleInputSellingPriceChange(e, product.id)}
-                                                               className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                               placeholder="Masukkan harga jual"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="h-px w-72 whitespace-nowrap">
-                                            <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.selling_price - product.price)}</span>
-                                            </div>
-                                        </td>
-                                        {
-                                            brand.processed_by === 'digiflazz' && (
-                                                <td className="h-px w-72 whitespace-nowrap">
-                                                    <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.seller_name}</span>
-                                                    </div>
-                                                </td>
-                                            )
-                                        }
-                                        <td className="size-px whitespace-nowrap">
-                                            <div className="px-6 py-3">
-                                                <span
-                                                    className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${product.product_status ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
-                                                    <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
-                                                         width="16" height="16" fill="currentColor"
-                                                         viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                                    </svg>
-                                                    {product.product_status ? 'Active' : 'Nonactive'}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td className="size-px whitespace-nowrap">
-                                            <div className="px-6 py-3">
-                                            <span
-                                                className="text-sm text-gray-500 dark:text-neutral-500">{new Date(product.updated_at).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                                hour: 'numeric',
-                                                minute: 'numeric',
-                                                second: 'numeric'
-                                            })}</span>
-                                            </div>
-                                        </td>
-                                        <td className="size-px whitespace-nowrap">
-                                            <div className="px-6 py-1.5 flex space-x-4">
-                                                <div className="hs-tooltip flex items-center">
-                                                    <input type="checkbox" checked={product.product_status}
-                                                           onChange={(e) => {
-                                                               handleCheckboxProductChange(e, product)
-                                                           }}
-                                                           id="hs-small-switch"
-                                                           className="relative w-[35px] h-[21px] bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
-                                                           before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"/>
-                                                    {/*<label htmlFor="hs-tooltip-example"*/}
-                                                    {/*       className="text-sm text-gray-500 ms-3 dark:text-neutral-400">*/}
-                                                    {/*    {category.category_status === true ? "Brand Active" : "Brand Nonactive"}*/}
-                                                    {/*</label>*/}
-                                                    <div
-                                                        className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
-                                                        role="tooltip">
-                                                        {product.product_status === true ? "Nonactive Brand" : "Activated Brand"}
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <button type="button"
-                                                            onClick={(e) => {
-                                                                handleSave(e, product)
-                                                            }}
-                                                            className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
-                                                        Save
-                                                    </button>
-                                                </div>
-                                                <div>
-                                                    <button type="button"
-                                                            onClick={(e) => {
-                                                                handleDelete(product.id)
-                                                            }}
-                                                            className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        {/*<EditProductModal product={product}/>*/}
-
-                                    </tr>
-
-                                ))}
+                                {
+                                    ProductsTable()
+                                }
                                 </tbody>
                             </table>
                             {/*{selectedProduct && (*/}
