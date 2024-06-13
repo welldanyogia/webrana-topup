@@ -480,7 +480,7 @@ export default function DetailTransaction({auth, transaction,bank_account ,payme
                                             Harga
                                         </div>
                                         <div className="flex font-bold">
-                                            {formatRupiah(parseInt(transaction.amount))}
+                                            {formatRupiah(parseInt(transaction.amount-transaction.fee))}
                                         </div>
                                     </div>
                                     {transaction.unique_code !== null ? (
