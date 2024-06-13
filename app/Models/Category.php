@@ -12,7 +12,7 @@ class Category extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     protected $primaryKey = 'category_id';
-    protected $fillable = ['category_id','category_name','category_status'];
+    protected $fillable = ['category_id','code','category_name','category_status'];
 
     public function brands()
     {
