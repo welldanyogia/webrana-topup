@@ -236,45 +236,46 @@ class TransactionController extends Controller
                         $this->sendErrorWhatsAppOwner($e->getMessage());
                         Log::error('Failed to send message to ' . $transaction->phone_number . ': ' . $e->getMessage());
                     }
-                    while (time() < strtotime($transaction->expired_time)) {
-                        // Make a request to check the mutation API
-                        $response = Http::post('/api/check-mutation/' . $transaction->amount, [
-                            // Pass necessary data to the API
-                            'transaction' => $transaction,
-                            'bank' => $transaction->payment_name,
-                            'account' => $transaction->no_rekening,
-                            'reference' => 'date',
-                            'key' => $transaction->created_at->format('Y-m-d'),
+                    if ($transaction->no_rekening !== null) {
+                        while (time() < strtotime($transaction->expired_time)) {
+                            // Make a request to check the mutation API
+                            $response = Http::post('/api/check-mutation/' . $transaction->amount, [
+                                // Pass necessary data to the API
+                                'transaction' => $transaction,
+                                'bank' => $transaction->payment_name,
+                                'account' => $transaction->no_rekening,
+                                'reference' => 'date',
+                                'key' => $transaction->created_at->format('Y-m-d'),
 //                            'desc' => $desc // If needed
-                        ]);
+                            ]);
 
-                        // Check if the API request was successful
-                        if ($response->successful()) {
-                            // Extract the response data
-                            $responseData = $response->json();
-                            Log::info($response."\n");
+                            // Check if the API request was successful
+                            if ($response->successful()) {
+                                // Extract the response data
+                                $responseData = $response->json();
+                                Log::info($response . "\n");
 
-                            // Check if the payment status is PAID
-                            if ($responseData['result'] === 'success' && !empty($responseData['message'])) {
-                                // Update the payment status in the database
-                                $transaction->update(['payment_status' => 'PAID']);
-                                $transaction->update(['status' => 'process']);
+                                // Check if the payment status is PAID
+                                if ($responseData['result'] === 'success' && !empty($responseData['message'])) {
+                                    // Update the payment status in the database
+                                    $transaction->update(['payment_status' => 'PAID']);
+                                    $transaction->update(['status' => 'process']);
 
-                                // Perform additional processing for paid transactions
-                                // For example, send a confirmation message, etc.
+                                    // Perform additional processing for paid transactions
+                                    // For example, send a confirmation message, etc.
 
-                                // Break out of the loop since payment is completed
-                                break;
+                                    // Break out of the loop since payment is completed
+                                    break;
+                                }
+
+                                // Sleep for a short duration before checking again
+                                sleep(30); // Sleep for 30 seconds (adjust as needed)
+                            } else {
+                                // Handle API request failure
+                                Log::error('Failed to fetch transaction status', ['response' => $response->json()]);
                             }
-
-                            // Sleep for a short duration before checking again
-                            sleep(30); // Sleep for 30 seconds (adjust as needed)
-                        } else {
-                            // Handle API request failure
-                            Log::error('Failed to fetch transaction status', ['response' => $response->json()]);
                         }
                     }
-
 
 
                     return redirect()->to(route('detail.transaction', $transaction->trx_id));
