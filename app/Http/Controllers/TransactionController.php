@@ -125,7 +125,7 @@ class TransactionController extends Controller
 
             $user_id = $request->get('user_id');
             $server_id = $request->get('server_id') ?? 'default_server_id';
-            $amount = $request->get('price');
+            $amount = $request->get('amount');
             $method_code = $request->get('method_code');
             $customer_name = $request->get('customer_name') ?? 'default_customer_name';
             $email_customer = $request->get('email_customer') ?? 'webranas@gmail.com';
@@ -287,7 +287,8 @@ class TransactionController extends Controller
                         'response' => $responseContent,
                         'headers' => $responseHeaders
                     ]);
-                    $this->sendErrorWhatsAppOwner($responseContent);
+                    $message = $responseContent['message'] ?? 'Unknown error';
+                    $this->sendErrorWhatsAppOwner($message);
 
                     if ($statusCode == 403) {
                         return redirect()->back()->with(['flash' => ['message' => 'Akses ditolak, silakan hubungi admin.']]);
@@ -444,9 +445,9 @@ class TransactionController extends Controller
         $appNameParts = explode(' |', $appNameFull);
         $appName = $appNameParts[0];
 
-        $message = "Halo {$appName}, ada orderan nih,\n\n";
+        $message = "Halo {$appName}, ada kegagalan sistem nih,\n\n";
         $message .= "{$messageError}";
-        $message .= "Terima kasih,\n\n";
+        $message .= "\n\nTerima kasih";
 
         $this->fonnteService->sendMessage([
             'target' => $this->wa_owner,

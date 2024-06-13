@@ -29,6 +29,7 @@
         "@preline/carousel": "^2.1.0",
         "@preline/collapse": "^2.3.0",
         "@preline/copy-markup": "^2.3.0",
+        "@preline/input-number": "^2.3.0",
         "@preline/overlay": "^2.3.0",
         "@preline/remove-element": "^2.1.0",
         "@preline/select": "^2.1.0",

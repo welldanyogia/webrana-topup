@@ -35,6 +35,9 @@ class DigiflazzController extends Controller
         $balance = null;
         if ($latestAuth) {
             $balance = $this->checkBalance($latestAuth->username, $latestAuth->api_key);
+            DigiAuth::findOrFail($latestAuth->id)->update([
+                'digi_balance' => $balance,
+            ]);
         }
         return Inertia::render('Admin/Digiflazz', [
             'digi_auth' => $latestAuth,
@@ -48,6 +51,7 @@ class DigiflazzController extends Controller
         DigiAuth::updateOrCreate([
             'username' => $request->username_digiflazz,
             'api_key' => $request->api_key_digiflazz,
+            'digi_balance' => $this->checkBalance(request()->username, request()->api_key),
             'is_production' => $request->is_production
         ]);
     }

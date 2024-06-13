@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 export default function OrderConfirmationModal({formInputs,values,product,brand,price,email,phoneNumber,
                                                    paymentMethod,paymentMethodCode,productCode,fee,username,
-                                               unique_code,bankID}){
+                                               unique_code,bankID,amount}){
 
     const concatenatedValues = Object.values(values).join('');
 
@@ -15,6 +15,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
     }
 
     const transactionData = {
+        amount:amount,
         values:values,
         user_id: concatenatedValues,
         price:price,
@@ -96,7 +97,7 @@ export default function OrderConfirmationModal({formInputs,values,product,brand,
                         }
                         <div className='grid grid-cols-2 justify-between w-3/4 mx-auto'>
                             <div className='text-start'>Harga</div>
-                            <div className='text-start'>{formatRupiah(price)}</div>
+                            <div className='text-start'>{formatRupiah(amount)}</div>
                         </div>
                         {
                            unique_code !== null && (

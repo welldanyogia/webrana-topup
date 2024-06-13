@@ -98,7 +98,9 @@ class BrandController extends Controller
             'brand_status' => 'nullable|boolean',
             'processed_by' => 'nullable|in:manual,digiflazz',
             'mass_profit' => 'nullable|numeric',
+            'qty_minimum' => 'nullable|numeric',
             'mass_profit_status' => 'nullable|boolean',
+            'qty_status' => 'nullable|boolean',
         ]);
 
         // Pastikan setidaknya satu kolom diisi
@@ -109,7 +111,9 @@ class BrandController extends Controller
             'brand_status',
             'processed_by',
             'mass_profit',
-            'mass_profit_status'
+            'mass_profit_status',
+            'qty_status',
+            'qty_minimum'
         ]);
 
         if (empty(array_filter($input, fn($value) => !is_null($value) && $value !== ''))) {

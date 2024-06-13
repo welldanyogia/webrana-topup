@@ -10,7 +10,7 @@ import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import SignupModal from "@/Components/SignupModal.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
 
-export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChannels }) {
+export default function DetailProduct({auth, brand, formInputs, sortedGroupedChannels}) {
     const [activeGroup, setActiveGroup] = useState(null);
     const [activeTab, setActiveTab] = useState(
         brand && brand.products && brand.products.length > 0 ? brand.products[0].type_id : null
@@ -23,21 +23,39 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
     const [selectedPaymentCode, setSelectedPaymentCode] = useState(null);
     const [paymentPrice, setPaymentPrice] = useState(null);
+    const [amount, setAmount] = useState(null);
     const [paymentPriceWithFee, setPaymentPriceWithFee] = useState(null);
-    const [fee,setFee] = useState(null)
+    const [fee, setFee] = useState(null)
     const [email, setEmail] = useState(null);
     const [phone, setPhone] = useState(null);
     const isAuthenticated = auth?.user && auth.user.role === 'user';
-    const [values,setValues] = useState({})
+    const [values, setValues] = useState({})
     const [username, setUsername] = useState("")
     const [isAlert, setIsAlert] = useState(false)
-    const [message,setMessage] = useState("")
+    const [message, setMessage] = useState("")
     const [bankID, setBankID] = useState(null);
     const [uniqueCode, setUniqueCode] = useState(null);
+    const [qtyMinimum, setQtyMinimum] = useState(brand.qty_status === 0 || brand.qty_minimum === 0 ? null : brand.qty_minimum)
     const appName = import.meta.env.APP_NAME || 'Webrana';
 
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
+
+
+    const handleIncrement = () => {
+        setQtyMinimum((prevQty) => prevQty + 1);
+        setAmount(parseInt((qtyMinimum+1)*paymentPrice))
+    };
+
+    const handleDecrement = () => {
+        setQtyMinimum((prevQty) =>
+            Math.max(prevQty - 1, brand.qty_minimum)
+        ); // ensure qtyMinimum doesn't go below brand.qty_minimum
+        setAmount(parseInt((qtyMinimum-1)*paymentPrice))
+
+
+
+    };
 
     useEffect(() => {
         const initialValues = formInputs.reduce((acc, formInput) => {
@@ -76,13 +94,11 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
             const uniqueCode = generateUniqueCode();
             setUniqueCode(uniqueCode);
             setBankID(selectedPayment)
-        }else {
+        } else {
             setUniqueCode(null)
             setBankID(null)
         }
     };
-
-    console.log(uniqueCode)
 
     useEffect(() => {
         handlePaymentGroupCheck();
@@ -99,7 +115,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
 
     function handleConfirm(e) {
         e.preventDefault()
-        if (phone === null){
+        if (phone === null) {
             // document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
             setMessage(`Silahkan lengkapi transaksi terlebih dahulu`)
             setIsAlert(true)
@@ -107,34 +123,38 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     }
 
 
-    function price(paymentPrice,feeFlat,feePercent) {
-        // setPaymentPriceWithFee(paymentPrice + feeFlat + (paymentPrice*(feePercent/100)))
-        return parseFloat(paymentPrice) + parseFloat(feeFlat) + parseFloat((paymentPrice*(feePercent/100)))
+    function price(amount, feeFlat, feePercent) {
+        // setPaymentPriceWithFee(amount + feeFlat + (amount*(feePercent/100)))
+        return parseFloat(amount) + totalFee(amount,feeFlat,feePercent)
     }
-    function totalFee(paymentPrice,feeFlat,feePercent) {
-        // setPaymentPriceWithFee(paymentPrice + feeFlat + (paymentPrice*(feePercent/100)))
-        return parseFloat(feeFlat) + parseFloat((paymentPrice*(feePercent/100)))
+
+    function totalFee(amount, feeFlat, feePercent) {
+        // setPaymentPriceWithFee(amount + feeFlat + (amount*(feePercent/100)))
+        return parseFloat(feeFlat) + parseFloat((amount * (feePercent / 100)))
     }
+
     const handleToggle = (group) => {
         // e.preventDefault()
         setActiveGroup(activeGroup === group ? null : group);
     };
 
-    function handleTextInputChange(e,form){
+    function handleTextInputChange(e, form) {
         e.preventDefault()
-        setValues({ ...values, [form.name]: e.target.value })
+        setValues({...values, [form.name]: e.target.value})
     }
-    function handleNumberInputChange(e,form){
+
+    function handleNumberInputChange(e, form) {
         e.preventDefault()
-        setValues({ ...values, [form.name]: e.target.value })
+        setValues({...values, [form.name]: e.target.value})
     }
-    function handleSelectInputChange(e,form){
-        setValues({ ...values, [form.name]: e.target.value })
+
+    function handleSelectInputChange(e, form) {
+        setValues({...values, [form.name]: e.target.value})
     }
 
     function handleEmail(e) {
         e.preventDefault()
-        if (selectedProduct === null){
+        if (selectedProduct === null) {
             document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
             setMessage(`Silahkan pilih nominal terlebih dahulu`)
             setIsAlert(true)
@@ -153,7 +173,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
 
             if (emptyFields.length > 0) {
                 const formNames = emptyFields.join(", ");
-                document.getElementById('values-input').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
                 setMessage(`Isi ${formNames} dengan benar`);
                 setIsAlert(true);
             } else {
@@ -163,13 +183,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
         }
     };
 
-    function handleProductButton(e,product) {
+    function handleProductButton(e, product) {
         let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '')
         let concatenatedValues = Object.values(values).join('');
 
         validateInputs()
 
-        if (gamecode === 'mobilelegends'){
+        if (gamecode === 'mobilelegends') {
             gamecode = 'mobilelegend'
         }
         e.preventDefault()
@@ -181,13 +201,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                 // Tangani respons yang diterima dari API
                 const data = response.data;
                 if (data.status === 0 && data.rc === 2) {
-                    document.getElementById('values-input').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
                     setMessage(`${data.error_msg}`);
                     setIsAlert(true);
                     return
                     // alert('Data tidak ditemukan'); // Tampilkan alert jika data tidak ditemukan
                 }
-                if (data?.data?.is_valid === true){
+                if (data?.data?.is_valid === true) {
                     setUsername(data.data.username)
                     document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth'});
                 }
@@ -200,8 +220,14 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
         setSelectedProductName(product.product_name)
         setSelectedProductCode(product.buyer_sku_code)
         setPaymentPrice(product.selling_price)
+        if (qtyMinimum !== null || qtyMinimum > 0){
+            setAmount(parseInt(product.selling_price*qtyMinimum))
+        }else {
+            setAmount(parseInt(product.selling_price))
+        }
     }
-    function handlePaymentButton(e,channel) {
+
+    function handlePaymentButton(e, channel) {
         e.preventDefault()
         setSelectedPayment(channel.id)
         setSelectedPaymentMethod(channel.name)
@@ -210,7 +236,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
 
     function handlePhone(e) {
         e.preventDefault()
-        if (selectedProduct === null){
+        if (selectedProduct === null) {
             document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
             setMessage(`Silahkan pilih nominal terlebih dahulu`)
             setIsAlert(true)
@@ -224,9 +250,12 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
         return products
             .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
             .map(productType => (
-                <div id={`pills-with-brand-color-${productType.type_id}`} className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 max-sm:grid-cols-2 gap-6`} role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`} key={productType.type_id}>
+                <div id={`pills-with-brand-color-${productType.type_id}`}
+                     className={`${activeTab === productType.type_id ? '' : 'hidden'} grid grid-cols-3 max-sm:grid-cols-2 gap-6`}
+                     role="tabpanel" aria-labelledby={`pills-with-brand-color-item-${productType.type_id}`}
+                     key={productType.type_id}>
                     {products
-                        .filter(product => product.type_id === productType.type_id && product.product_status ===1 && product.selling_price !== 0)
+                        .filter(product => product.type_id === productType.type_id && product.product_status === 1 && product.selling_price !== 0)
                         .map(product => {
                             let productName = product.product_name;
                             if (productName.includes('- ')) {
@@ -244,23 +273,28 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                             //     }
                             // }
                             return (
-                            <button
-                                className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'}`}
-                                key={product.id}
-                                onClick={(e) => handleProductButton(e,product)}
-                            >
-                                <div className='flex flex-col max-sm:text-xs text-start'>
-                                    <div className='font-semibold'>{productName}</div>
-                                    <div className='font-bold'>{formatRupiah(product.selling_price)}</div>
-                                </div>
-                                {selectedProduct === product.id ? <span
-                                    className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                      <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                                <button
+                                    className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'}`}
+                                    key={product.id}
+                                    onClick={(e) => handleProductButton(e, product)}
+                                >
+                                    <div className='flex flex-col max-sm:text-xs text-start'>
+                                        <div className='font-semibold'>{productName}</div>
+                                        <div className='font-bold'>{formatRupiah(product.selling_price)}</div>
+                                    </div>
+                                    {selectedProduct === product.id ? <span
+                                        className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white"><svg
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        className="size-6">
+                                      <path fillRule="evenodd"
+                                            d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                                            clipRule="evenodd"/>
                                     </svg>
                                     </span> : ''}
 
-                            </button>
-                        )})
+                                </button>
+                            )
+                        })
                     }
                 </div>
             ));
@@ -269,7 +303,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
     const renderUniqueTypeButtons = (products) => {
         const uniqueTypes = {};
         return products
-            .filter(product => product && !uniqueTypes[product.type_id]&& product.product_status===1 && (uniqueTypes[product.type_id] = true))
+            .filter(product => product && !uniqueTypes[product.type_id] && product.product_status === 1 && (uniqueTypes[product.type_id] = true))
             .map(product => (
                 <button
                     type="button"
@@ -309,8 +343,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     <div className="flex flex-col gap-6 max-sm:grid">
                                         <div>
                                             <img className="rounded-xl"
-                                             src={brand.image_url ? `/${brand.image_url}` : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
-                                             alt={brand.brand_name}/>
+                                                 src={brand.image_url ? `/${brand.image_url}` : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
+                                                 alt={brand.brand_name}/>
                                         </div>
                                         <div className="text-xl dark:text-white font-bold items-center h-auto">
                                             <h1>{brand.brand_name}</h1>
@@ -436,7 +470,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         </div>
                                     </div>
                                     <div className="text-sm dark:text-white space-y-2">
-                                        <h4 className="text-sm font-bold">Order Produk {brand.brand_name} di {appName} Hanya Dalam
+                                        <h4 className="text-sm font-bold">Order
+                                            Produk {brand.brand_name} di {appName} Hanya Dalam
                                             Hitungan Detik!</h4>
                                         <p className="mt-3 text-sm font-sans text-primary-900 dark:text-neutral-100">{appName} adalah
                                             platform digital yang menyediakan berbagai produk digital seperti game,
@@ -453,7 +488,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         <div
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">1
                                         </div>
-                                        <div className="dark:text-white font-bold text-center text-sm">Masukkan {formNamesString}
+                                        <div
+                                            className="dark:text-white font-bold text-center text-sm">Masukkan {formNamesString}
                                         </div>
                                     </div>
                                     <div className="text-xs text-start my-4 dark:text-white mx-auto">
@@ -509,6 +545,85 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     </div>
 
                                 </div>
+                                {
+                                    brand.qty_status === 1 && (
+                                        <div id='qty-input'
+                                             className='bg-primary-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800'>
+                                            <div className="flex mx-auto w-full border-b-2 border-secondary-500 py-2 gap-4">
+                                                <div
+                                                    className="dark:text-white font-bold text-center text-sm">Masukkan
+                                                    Jumlah
+                                                </div>
+                                            </div>
+                                            {/*// <!-- Input Number -->*/}
+                                            <div
+                                                className="py-2 px-3 mt-4 max-w-sm bg-white border border-gray-200 rounded-lg dark:bg-neutral-900 dark:border-neutral-700"
+                                                data-hs-input-number={`{"min": ${brand.qty_minimum}}`}>
+                                                <div className="w-full flex justify-between items-center gap-x-5">
+                                                    <div className="grow">
+                                                      <span
+                                                          className="block text-xs text-gray-500 dark:text-neutral-400">
+                                                        Select quantity
+                                                      </span>
+                                                        <input
+                                                            className="w-full p-0 bg-transparent border-0 text-gray-800 focus:ring-0 dark:text-white"
+                                                            type="text" value={qtyMinimum}
+                                                            min={brand.qty_minimum}
+                                                            // onChange={(e) => {
+                                                            //     setQtyMinimum(parseInt(e.target.value))
+                                                            //     setAmount(e.target.value*paymentPrice)
+                                                            // }}
+                                                            data-hs-input-number-input=""/>
+                                                    </div>
+                                                    <div className="flex justify-end items-center gap-x-1.5">
+                                                        <button type="button"
+                                                                onClick={()=> {
+                                                                    handleDecrement()
+                                                                    // setAmount(parseInt(qtyMinimum*paymentPrice))
+                                                                    setSelectedPayment(null);
+                                                                    setSelectedPaymentMethod(null);
+                                                                    setSelectedPaymentCode(null);
+                                                                    setFee(null);
+                                                                }}
+                                                                disabled={qtyMinimum <= brand.qty_minimum}
+                                                                className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                                                data-hs-input-number-decrement="">
+                                                            <svg className="flex-shrink-0 size-3.5"
+                                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                 strokeWidth="2" strokeLinecap="round"
+                                                                 strokeLinejoin="round">
+                                                                <path d="M5 12h14"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button type="button"
+                                                                onClick={()=> {
+                                                                    handleIncrement()
+                                                                    // setAmount(parseInt(paymentPrice*qtyMinimum))
+                                                                    setSelectedPayment(null);
+                                                                    setSelectedPaymentMethod(null);
+                                                                    setSelectedPaymentCode(null);
+                                                                    setFee(null);
+                                                                }}
+                                                                className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                                                data-hs-input-number-increment="">
+                                                            <svg className="flex-shrink-0 size-3.5"
+                                                                 xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                 strokeWidth="2" strokeLinecap="round"
+                                                                 strokeLinejoin="round">
+                                                                <path d="M5 12h14"></path>
+                                                                <path d="M12 5v14"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/*// <!-- End Input Number -->*/}
+                                        </div>
+                                    )
+                                }
+
                                 <div id='paymentSection'
                                      className='bg-primary-200 shadow-md p-6 rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800'>
                                     <div className="flex mx-auto w-full border-b-2 border-secondary-500 py-2 gap-4">
@@ -519,11 +634,12 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         </div>
 
                                     </div>
-                                    {/*<PaymentMethod paymentPrice={paymentPrice} groupedChannels={sortedGroupedChannels}/>*/}
+                                    {/*<PaymentMethod amount={amount} groupedChannels={sortedGroupedChannels}/>*/}
                                     <div className='grid'>
                                         {Object.entries(sortedGroupedChannels).map(([group, channels]) => (
                                             <div className="flex flex-col mx-auto w-full py-2" key={group}>
-                                                <div className="w-full bg-secondary-500 rounded-t-lg text-lg font-bold py-2 px-4 capitalize text-white">
+                                                <div
+                                                    className="w-full bg-secondary-500 rounded-t-lg text-lg font-bold py-2 px-4 capitalize text-white">
                                                     {group}
                                                 </div>
                                                 <div className="w-full bg-secondary-400 dark:bg-white rounded-b-lg">
@@ -534,7 +650,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                             if (selectedProduct === null) {
                                                                 setMessage('Please select a product first.');
                                                                 setIsAlert(true)
-                                                                document.getElementById('productSection').scrollIntoView({ behavior: 'smooth' });
+                                                                document.getElementById('productSection').scrollIntoView({behavior: 'smooth'});
                                                             } else {
                                                                 handleToggle(group);
                                                             }
@@ -545,7 +661,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                     >
                                                         {Array.isArray(channels) && channels.map((channel) => (
                                                             <div className="w-[15%] h-full" key={channel.id}>
-                                                                <img className="flex" src={channel.icon_url} alt={channel.name} />
+                                                                <img className="flex" src={channel.icon_url}
+                                                                     alt={channel.name}/>
                                                             </div>
                                                         ))}
                                                         <svg
@@ -556,9 +673,13 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                             fill="none"
                                                             viewBox="0 0 10 6"
                                                         >
-                                                            <path stroke="primary" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
+                                                            <path stroke="primary" strokeLinecap="round"
+                                                                  strokeLinejoin="round" strokeWidth="2"
+                                                                  d="M9 5 5 1 1 5"/>
                                                         </svg>
-                                                        <input className="hidden" id="payment_type" value={group.replace(/\s+/g, '_').toLowerCase()} readOnly />
+                                                        <input className="hidden" id="payment_type"
+                                                               value={group.replace(/\s+/g, '_').toLowerCase()}
+                                                               readOnly/>
                                                     </button>
                                                     {activeGroup === group && (
                                                         <div
@@ -579,25 +700,34 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                                                             setSelectedPayment(channel.id);
                                                                             setSelectedPaymentMethod(channel.name);
                                                                             setSelectedPaymentCode(channel.code);
-                                                                            setFee(price(paymentPrice, channel.total_fee_flat, channel.total_fee_percent));
+                                                                            setFee(parseInt(price(amount, channel.total_fee_flat, channel.total_fee_percent)));
                                                                         }}
                                                                     >
                                                                         <div className="w-full grid grid-cols-2">
-                                                                            <img src={channel.icon_url} alt={channel.name} />
-                                                                            <span className="text-red-500 text-xs font-bold">+Biaya Admin {formatRupiah(totalFee(paymentPrice, channel.total_fee_flat, channel.total_fee_percent))}</span>
+                                                                            <img src={channel.icon_url}
+                                                                                 alt={channel.name}/>
+                                                                            <span
+                                                                                className="text-red-500 text-xs font-bold">+Biaya Admin {formatRupiah(totalFee(amount, channel.total_fee_flat, channel.total_fee_percent))}</span>
                                                                         </div>
                                                                         <div>
-                                                                            <p id="product-price" className="paymentMethod text-start max-sm:text-xs">
-                                                                                {formatRupiah(paymentPrice)}
+                                                                            <p id="product-price"
+                                                                               className="paymentMethod text-start max-sm:text-xs">
+                                                                                {formatRupiah(amount)}
                                                                             </p>
                                                                         </div>
                                                                         <div className="border-t-2">
                                                                             <h2 className="text-xs font-bold uppercase text-start">{channel.name}</h2>
                                                                         </div>
                                                                         {selectedPayment === channel.id ? (
-                                                                            <span className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                                                                    <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                                                                            <span
+                                                                                className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                     viewBox="0 0 24 24"
+                                                                                     fill="currentColor"
+                                                                                     className="size-6">
+                                                                                    <path fillRule="evenodd"
+                                                                                          d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                                                                                          clipRule="evenodd"/>
                                                                                 </svg>
                                                                             </span>
                                                                         ) : ''}
@@ -623,7 +753,8 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                         </div>
                                     </div>
                                     <div className='grid grid-cols-2 gap-4'>
-                                        <div className='col-span-2 grid grid-cols-2 gap-4 max-sm:flex max-sm:flex-col-reverse'>
+                                        <div
+                                            className='col-span-2 grid grid-cols-2 gap-4 max-sm:flex max-sm:flex-col-reverse'>
                                             <div className="max-w-sm">
                                                 <label htmlFor="input-wa"
                                                        className="block text-sm font-medium mb-2 dark:text-white">Nomor
@@ -678,6 +809,7 @@ export default function DetailProduct({ auth,brand,formInputs,sortedGroupedChann
                                     paymentMethodCode={selectedPaymentCode}
                                     priceWithFee={paymentPriceWithFee} brand={selectedProductBrand}
                                     fee={fee} username={username} unique_code={uniqueCode} bankID={bankID}
+                                    amount={amount}
             />
             <SignupModal/>
             <SigninModal/>

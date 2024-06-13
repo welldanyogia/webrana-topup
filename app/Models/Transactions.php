@@ -67,7 +67,8 @@ class Transactions extends Model
         'qr_url',
         'qr_string',
         'digiflazz_status',
-        'data_trx'
+        'data_trx',
+        'qty'
     ];
 
     public function buyer()

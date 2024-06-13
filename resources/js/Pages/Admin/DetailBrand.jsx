@@ -36,7 +36,9 @@ export default function DetailBrand() {
         brand_status: brand.brand_status,
         processed_by: brand.processed_by,
         mass_profit: brand.mass_profit,
-        mass_profit_status: brand.mass_profit_status
+        mass_profit_status: brand.mass_profit_status,
+        qty_status: brand.qty_status,
+        qty_minimum: brand.qty_minimum
     });
     const [dataStore, setDataStore] = useState({
         product_name: '',
@@ -56,6 +58,23 @@ export default function DetailBrand() {
         desc: '',
         product_status: ''
     });
+
+    console.log(values.qty_minimum)
+    console.log(values.qty_status)
+
+    const handleIncrement = () => {
+        setValues((prevValues) => ({
+            ...prevValues,
+            qty_minimum: prevValues.qty_minimum + 1,
+        }));
+    };
+
+    const handleDecrement = () => {
+        setValues((prevValues) => ({
+            ...prevValues,
+            qty_minimum: Math.max(prevValues.qty_minimum - 1, 0), // ensure qty_minimum doesn't go below 0
+        }));
+    };
 
     const handleDelete = async (productId) => {
         if (confirm("Are you sure you want to delete this product?")) {
@@ -140,14 +159,14 @@ export default function DetailBrand() {
         const key = e.target.id
         const value = e.target.value
 
-        if (key === 'mass_profit_status') {
+        if (key === 'mass_profit_status' || key === 'qty_status') {
             // (e.target.checked)
             setValues({
                 ...values,
                 [key]: e.target.checked ? 1 : 0,
             })
         }
-        if (key !== 'brand_image' && key !== 'mass_profit_status') {
+        if (key !== 'brand_image' && key !== 'mass_profit_status'&& key !== 'qty_status') {
             setValues({
                 ...values,
                 [key]: value,
@@ -211,6 +230,8 @@ export default function DetailBrand() {
         if (values.processed_by !== brand.processed_by) formData.append('processed_by', values.processed_by);
         if (values.mass_profit !== brand.mass_profit) formData.append('mass_profit', values.mass_profit);
         if (values.mass_profit_status !== brand.mass_profit_status) formData.append('mass_profit_status', values.mass_profit_status);
+        if (values.qty_status !== brand.qty_status) formData.append('qty_status', values.qty_status);
+        if (values.qty_minimum !== brand.qty_minimum) formData.append('qty_minimum', values.qty_minimum);
 
         try {
             router.post(`/api/brands/${brand.brand_id}`, formData, {
@@ -337,29 +358,29 @@ export default function DetailBrand() {
                 }
                 <td className="size-px whitespace-nowrap">
                     <div className="px-6 py-3">
-                                                <span
-                                                    className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${product.product_status ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
-                                                    <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
-                                                         width="16" height="16" fill="currentColor"
-                                                         viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                                    </svg>
-                                                    {product.product_status ? 'Active' : 'Nonactive'}
-                                                </span>
+                        <span
+                            className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${product.product_status ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
+                            <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
+                                 width="16" height="16" fill="currentColor"
+                                 viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>
+                            {product.product_status ? 'Active' : 'Nonactive'}
+                        </span>
                     </div>
                 </td>
                 <td className="size-px whitespace-nowrap">
                     <div className="px-6 py-3">
-                                            <span
-                                                className="text-sm text-gray-500 dark:text-neutral-500">{new Date(product.updated_at).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                                hour: 'numeric',
-                                                minute: 'numeric',
-                                                second: 'numeric'
-                                            })}</span>
+                        <span
+                            className="text-sm text-gray-500 dark:text-neutral-500">{new Date(product.updated_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            second: 'numeric'
+                        })}</span>
                     </div>
                 </td>
                 <td className="size-px whitespace-nowrap">
@@ -624,6 +645,79 @@ export default function DetailBrand() {
                                                 </div>
                                             </div>
                                         </div>
+                                        {
+                                            brand.processed_by === 'manual' && (
+                                                <div className="max-w-sm space-y-3">
+                                                    <div className='space-y-2'>
+                                                        <label htmlFor="qty_minimum"
+                                                               className="block text-sm font-medium mb-2 dark:text-white">Qty
+                                                            Minimum</label>
+                                                        <div
+                                                            className="py-2 px-3 w-full bg-white border border-gray-200 rounded-lg dark:bg-neutral-900 dark:border-neutral-700">
+                                                            <div
+                                                                className="w-full flex justify-between items-center gap-x-3"
+                                                                data-hs-input-number="">
+                                                                <div>
+                                                              <span
+                                                                  className="block text-xs text-gray-500 dark:text-neutral-400">
+                                                                Select minimum quantity
+                                                              </span>
+                                                                    <input
+                                                                        className="p-0 bg-transparent border-0 text-gray-800 focus:ring-0 dark:text-white"
+                                                                        type="text" id="qty_minimum"
+                                                                        disabled={!values.qty_status}
+                                                                        onChange={(e) => {
+                                                                            handleStoreValue(e)
+                                                                        }}
+                                                                        value={values.qty_minimum}
+                                                                        data-hs-input-number-input="qty_minimum"/>
+                                                                </div>
+                                                                <div className="flex justify-end items-center gap-x-1.5">
+                                                                    <button type="button"
+                                                                            disabled={!values.qty_status}
+                                                                            onClick={handleDecrement}
+                                                                            className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                                                            data-hs-input-number-decrement="qty_minimum">
+                                                                        <svg className="flex-shrink-0 size-3.5"
+                                                                             xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                             height="24" viewBox="0 0 24 24" fill="none"
+                                                                             stroke="currentColor" strokeWidth="2"
+                                                                             strokeLinecap="round" strokeLinejoin="round">
+                                                                            <path d="M5 12h14"></path>
+                                                                        </svg>
+                                                                    </button>
+                                                                    <button type="button"
+                                                                            disabled={!values.qty_status}
+                                                                            onClick={handleIncrement}
+                                                                            className="size-6 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                                                            data-hs-input-number-increment="qty_minimum">
+                                                                        <svg className="flex-shrink-0 size-3.5"
+                                                                             xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                             height="24" viewBox="0 0 24 24" fill="none"
+                                                                             stroke="currentColor" strokeWidth="2"
+                                                                             strokeLinecap="round" strokeLinejoin="round">
+                                                                            <path d="M5 12h14"></path>
+                                                                            <path d="M12 5v14"></path>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                            <input type="checkbox" id="qty_status"
+                                                                   checked={values.qty_status}
+                                                                   onChange={(e) => handleStoreValue(e)}
+                                                                   className="relative w-[35px] h-[21px] bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
+                                                    before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"/>
+                                                            <label htmlFor="hs-xs-switch"
+                                                                   className="text-sm text-gray-500 ms-3 dark:text-neutral-400">
+                                                                Aktifkan Qty
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                     <div className='col-span-1 p-6 space-y-2'>
                                         <div className='grid grid-cols-2 justify-between'>
@@ -641,7 +735,7 @@ export default function DetailBrand() {
                                             formInputs && formInputs.map((form) => {
                                                 if (form.type === 'select') {
                                                     return (
-                                                        <div className='grid grid-cols-4 gap-2'>
+                                                        <div key={form.id} className='grid grid-cols-4 gap-2'>
                                                             <div className='col-span-3'>
                                                                 <AddSelectInput
                                                                     key={form.id}
@@ -691,7 +785,7 @@ export default function DetailBrand() {
                                                     );
                                                 } else if (form.type === 'text') {
                                                     return (
-                                                        <div className='grid grid-cols-4 gap-2'>
+                                                        <div key={form.id} className='grid grid-cols-4 gap-2'>
                                                             <div className='col-span-3'>
                                                                 <AddTextInput form={form}/>
                                                             </div>
@@ -728,7 +822,7 @@ export default function DetailBrand() {
 
                                                 } else if (form.type === 'number') {
                                                     return (
-                                                        <div className='grid grid-cols-4 gap-2'>
+                                                        <div key={form.id} className='grid grid-cols-4 gap-2'>
                                                             <div className='col-span-3'>
                                                                 <AddNumberInput form={form}/>
                                                             </div>
@@ -874,7 +968,7 @@ export default function DetailBrand() {
                                     </th>
 
                                     <th scope="col" className="px-6 py-3 text-start">
-                                    <div className="flex items-center gap-x-2">
+                                        <div className="flex items-center gap-x-2">
                                           <span
                                               className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
                                             Product Code
