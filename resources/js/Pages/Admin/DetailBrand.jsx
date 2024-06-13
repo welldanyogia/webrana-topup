@@ -13,7 +13,7 @@ import {Inertia} from "@inertiajs/inertia";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
 
 export default function DetailBrand() {
-    const {flash, brand, categories, products, formInputs} = usePage().props
+    const {flash, brand, categories, products,productsAll, formInputs} = usePage().props
     const [alertVisible, setAlertVisible] = useState(true);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isAddFormModalOpen, setIsAddFormModalOpen] = useState(false);
@@ -59,8 +59,6 @@ export default function DetailBrand() {
         product_status: ''
     });
 
-    console.log(values.qty_minimum)
-    console.log(values.qty_status)
 
     const handleIncrement = () => {
         setValues((prevValues) => ({
@@ -85,12 +83,12 @@ export default function DetailBrand() {
                         // Inertia.flash('success', 'Product deleted successfully!');
                     },
                     onError: (error) => {
-                        console.error('Error deleting product:', error);
+                        // console.error('Error deleting product:', error);
                         // Inertia.flash('error', 'Failed to delete product.');
                     }
                 });
             } catch (error) {
-                console.error('Error deleting product:', error);
+                // console.error('Error deleting product:', error);
                 Inertia.flash('error', 'Failed to delete product.');
             }
         }
@@ -283,7 +281,7 @@ export default function DetailBrand() {
         })
     }
 
-    const filteredProducts = products && keyword.length > 0 ? products.data.filter(product => {
+    const filteredProducts = productsAll && productsAll && keyword.length > 0 ? productsAll.filter(product => {
         return (
             product.product_name &&
             product.buyer_sku_code

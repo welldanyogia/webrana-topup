@@ -70,6 +70,8 @@ class BrandController extends Controller
         $products = Product::where('brand_id', $id)
             ->orderBy('price', 'asc')
             ->paginate();
+        $productsAll = Product::where('brand_id', $id)
+            ->orderBy('price', 'asc')->get();
         $formInputs = FormInputBrand::where('brand_id',$id)->with('options')->get();
 //        $optionsInput = OptionSelectInput::where('form_input_id',$formInputs->id)->get();
         $categories = Category::all();
@@ -81,7 +83,8 @@ class BrandController extends Controller
             'formInputs' => $formInputs,
 //            'optionsInput' => $optionsInput,
             'flash' => session('flash'),
-            'categories' => $categories
+            'categories' => $categories,
+            'productsAll' => $productsAll,
         ]);
     }
 
