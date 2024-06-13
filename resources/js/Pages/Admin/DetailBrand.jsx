@@ -11,6 +11,7 @@ import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import AddProduct from "@/Components/AddProduct.jsx";
 import {Inertia} from "@inertiajs/inertia";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
+import RichTextEditor from "@/Components/RichTextEditor.jsx";
 
 export default function DetailBrand() {
     const {flash, brand, categories, products,productsAll, formInputs} = usePage().props
@@ -29,6 +30,7 @@ export default function DetailBrand() {
     const [productNames, setProductNames] = useState({})
     const [productSellingPrices, setProductSellingPrices] = useState({})
     const [keyword, setKeyword] = useState('');
+    const [model,setModel] = useState(brand.brand_desc);
     const [values, setValues] = useState({
         brand_name: brand.brand_name,
         category_id: brand.category.category_id,
@@ -38,7 +40,8 @@ export default function DetailBrand() {
         mass_profit: brand.mass_profit,
         mass_profit_status: brand.mass_profit_status,
         qty_status: brand.qty_status,
-        qty_minimum: brand.qty_minimum
+        qty_minimum: brand.qty_minimum,
+        brand_desc: brand.brand_desc
     });
     const [dataStore, setDataStore] = useState({
         product_name: '',
@@ -58,7 +61,15 @@ export default function DetailBrand() {
         desc: '',
         product_status: ''
     });
+    const handleModelChange= (event)=>{
+        setModel(event)
+        setValues({
+            ...values,
+            brand_desc: event
+        })
+    }
 
+    // console.log(model)
 
     const handleIncrement = () => {
         setValues((prevValues) => ({
@@ -230,6 +241,7 @@ export default function DetailBrand() {
         if (values.mass_profit_status !== brand.mass_profit_status) formData.append('mass_profit_status', values.mass_profit_status);
         if (values.qty_status !== brand.qty_status) formData.append('qty_status', values.qty_status);
         if (values.qty_minimum !== brand.qty_minimum) formData.append('qty_minimum', values.qty_minimum);
+        if (values.brand_desc !== brand.brand_desc) formData.append('brand_desc', values.brand_desc);
 
         try {
             router.post(`/api/brands/${brand.brand_id}`, formData, {
@@ -716,6 +728,9 @@ export default function DetailBrand() {
                                                 </div>
                                             )
                                         }
+                                        <div className="space-y-3">
+                                            <RichTextEditor handleModelChange={handleModelChange} model={model}/>
+                                        </div>
                                     </div>
                                     <div className='col-span-1 p-6 space-y-2'>
                                         <div className='grid grid-cols-2 justify-between'>

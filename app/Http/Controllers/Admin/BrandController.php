@@ -104,6 +104,7 @@ class BrandController extends Controller
             'qty_minimum' => 'nullable|numeric',
             'mass_profit_status' => 'nullable|boolean',
             'qty_status' => 'nullable|boolean',
+            'brand_des' => 'nullable',
         ]);
 
         // Pastikan setidaknya satu kolom diisi
@@ -116,7 +117,8 @@ class BrandController extends Controller
             'mass_profit',
             'mass_profit_status',
             'qty_status',
-            'qty_minimum'
+            'qty_minimum',
+            'brand_desc'
         ]);
 
         if (empty(array_filter($input, fn($value) => !is_null($value) && $value !== ''))) {

@@ -9,6 +9,7 @@ import OrderConfirmationModal from "@/Components/OrderConfirmationModal.jsx";
 import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import SignupModal from "@/Components/SignupModal.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
+import {Parser} from "html-to-react";
 
 export default function DetailProduct({auth, brand, formInputs, sortedGroupedChannels}) {
     const [activeGroup, setActiveGroup] = useState(null);
@@ -470,14 +471,15 @@ export default function DetailProduct({auth, brand, formInputs, sortedGroupedCha
                                         </div>
                                     </div>
                                     <div className="text-sm dark:text-white space-y-2">
-                                        <h4 className="text-sm font-bold">Order
-                                            Produk {brand.brand_name} di {appName} Hanya Dalam
-                                            Hitungan Detik!</h4>
-                                        <p className="mt-3 text-sm font-sans text-primary-900 dark:text-neutral-100">{appName} adalah
-                                            platform digital yang menyediakan berbagai produk digital seperti game,
-                                            pulsa, paket data, dan e-money. Kami menawarkan layanan cepat, mudah, dan
-                                            aman untuk memenuhi
-                                            kebutuhan digital Anda.</p>
+                                        {/*<h4 className="text-sm font-bold">Order*/}
+                                        {/*    Produk {brand.brand_name} di {appName} Hanya Dalam*/}
+                                        {/*    Hitungan Detik!</h4>*/}
+                                        {/*<p className="mt-3 text-sm font-sans text-primary-900 dark:text-neutral-100">{appName} adalah*/}
+                                        {/*    platform digital yang menyediakan berbagai produk digital seperti game,*/}
+                                        {/*    pulsa, paket data, dan e-money. Kami menawarkan layanan cepat, mudah, dan*/}
+                                        {/*    aman untuk memenuhi*/}
+                                        {/*    kebutuhan digital Anda.</p>*/}
+                                        {Parser().parse(brand.brand_desc)}
                                     </div>
                                 </div>
                             </div>
