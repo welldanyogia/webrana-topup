@@ -46,7 +46,6 @@
         "html-to-react": "^1.7.0",
         "katex": "^0.16.10",
         "lodash": "^4.17.21",
-        "next": "^14.2.4",
         "preline": "^2.3.0",
         "quill": "^2.0.2",
         "react-apexcharts": "^1.4.1",

@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\DigiAuth;
+use App\Models\Fonnte;
 use App\Models\Product;
 use App\Models\Type;
+use App\Services\FonnteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -16,10 +18,24 @@ use Inertia\Inertia;
 class DigiflazzController extends Controller
 {
     protected $url;
+    protected $acc_token;
+    protected $wa_owner;
+    protected $fonnteService;
 
-    public function __construct()
+
+    public function __construct(FonnteService $fonnteService)
     {
         $latest = DigiAuth::latest()->first();
+        $latestFonnte = Fonnte::latest()->first();
+        $this->fonnteService = $fonnteService;
+
+        if ($latestFonnte) {
+            $this->acc_token = $latestFonnte->acc_token;
+            $this->wa_owner = $latestFonnte->wa_owner;
+        } else {
+            $this->acc_token = null;
+            $this->wa_owner = null;
+        }
         if ($latest) {
             if ($latest->is_production === 0) {
                 $this->url = "https://api.digiflazz.com/v1";
@@ -76,6 +92,7 @@ class DigiflazzController extends Controller
     public function fetchAndStorePriceList()
     {
         Log:info('test '.now());
+        $this->sendMessage();
         // Validasi request
         $latestAuth = DigiAuth::latest()->first();
         $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');
@@ -194,6 +211,27 @@ class DigiflazzController extends Controller
             return $_SERVER['SERVER_ADDR'];
         } else {
             return gethostbyname(gethostname());
+        }
+    }
+
+    public function sendMessage(): \Illuminate\Http\RedirectResponse
+    {
+//        $request->validate([
+//            'target' => $this->wa_owner,
+//            'message' => 'Test Whatsapp Gateway Message',
+//            // Add other validations as needed
+//        ]);
+        $data = [
+            'target' => $this->wa_owner,
+            'message' => 'Product Updated '. now(),
+        ];
+
+        try {
+            $this->fonnteService->sendMessage($data);
+
+            return redirect()->back()->with(['flash' => ['success' => 'Successfully test send message to '. $data->target]]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to test send message. '. $e->getMessage()]);
         }
     }
 }
