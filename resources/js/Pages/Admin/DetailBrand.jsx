@@ -12,6 +12,58 @@ import AddProduct from "@/Components/AddProduct.jsx";
 import {Inertia} from "@inertiajs/inertia";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
 import RichTextEditor from "@/Components/RichTextEditor.jsx";
+import QuillRichTextEditor from "@/Components/QuillRichTextEditor.jsx";
+import dynamic from 'next/dynamic'
+import {Parser} from "html-to-react";
+import parse from 'html-react-parser';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+    ssr: false,
+    loading: () => <p>Loading ...</p>,
+})
+
+
+const modules = {
+    toolbar: [
+        [{ header: '1' }, { header: '2' }, { font: [] }],
+        [{ size: [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [
+            { list: 'ordered' },
+            { list: 'bullet' },
+            { indent: '-1' },
+            { indent: '+1' },
+        ],
+        ['link', 'image', 'video'],
+        ['clean'],
+    ],
+    clipboard: {
+        // toggle to add extra line breaks when pasting HTML:
+        matchVisual: false,
+    },
+}
+/*
+ * Quill editor formats
+ * See https://quilljs.com/docs/formats/
+ */
+const formats = [
+    'header',
+    'font',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'video',
+]
 
 export default function DetailBrand() {
     const {flash, brand, categories, products,productsAll, formInputs} = usePage().props
@@ -67,6 +119,10 @@ export default function DetailBrand() {
             ...values,
             brand_desc: event
         })
+    }
+
+    const replaceClass = (string) =>{
+        return string.replace(/class=/g, 'className=');
     }
 
     // console.log(model)
@@ -730,6 +786,21 @@ export default function DetailBrand() {
                                         }
                                         <div className="space-y-3">
                                             <RichTextEditor handleModelChange={handleModelChange} model={model}/>
+                                            {/*<QuillRichTextEditor value={model} setValue={handleModelChange}/>*/}
+                                            {/*<div>*/}
+                                            {/*    /!*<QuillNoSSRWrapper modules={modules} placeholder='compose here'*!/*/}
+                                            {/*    /!*                   value={model} onChange={setModel} formats={formats}*!/*/}
+                                            {/*    /!*                   theme="snow"/>*!/*/}
+                                            {/*    <QuillRichTextEditor value={model} setValue={handleModelChange}/>*/}
+
+
+                                            {/*    /!*<p>{model}</p>*!/*/}
+                                            {/*    /!*<div>*!/*/}
+                                                {/*/!*{Parser().parse(model)}*!/*/}
+                                            {/*    /!*    model*!/*/}
+                                            {/*    /!*    <div dangerouslySetInnerHTML={{__html: replaceClass(model)}}></div>*!/*/}
+                                            {/*    /!*</div>*!/*/}
+                                            {/*</div>*/}
                                         </div>
                                     </div>
                                     <div className='col-span-1 p-6 space-y-2'>

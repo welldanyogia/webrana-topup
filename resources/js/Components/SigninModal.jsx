@@ -131,14 +131,14 @@ function SigninModal({...props}) {
                                     {/*    in*/}
                                     {/*</button>*/}
 
-                                    {/*<button type="submit" disabled={processing}*/}
-                                    {/*        data-hs-overlay="#hs-modal-signin"*/}
-                                    {/*        className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">Sign*/}
-                                    {/*    in*/}
-                                    {/*</button>*/}
-                                    <PrimaryButton className="ms-4" disabled={processing} data-hs-overlay="#hs-modal-signin">
-                                        Log in
-                                    </PrimaryButton>
+                                    <button type="submit" disabled={processing}
+                                            data-hs-overlay="#hs-modal-signin"
+                                            className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-secondary-600 text-white hover:bg-secondary-700 disabled:opacity-50 disabled:pointer-events-none">Sign
+                                        in
+                                    </button>
+                                    {/*<PrimaryButton className="ms-4" disabled={processing} data-hs-overlay="#hs-modal-signin">*/}
+                                    {/*    Log in*/}
+                                    {/*</PrimaryButton>*/}
                                 </div>
                             </form>
                             {/*<!-- End Form */}

@@ -10,6 +10,9 @@ import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import SignupModal from "@/Components/SignupModal.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
 import {Parser} from "html-to-react";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import "quill/dist/quill.core.css";
 
 export default function DetailProduct({auth, brand, formInputs, sortedGroupedChannels}) {
     const [activeGroup, setActiveGroup] = useState(null);
@@ -42,6 +45,7 @@ export default function DetailProduct({auth, brand, formInputs, sortedGroupedCha
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
 
+    console.log(brand.brand_desc)
 
     const handleIncrement = () => {
         setQtyMinimum((prevQty) => prevQty + 1);
