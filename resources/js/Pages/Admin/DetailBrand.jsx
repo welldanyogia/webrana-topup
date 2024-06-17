@@ -11,7 +11,6 @@ import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import AddProduct from "@/Components/AddProduct.jsx";
 import {Inertia} from "@inertiajs/inertia";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
-import RichTextEditor from "@/Components/RichTextEditor.jsx";
 import QuillRichTextEditor from "@/Components/QuillRichTextEditor.jsx";
 
 export default function DetailBrand() {
