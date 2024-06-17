@@ -3,7 +3,7 @@ import {usePage} from "@inertiajs/react";
 
 function Footer() {
     const {tripayPaymentChannel} = usePage().props
-    const appName = import.meta.env.APP_NAME || 'Webrana';
+    const appName = import.meta.env.VITE_APP_NAME;
     return (
         // <!-- ========== FOOTER ========== -->
         <footer className="mt-20 w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
