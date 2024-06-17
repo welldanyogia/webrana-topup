@@ -354,8 +354,8 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                     <div className="flex flex-col gap-6 max-sm:grid">
                                         <div>
                                             <img className="rounded-xl"
-                                                 src={brand.image_url ? `/${brand.image_url}` : '/juju.png'}
-                                                     // 'https://placehold.co/120x200'}
+                                                 src={brand.image_url ? `/${brand.image_url}` :
+                                                     'https://placehold.co/120x200'}
                                                  alt={brand.brand_name}/>
                                         </div>
                                         <div className="text-xl dark:text-white font-bold items-center h-auto">
