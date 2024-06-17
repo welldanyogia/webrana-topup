@@ -11,6 +11,7 @@ import SignupModal from "@/Components/SignupModal.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
 import {Parser} from "html-to-react";
 import CarouselHero from "@/Components/CarouselHero.jsx";
+import Editor from "../../Editor.jsx";
 
 export default function DetailProduct({auth, brand,banners, formInputs, sortedGroupedChannels}) {
     const [activeGroup, setActiveGroup] = useState(null);
@@ -484,7 +485,8 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                     <div className="text-sm dark:text-white space-y-2">
                                         {
                                             brand.brand_desc !== null ? (
-                                                Parser().parse(brand.brand_desc)
+                                                <Editor value={brand.brand_desc} toolbar={false} setValue={() => { }} readOnly={true} />
+
                                             ) : (
                                                 <>
                                                     <h4 className="text-sm font-bold">

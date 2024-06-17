@@ -47,10 +47,11 @@
         "katex": "^0.16.10",
         "lodash": "^4.17.21",
         "preline": "^2.3.0",
+        "prop-types": "^15.8.1",
         "quill": "^2.0.2",
         "react-apexcharts": "^1.4.1",
-        "react-froala-wysiwyg": "^4.2.0",
         "react-icons": "^5.2.1",
+        "react-quill": "^2.0.0",
         "react-router": "^6.23.1",
         "react-router-dom": "^6.23.1",
         "react-spinners": "^0.13.8"

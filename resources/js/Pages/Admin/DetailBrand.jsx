@@ -12,6 +12,7 @@ import AddProduct from "@/Components/AddProduct.jsx";
 import {Inertia} from "@inertiajs/inertia";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
 import RichTextEditor from "@/Components/RichTextEditor.jsx";
+import QuillRichTextEditor from "@/Components/QuillRichTextEditor.jsx";
 
 export default function DetailBrand() {
     const {flash, brand, categories, products,productsAll, formInputs} = usePage().props
@@ -733,8 +734,8 @@ export default function DetailBrand() {
                                             )
                                         }
                                         <div className="space-y-3">
-                                            <RichTextEditor handleModelChange={handleModelChange} model={model}/>
-                                            {/*<QuillRichTextEditor value={model} setValue={handleModelChange}/>*/}
+                                            {/*<RichTextEditor handleModelChange={handleModelChange} model={model}/>*/}
+                                            <QuillRichTextEditor value={model} setValue={handleModelChange}/>
                                             {/*<div>*/}
                                             {/*    /!*<QuillNoSSRWrapper modules={modules} placeholder='compose here'*!/*/}
                                             {/*    /!*                   value={model} onChange={setModel} formats={formats}*!/*/}
