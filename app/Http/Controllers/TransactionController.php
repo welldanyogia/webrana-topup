@@ -32,13 +32,16 @@ class TransactionController extends Controller
             $this->wa_owner = null;
         }
         $this->fonnteService = $fonnteService;
-        if (Tripay::latest()->first()->is_production === 0){
-            $this->url = "https://tripay.co.id/api-sandbox/";
-        }elseif (Tripay::latest()->first()->is_production === 1){
-            $this->url = "https://tripay.co.id/api/";
-        } else{
+        if (Tripay::latest()->first()) {
+            if (Tripay::latest()->first()->is_production === 0) {
+                $this->url = "https://tripay.co.id/api-sandbox/";
+            } elseif (Tripay::latest()->first()->is_production === 1) {
+                $this->url = "https://tripay.co.id/api/";
+            }
+        }else{
             $this->url = "https://tripay.co.id/api-sandbox/";
         }
+
     }
     /**
      * Display a listing of the resource.
