@@ -27,10 +27,14 @@ class TransactionController extends Controller
     public function __construct(FonnteService $fonnteService)
     {
         $this->fonnteService = $fonnteService;
-        $this->privateKey = Tripay::latest()->first()->private_key;
-        $this->username = DigiAuth::latest()->first()->username;
-        $this->apiKey = DigiAuth::latest()->first()->api_key;
-        $this->is_production = DigiAuth::latest()->first()->is_production;
+        if (Tripay::latest()->first()) {
+            $this->privateKey = Tripay::latest()->first()->private_key;
+        }
+        if (DigiAuth::latest()->first()) {
+            $this->username = DigiAuth::latest()->first()->username;
+            $this->apiKey = DigiAuth::latest()->first()->api_key;
+            $this->is_production = DigiAuth::latest()->first()->is_production;
+        }
     }
     /**
      * Display a listing of the resource.
