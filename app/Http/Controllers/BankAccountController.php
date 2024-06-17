@@ -37,10 +37,14 @@ class BankAccountController extends Controller
             $this->wa_owner = null;
         }
         $this->fonnteService = $fonnteService;
-        $this->privateKey = Tripay::latest()->first()->private_key;
-        $this->username = DigiAuth::latest()->first()->username;
-        $this->apiKey = DigiAuth::latest()->first()->api_key;
-        $this->is_production = DigiAuth::latest()->first()->is_production;
+        if (Tripay::latest()->first()) {
+            $this->privateKey = Tripay::latest()->first()->private_key;
+        }
+        if (DigiAuth::latest()->first()) {
+            $this->username = DigiAuth::latest()->first()->username;
+            $this->apiKey = DigiAuth::latest()->first()->api_key;
+            $this->is_production = DigiAuth::latest()->first()->is_production;
+        }
         if ($latestBT !== null){
             $this->api_key_moota = $latestBT->api_key;
         }else{
