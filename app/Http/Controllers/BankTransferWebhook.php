@@ -173,9 +173,19 @@ class BankTransferWebhook extends Controller
         }
         $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";
         $message .= "Merek Produk: *".strtoupper($transaction->product_brand)."*\n";
-        $message .= "Harga Produk: *Rp" . number_format($transaction->product_price, 0, ',', '.') . "*\n";
-        $message .= "Biaya Admin: *Rp" . number_format($transaction->fee, 0, ',', '.') . "*\n";
-        $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount, 0, ',', '.') . "*\n";
+        if ($transaction->fee > 0){
+            $message .= "Biaya Admin: *Rp" . number_format($transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Kode Unik: *" . $transaction->unique_code . "*\n";
+        }
+        if ($transaction->fee > 0){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->unique_code, 0, ',', '.') . "*\n";
+
+        }
         $message .= "Status Pembayaran: *Pembayaran Berhasil*\n";
         $message .= "Metode Pembayaran: *{$transaction->payment_name}*\n";
 
@@ -226,9 +236,19 @@ class BankTransferWebhook extends Controller
         }
         $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";
         $message .= "Merek Produk: *".strtoupper($transaction->product_brand)."*\n";
-        $message .= "Harga Produk: *Rp" . number_format($transaction->product_price, 0, ',', '.') . "*\n";
-        $message .= "Biaya Admin: *Rp" . number_format($transaction->fee, 0, ',', '.') . "*\n";
-        $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount, 0, ',', '.') . "*\n";
+        if ($transaction->fee > 0){
+            $message .= "Biaya Admin: *Rp" . number_format($transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Kode Unik: *" . $transaction->unique_code . "*\n";
+        }
+        if ($transaction->fee > 0){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->unique_code, 0, ',', '.') . "*\n";
+
+        }
         $message .= "Status Pembayaran: *Pembayaran Berhasil*\n";
         $message .= "Metode Pembayaran: *{$transaction->payment_name}*\n";
 
@@ -274,9 +294,19 @@ class BankTransferWebhook extends Controller
         $message .= "Status Transaksi: *".ucwords($transaction->status)."*\n";
         $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";
         $message .= "Merek Produk: *".strtoupper($transaction->product_brand)."*\n";
-        $message .= "Harga Produk: *Rp" . number_format($transaction->product_price, 0, ',', '.') . "*\n";
-        $message .= "Biaya Admin: *Rp" . number_format($transaction->fee, 0, ',', '.') . "*\n";
-        $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount, 0, ',', '.') . "*\n";
+        if ($transaction->fee > 0){
+            $message .= "Biaya Admin: *Rp" . number_format($transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Kode Unik: *" . $transaction->unique_code . "*\n";
+        }
+        if ($transaction->fee > 0){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->unique_code, 0, ',', '.') . "*\n";
+
+        }
         $message .= "Status Pembayaran: *Pembayaran Berhasil*\n";
         $message .= "Metode Pembayaran: *{$transaction->payment_name}*\n";
 

@@ -79,14 +79,14 @@ export default function BankAccountTable(){
                         </div>
                     </th>
 
-                    {/*<th scope="col" className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3 text-start">*/}
-                    {/*    <div className="flex items-center gap-x-2">*/}
-                    {/*        <span*/}
-                    {/*            className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">*/}
-                    {/*            Icon*/}
-                    {/*        </span>*/}
-                    {/*    </div>*/}
-                    {/*</th>*/}
+                    <th scope="col" className="text-center">
+                        <div className="flex items-center gap-x-2">
+                            <span
+                                className="text-xs text-center font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                Icon
+                            </span>
+                        </div>
+                    </th>
 
                     <th scope="col" className="px-6 py-3 text-start">
                         <div className="flex items-center gap-x-2">
@@ -101,7 +101,7 @@ export default function BankAccountTable(){
                         <div className="flex items-center gap-x-2">
                             <span
                                 className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                                Account Number
+                                Nomor Rekening
                             </span>
                         </div>
                     </th>
@@ -111,7 +111,7 @@ export default function BankAccountTable(){
                         <div className="flex items-center gap-x-2">
                             <span
                                 className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                                Account Name
+                                Nama Rekening
                             </span>
                         </div>
                     </th>
@@ -119,7 +119,23 @@ export default function BankAccountTable(){
                         <div className="flex items-center gap-x-2">
                             <span
                                 className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                                Balance
+                                Saldo
+                            </span>
+                        </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-start">
+                        <div className="flex items-center gap-x-2">
+                            <span
+                                className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                Interval Pengecekan
+                            </span>
+                        </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-start">
+                        <div className="flex items-center gap-x-2">
+                            <span
+                                className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                Pengecekan Terakhir
                             </span>
                         </div>
                     </th>
@@ -146,20 +162,27 @@ export default function BankAccountTable(){
                         </td>
                         <td className="h-px w-72 whitespace-nowrap">
                             <div className="px-6 py-3">
-                                <span
-                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.bank}</span>
+                                {/*<span*/}
+                                {/*    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.bank}</span>*/}
+                                <img src={bankAccount.icon} alt={bankAccount.label}/>
                             </div>
                         </td>
                         <td className="h-px w-72 whitespace-nowrap">
                             <div className="px-6 py-3">
                                 <span
-                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.account_no}</span>
+                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.label}</span>
                             </div>
                         </td>
                         <td className="h-px w-72 whitespace-nowrap">
                             <div className="px-6 py-3">
                                 <span
-                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.account_name}</span>
+                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.account_number}</span>
+                            </div>
+                        </td>
+                        <td className="h-px w-72 whitespace-nowrap">
+                            <div className="px-6 py-3">
+                                <span
+                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.atas_nama}</span>
                             </div>
                         </td>
                         <td className="h-px w-72 whitespace-nowrap">
@@ -168,6 +191,26 @@ export default function BankAccountTable(){
                                     className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(bankAccount.balance)}</span>
                             </div>
                         </td>
+                        <td className="h-px w-72 whitespace-nowrap">
+                            <div className="px-6 py-3">
+                                <span
+                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{bankAccount.interval_refresh} Menit Sekali</span>
+                            </div>
+                        </td>
+                        <td className="h-px w-72 whitespace-nowrap">
+                            <div className="px-6 py-3">
+                                <span
+                                    className="text-sm text-gray-500 dark:text-neutral-500">{new Date(bankAccount.last_update).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    second: 'numeric'
+                                })}</span>
+                            </div>
+                        </td>
+
                         <td className="size-px whitespace-nowrap">
                             <div className="px-6 py-3">
                                 <span

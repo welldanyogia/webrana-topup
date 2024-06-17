@@ -19,6 +19,7 @@ Route::post('/addform',[\App\Http\Controllers\FormInputController::class,'store'
 Route::get('/bank/bank-account', [\App\Http\Controllers\BankAccountController::class, 'getAllAccounts']);
 Route::get('/bank-list', [BankAccountController::class, 'getList']);
 Route::post('/check-mutation/{amount}', [BankAccountController::class, 'checkMutation']);
+Route::post('/mutations', [BankAccountController::class, 'getMutations']);
 
 
 Route::post('/createTransaction',[\App\Http\Controllers\TransactionController::class,'createTransaction'])->name('tripay.create.transaction');

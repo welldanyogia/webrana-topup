@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\BankAccount;
+use App\Models\BankAccountMoota;
 use App\Models\Brand;
 use App\Models\Fonnte;
 use App\Models\Transactions;
@@ -36,6 +37,9 @@ class TransactionController extends Controller
         }elseif (Tripay::latest()->first()->is_production === 1){
             $this->url = "https://tripay.co.id/api/";
         }
+//        else{
+//            $this->url = "https://tripay.co.id/api-sandbox/";
+//        }
     }
     /**
      * Display a listing of the resource.
@@ -239,13 +243,17 @@ class TransactionController extends Controller
                     if ($transaction->no_rekening !== null) {
                         while (time() < strtotime($transaction->expired_time)) {
                             // Make a request to check the mutation API
-                            $response = Http::post('/api/check-mutation/' . $transaction->amount, [
+                            $response = Http::post('/api/mutations', [
                                 // Pass necessary data to the API
-                                'transaction' => $transaction,
-                                'bank' => $transaction->payment_name,
-                                'account' => $transaction->no_rekening,
-                                'reference' => 'date',
-                                'key' => $transaction->created_at->format('Y-m-d'),
+                                'transaction' => $transaction->trx_id,
+                                'bank' => $bankID,
+//                                'account' => $transaction->no_rekening,
+//                                'reference' => 'date',
+                                'start_date' => $transaction->created_at,
+//                                    ->format('Y-m-d'),
+                                'end_date' => $transaction->expired_time
+//                                    ->format('Y-m-d'),
+//                                'key' => $transaction->created_at->format('Y-m-d'),
 //                            'desc' => $desc // If needed
                             ]);
 
@@ -298,7 +306,7 @@ class TransactionController extends Controller
                     return redirect()->back()->with(['flash' => ['message' => 'Transaksi gagal']]);
                 }
             }
-            $bank_account = BankAccount::where('id',$bankID)->first();
+            $bank_account = BankAccountMoota::where('bank_id',$bankID)->first();
             $transaction = Transactions::create([
                 'trx_id' => $order_id,
                 'user_id' => $user_id,
@@ -316,9 +324,9 @@ class TransactionController extends Controller
                 'fee' => 0,
                 'status' => $status,
                 'digiflazz_status' => $status,
-                'payment_method' => $bank_account->bank,
-                'payment_name' => $bank_account->bank,
-                'no_rekening' => $bank_account->account_no,
+                'payment_method' => $bank_account->label,
+                'payment_name' => $bank_account->label,
+                'no_rekening' => $bank_account->account_number,
                 'payment_status' => 'UNPAID',
                 'expired_time' => date('Y-m-d H:i:s', strtotime('+1 hour')),
                 'qr_url' => $qr_url,
@@ -420,7 +428,20 @@ class TransactionController extends Controller
         $message .= "Nama Produk: *".strtoupper($transaction->product_name)."*\n";
         $message .= "Merek Produk: *".strtoupper($transaction->product_brand)."*\n";
         $message .= "Harga Produk: *Rp" . number_format($transaction->product_price, 0, ',', '.') . "*\n";
-        $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount, 0, ',', '.') . "*\n";
+        if ($transaction->fee > 0){
+            $message .= "Biaya Admin: *Rp" . number_format($transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Kode Unik: *" . $transaction->unique_code . "*\n";
+        }
+        if ($transaction->fee > 0){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->fee, 0, ',', '.') . "*\n";
+        }
+        if ($transaction->unique_code){
+            $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount+$transaction->unique_code, 0, ',', '.') . "*\n";
+
+        }
+//        $message .= "Total Pembayaran: *Rp" . number_format($transaction->amount, 0, ',', '.') . "*\n";
         $message .= "Status Pembayaran: *Menunggu Pembayaran*\n";
         $message .= "Metode Pembayaran: *{$transaction->payment_name}*\n";
 

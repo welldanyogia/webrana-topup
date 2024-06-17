@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankAccount;
+use App\Models\BankAccountMoota;
 use App\Models\BankTransfer;
 use App\Models\Brand;
 use App\Models\FormInputBrand;
@@ -53,13 +54,14 @@ class DetailController extends Controller
                 return $channel->total_fee_flat + ($channel->total_fee_percent * 100);
             });
         });
-        $bankTransfers = BankAccount::where('is_active', 1)->get()->map(function ($bank) {
+        $bankTransfers = BankAccountMoota::where('is_active', 1)->get()->map(function ($bank) {
             return (object)[
-                'id' => $bank->id,
-                'name' => $bank->bank,
-                'icon_url' => '/' . strtolower($bank->bank) . '.png', // Ensure you have an appropriate icon for each bank
+                'id' => $bank->bank_id,
+                'name' => $bank->label,
+                'icon_url' => $bank->icon, // Ensure you have an appropriate icon for each bank
                 'total_fee_flat' => 0, // Assuming no flat fee for bank transfer
                 'total_fee_percent' => 0, // Assuming no percentage fee for bank transfer
+                'interval' => $bank->interval_refresh
             ];
         });
         if ($latestBT) {

@@ -24,6 +24,8 @@ Route::get('/', function () {
 //    return view('Welcome');
 //    return Inertia::render('Welcome', []);
 });
+//Route::post('/mutations', [BankAccountController::class, 'getMutations']);
+
 
 Route::group(['middleware' => 'auth'], function() {
 //    Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
@@ -75,7 +77,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/banktransfer/register',[\App\Http\Controllers\BankAccountController::class,'registerMutasiBank'])->name('admin.banktransfer.register');
         Route::get('/admin/payment/register',[PaymentGatewayController::class,'registerTripay'])->name('admin.payment.register');
         Route::post('/admin/bank/store',[\App\Http\Controllers\BankAccountController::class,'store'])->name('admin.bank.store');
-        Route::post('/admin/bank/sync',[\App\Http\Controllers\BankAccountController::class,'getAllAccounts'])->name('admin.bank.sync');
+        Route::post('/admin/bank/sync',[\App\Http\Controllers\BankAccountController::class,'getBanksMoota'])->name('admin.bank.sync');
         Route::post('/admin/bankaccount/update-status', [BankAccountController::class, 'updateStatus'])->name('admin.bankaccount.updateStatus');
 
 

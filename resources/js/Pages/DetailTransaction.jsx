@@ -33,7 +33,6 @@ export default function DetailTransaction({auth, transaction,bank_account ,payme
         const date = dateObject.getDate().toString().padStart(2, '0');
         return `${year}-${month}-${date}`;
     };
-    console.log(formatDate(transaction.created_at))
 
 
     if (transaction.no_rekening !== null){
@@ -97,36 +96,63 @@ export default function DetailTransaction({auth, transaction,bank_account ,payme
         }
     }
 
+    // const formatDate = (dateString) => {
+    //     const date = new Date(dateString);
+    //     return date.toISOString().split('T')[0]; // Format the date to YYYY-MM-DD
+    // };
+    const dataTrx = {
+        transaction : transaction.trx_id,
+        bank : transaction.no_rekening,
+        start_date : formatDate(transaction.created_at),
+        end_date : formatDate(transaction.expired_time),
+    }
+    // console.log(dataTrx)
+
     const checkMutation = async () => {
         setLoading(true);
         try {
-            const response = await axios.post(`/api/check-mutation/${transaction.amount}`, {
-                transaction: transaction.trx_id,
-                bank: transaction.payment_name, // replace with actual bank
-                account: transaction.no_rekening, // replace with actual account
-                reference: 'date', // replace with actual reference
-                key: formatDate(transaction.created_at), // replace with actual key
-                desc: '' // replace with actual description if needed
-            });
+            const response = await axios.post(`/api/mutations`, dataTrx
+//                 {
+//                 // transaction: transaction.trx_id,
+//                 // bank: transaction.payment_name, // replace with actual bank
+//                 // account: transaction.no_rekening, // replace with actual account
+//                 // reference: 'date', // replace with actual reference
+//                 // key: formatDate(transaction.created_at), // replace with actual key
+//                 // desc: '' // replace with actual description if needed
+//                 transaction : transaction.trx_id,
+//                 bank : transaction.no_rekening,
+// //                                'account' => $transaction->no_rekening,
+// //                                'reference' => 'date',
+//                 start_date : transaction.created_at,
+//                 end_date : transaction.expired_time,
+// //                                'key' => $transaction->created_at->format('Y-m-d'),
+// //                            'desc' => $desc // If needed
+//             }
+            );
 
 
             const result = response.data;
             console.log(result)
+            console.log(dataTrx)
 
             if (result.result === 'success' && result.message.length > 0) {
                 setMatched(true);
-                Inertia.reload()
+                // Inertia.reload()
+                console.log(result);
                 // You can also add other logic here if needed when matched
             } else {
                 setMatched(false);
-                Inertia.reload()
+                // Inertia.reload()
+                console.log(response)
             }
         } catch (error) {
             setError(error.message);
-            Inertia.reload()
+            // Inertia.reload()
+            console.log(error.message)
         } finally {
             setLoading(false);
-            Inertia.reload()
+            // Inertia.reload()
+            console.log(dataTrx)
         }
     };
 
@@ -506,7 +532,7 @@ export default function DetailTransaction({auth, transaction,bank_account ,payme
 
                                 </div>
                                 <div className="flex justify-between text-neutral-800">
-                                    <div className="text-white py-2 font-bold">Total</div>
+                                    <div className="dark:text-white py-2 font-bold">Total</div>
                                     {/*{{--                            <div class="font-bold font-bold text-blue-600">Rp. 20.000</div>--}}*/}
                                     <div className="inline-flex items-center gap-x-3">
                                         <div id="hs-clipboard-basic-total"

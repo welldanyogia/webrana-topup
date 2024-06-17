@@ -39,6 +39,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
     const [uniqueCode, setUniqueCode] = useState(null);
     const [qtyMinimum, setQtyMinimum] = useState(brand.qty_status === 0 || brand.qty_minimum === 0 ? null : brand.qty_minimum)
     const randomIndex = Math.floor(Math.random() * banners.length);
+    const appName = import.meta.env.VITE_APP_NAME;
 
 // Ambil banner secara acak
     const randomBanner = banners[randomIndex];
@@ -46,7 +47,6 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
 
-    console.log(brand.brand_desc)
 
     const handleIncrement = () => {
         setQtyMinimum((prevQty) => prevQty + 1);
@@ -482,15 +482,22 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                         </div>
                                     </div>
                                     <div className="text-sm dark:text-white space-y-2">
-                                        {/*<h4 className="text-sm font-bold">Order*/}
-                                        {/*    Produk {brand.brand_name} di {appName} Hanya Dalam*/}
-                                        {/*    Hitungan Detik!</h4>*/}
-                                        {/*<p className="mt-3 text-sm font-sans text-primary-900 dark:text-neutral-100">{appName} adalah*/}
-                                        {/*    platform digital yang menyediakan berbagai produk digital seperti game,*/}
-                                        {/*    pulsa, paket data, dan e-money. Kami menawarkan layanan cepat, mudah, dan*/}
-                                        {/*    aman untuk memenuhi*/}
-                                        {/*    kebutuhan digital Anda.</p>*/}
-                                        {Parser().parse(brand.brand_desc)}
+                                        {
+                                            brand.brand_desc !== null ? (
+                                                Parser().parse(brand.brand_desc)
+                                            ) : (
+                                                <>
+                                                    <h4 className="text-sm font-bold">
+                                                        Order Produk {brand.brand_name} di {appName} Hanya Dalam Hitungan Detik!
+                                                    </h4>
+                                                    <p className="mt-3 text-sm font-sans text-primary-900 dark:text-neutral-100">
+                                                        {appName} adalah platform digital yang menyediakan berbagai produk digital seperti game,
+                                                        pulsa, paket data, dan e-money. Kami menawarkan layanan cepat, mudah, dan aman untuk memenuhi
+                                                        kebutuhan digital Anda.
+                                                    </p>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -730,6 +737,11 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                                                         </div>
                                                                         <div className="border-t-2">
                                                                             <h2 className="text-xs font-bold uppercase text-start">{channel.name}</h2>
+                                                                            {
+                                                                                channel.interval  && (
+                                                                                    <p className="text-[8px] font-medium uppercase text-start">Pengecekan setiap {channel.interval} menit sekali</p>
+                                                                                )
+                                                                            }
                                                                         </div>
                                                                         {selectedPayment === channel.id ? (
                                                                             <span

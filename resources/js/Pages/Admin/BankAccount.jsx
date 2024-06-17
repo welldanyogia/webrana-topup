@@ -135,7 +135,7 @@ export default function BankAccount(props) {
                             <div className="sm:col-span-3">
                                 <label htmlFor="api_key"
                                        className="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-                                    API Key MutasiBank
+                                    Personal Token Moota App
                                 </label>
                                 <div className="hs-tooltip inline-block">
                                     <button type="button" className="hs-tooltip-toggle ms-1">
@@ -151,7 +151,7 @@ export default function BankAccount(props) {
                                     <span
                                         className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
                                         role="tooltip">
-                                    API Key MutasiBank.co.id anda
+                                    Personal Token Moota App anda
                                     </span>
                                 </div>
                             </div>
@@ -169,7 +169,7 @@ export default function BankAccount(props) {
                         </div>
                         <div className="mt-5 flex justify-start gap-x-2">
                         <span className='text-sm'>
-                            Jika belum memiliki akun MutasiBank, silahkan daftar{' '}
+                            Jika belum memiliki akun Moota App, silahkan daftar{' '}
                             <a
                                 href={route('admin.banktransfer.register')}
                                 className='underline text-blue-400 hover:text-blue-700'
