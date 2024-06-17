@@ -22,8 +22,8 @@ export default {
             colors: {
                 // 'primary' : colors.gray,
                 // 'primary-dark' : colors.gray,
-                'primary' : colors.blue,
-                'primary-dark' : colors.blue,
+                // 'primary' : colors.blue,
+                // 'primary-dark' : colors.blue,
                 'secondary' : colors.lime,
                 'blue': {
                     '50': '#e8efff',

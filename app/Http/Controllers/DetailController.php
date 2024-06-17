@@ -62,8 +62,10 @@ class DetailController extends Controller
                 'total_fee_percent' => 0, // Assuming no percentage fee for bank transfer
             ];
         });
-        if ($latestBT->status) {
-            $sortedGroupedChannels['Bank Transfer'] = $bankTransfers;
+        if ($latestBT) {
+            if ($latestBT->status) {
+                $sortedGroupedChannels['Bank Transfer'] = $bankTransfers;
+            }
         }
 
         $sortedGroupedChannels = $sortedGroupedChannels->sortBy(function ($group) {
