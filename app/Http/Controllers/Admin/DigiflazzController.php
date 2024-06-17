@@ -36,13 +36,15 @@ class DigiflazzController extends Controller
             $this->acc_token = null;
             $this->wa_owner = null;
         }
-        if ($latest) {
-            if ($latest->is_production === 0) {
-                $this->url = "https://api.digiflazz.com/v1";
-            } elseif ($latest->is_production === 1) {
-                $this->url = "https://api.digiflazz.com/v1";
-            }
-        }
+//        if ($latest) {
+//            if ($latest->is_production === 0) {
+//                $this->url = "https://api.digiflazz.com/v1";
+//            } elseif ($latest->is_production === 1) {
+//                $this->url = "https://api.digiflazz.com/v1";
+//            }
+//        }
+        $this->url = "https://api.digiflazz.com/v1";
+
     }
     public function index(){
         $latestAuth = DigiAuth::latest()->first();

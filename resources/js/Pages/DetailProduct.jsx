@@ -10,8 +10,9 @@ import ErrorAlert from "@/Components/ErrorAlert.jsx";
 import SignupModal from "@/Components/SignupModal.jsx";
 import SigninModal from "@/Components/SigninModal.jsx";
 import {Parser} from "html-to-react";
+import CarouselHero from "@/Components/CarouselHero.jsx";
 
-export default function DetailProduct({auth, brand, formInputs, sortedGroupedChannels}) {
+export default function DetailProduct({auth, brand,banners, formInputs, sortedGroupedChannels}) {
     const [activeGroup, setActiveGroup] = useState(null);
     const [activeTab, setActiveTab] = useState(
         brand && brand.products && brand.products.length > 0 ? brand.products[0].type_id : null
@@ -37,7 +38,10 @@ export default function DetailProduct({auth, brand, formInputs, sortedGroupedCha
     const [bankID, setBankID] = useState(null);
     const [uniqueCode, setUniqueCode] = useState(null);
     const [qtyMinimum, setQtyMinimum] = useState(brand.qty_status === 0 || brand.qty_minimum === 0 ? null : brand.qty_minimum)
-    const appName = import.meta.env.APP_NAME || 'Webrana';
+    const randomIndex = Math.floor(Math.random() * banners.length);
+
+// Ambil banner secara acak
+    const randomBanner = banners[randomIndex];
 
 
     const Layout = isAuthenticated ? Authenticated : GuestLayout;
@@ -337,7 +341,12 @@ export default function DetailProduct({auth, brand, formInputs, sortedGroupedCha
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 grid grid-cols-6  text-primary-900 dark:text-primary-dark-100 gap-6">
                             <div
-                                className='hidden  col-span-6 bg-primary-200 shadow-md rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800 h-40'>01
+                                className=' col-span-6 bg-primary-200 h-full shadow-md rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800 h-40'>
+                                {/*<CarouselHero/>*/}
+                                <img className="rounded-xl"
+                                     src={`/${randomBanner.banner_url}`}
+                                     alt={`Banner ${randomIndex + 1}`}
+                                />
                             </div>
                             <div className='col-span-2 max-md:col-span-6'>
                                 <div
@@ -345,7 +354,8 @@ export default function DetailProduct({auth, brand, formInputs, sortedGroupedCha
                                     <div className="flex flex-col gap-6 max-sm:grid">
                                         <div>
                                             <img className="rounded-xl"
-                                                 src={brand.image_url ? `/${brand.image_url}` : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
+                                                 src={brand.image_url ? `/${brand.image_url}` : '/juju.png'}
+                                                     // 'https://placehold.co/120x200'}
                                                  alt={brand.brand_name}/>
                                         </div>
                                         <div className="text-xl dark:text-white font-bold items-center h-auto">

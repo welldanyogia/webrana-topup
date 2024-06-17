@@ -7,8 +7,6 @@ function BrandSection() {
     const { categories } = usePage().props
     const [activeTab, setActiveTab] = useState(null);
     const [hoveredButton, setHoveredButton] = useState(null);
-    // const history = useHistory();
-    (categories)
 
     useEffect(() => {
         if (categories && categories.length > 0) {
@@ -48,7 +46,9 @@ function BrandSection() {
                     <div
                         key={tab.category_id}
                         id={`basic-tabs-${tab.category_id}`}
-                        className={`${activeTab === tab.category_id ? '' : 'hidden'} grid grid-cols-5 max-md:grid-cols-4 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5  max-sm:grid-cols-3 max-sm:gap-3`}
+                        className={`${activeTab === tab.category_id ? '' : 'hidden'}
+                        grid grid-cols-10 max-md:grid-cols-6 sm:grid-cols-6 sm:gap-3 lg:grid-cols-10  max-sm:grid-cols-3 max-sm:gap-3`
+                    }
                         role="tabpanel"
                         aria-labelledby={`basic-tabs-item-${tab.category_id}`}
                     >
@@ -58,7 +58,7 @@ function BrandSection() {
                                 <div>
                                     <Link
                                         key={card.brand_id}
-                                        className="relative shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-secondary-500"
+                                        className="relative shadow-sm rounded-xl grid-cols-1 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                                         href={`/brand/${card.brand_id}`}
                                         style={{backdropFilter: 'blur(10px)'}} // Efek blur pada latar belakang
                                         onMouseEnter={() => setHoveredButton(index)}
@@ -66,7 +66,10 @@ function BrandSection() {
                                     >
                                         <img
                                             className="rounded-xl"
-                                            src={card.image_url ? card.image_url : 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'}
+                                            src={card.image_url ? card.image_url :
+                                                'https://placehold.co/120x200'
+                                                // 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'
+                                        }
                                             alt={card.title}
                                         />
                                         {hoveredButton === index && (
@@ -77,7 +80,9 @@ function BrandSection() {
                                             </div>
                                         )}
                                     </Link>
-                                    <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-white text-center max-sm:hidden`}>{card.brand_name}</h1>
+                                    <div>
+                                    <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-white text-center font-bold mx-auto max-sm:hidden`}>{card.brand_name}</h1>
+                                    </div>
                                 </div>
                             ))}
             </div>
