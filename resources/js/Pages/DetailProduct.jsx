@@ -342,9 +342,9 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 grid grid-cols-6  text-primary-900 dark:text-primary-dark-100 gap-6">
                             <div
-                                className=' col-span-6 bg-primary-200 h-full shadow-md rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800 h-40'>
+                                className=' col-span-6 bg-primary-200 h-full max-sm:min-h-52 shadow-md rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800 h-40'>
                                 {/*<CarouselHero/>*/}
-                                <img className="rounded-xl"
+                                <img className="rounded-xl w-full h-full"
                                      src={`/${randomBanner.banner_url}`}
                                      alt={`Banner ${randomIndex + 1}`}
                                 />

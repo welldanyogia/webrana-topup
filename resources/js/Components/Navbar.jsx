@@ -22,8 +22,8 @@ export default function Navbar() {
                         {/*</svg>*/}
                         {/*<WebranaLogoBlack/>*/}
                         {/*<img src='/storage/logo_dark.png' className='w-40' alt={'Logo'}/>*/}
-                        <img className='hidden dark:flex w-40' src="/storage/logo_dark.png" alt="logo"/>
-                        <img className='flex dark:hidden w-40' src="/storage/logo_light.png" alt="logo"/>
+                        <img className='hidden dark:flex w-40 max-sm:w-20' src="/storage/logo_dark.png" alt="logo"/>
+                        <img className='flex dark:hidden w-40 max-sm:w-20' src="/storage/logo_light.png" alt="logo"/>
                     </a>
                     {/*// <!-- End Logo */}
                 </div>

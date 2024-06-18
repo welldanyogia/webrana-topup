@@ -14,8 +14,8 @@ export default function AuthNavbar({user, auth}) {
                     {/*// <!-- Logo -->*/}
                     <a className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
                        href="/" aria-label="Preline">
-                        <img className='hidden dark:flex w-40' src="/storage/logo_dark.png" alt="logo"/>
-                        <img className='flex dark:hidden w-40' src="/storage/logo_light.png" alt="logo"/>
+                        <img className='hidden dark:flex w-40 max-sm:w-20' src="/storage/logo_dark.png" alt="logo"/>
+                        <img className='flex dark:hidden w-40 max-sm:w-20' src="/storage/logo_light.png" alt="logo"/>
                     </a>
                     {/*// <!-- End Logo */}
                 </div>
