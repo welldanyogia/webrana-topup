@@ -1,4 +1,6 @@
 import Dropdown from "@/Components/Dropdown.jsx";
+import LiveDate from "@/Components/LiveDate.jsx";
+import Clock from "@/Components/LiveDate.jsx";
 
 export default function NavbarAdmin({user}){
     return (
@@ -24,8 +26,9 @@ export default function NavbarAdmin({user}){
 
 
 
-                        <div className="flex flex-row items-center justify-end gap-2">
+                        <div className="flex flex-row items-center justify-end gap-6">
 
+                            <Clock/>
                             <div className="hs-dropdown [--placement:bottom-right] relative border-blue-400 border-2 rounded-full inline-flex">
                                 <button id="hs-dropdown-with-header" type="button"
                                         className="w-[2.375rem] h-[2.375rem] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700">

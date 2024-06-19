@@ -61,6 +61,7 @@ export default function DetailBrand() {
         desc: '',
         product_status: ''
     });
+
     const handleModelChange= (event)=>{
         setModel(event)
         setValues({
@@ -277,7 +278,6 @@ export default function DetailBrand() {
 
     function handleCheckboxProductChange(e, product) {
         e.preventDefault()
-        (product)
         setIsCheckboxChecked(e.target.checked);
         router.post(`/admin/product/${product.id}`, {
             product_name: product.product_name,
@@ -331,14 +331,22 @@ export default function DetailBrand() {
                 </td>
                 <td className="h-px w-72 whitespace-nowrap">
                     <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.buyer_sku_code}</span>
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.buyer_sku_code}</span>
+                    </div>
+                </td>
+                <td className="size-px whitespace-nowrap">
+                    <div className="px-6 py-3">
+                        <span
+                            className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500'}`}>
+                            {product.type.type_name}
+                        </span>
                     </div>
                 </td>
                 <td className="h-px w-72 whitespace-nowrap">
                     <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.price)}</span>
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.price)}</span>
                     </div>
                 </td>
                 <td className="whitespace-nowrap">
@@ -356,16 +364,16 @@ export default function DetailBrand() {
                 </td>
                 <td className="h-px w-72 whitespace-nowrap">
                     <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.selling_price - product.price)}</span>
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.selling_price - product.price)}</span>
                     </div>
                 </td>
                 {
                     brand.processed_by === 'digiflazz' && (
                         <td className="h-px w-72 whitespace-nowrap">
                             <div className="px-6 py-3">
-                                                <span
-                                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.seller_name}</span>
+                                <span
+                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.seller_name}</span>
                             </div>
                         </td>
                     )
@@ -1004,6 +1012,14 @@ export default function DetailBrand() {
                                           <span
                                               className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
                                             Product Code
+                                          </span>
+                                        </div>
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-start">
+                                        <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            Type
                                           </span>
                                         </div>
                                     </th>

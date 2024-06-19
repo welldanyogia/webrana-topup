@@ -287,8 +287,10 @@ export default function Category() {
                                             Sync with Digiflazz
                                         </a>
 
-                                        <a className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
-                                           href="#" onClick={openAddModal}>
+                                        <button className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                                           type="button" onClick={openAddModal}
+                                           data-hs-overlay="#hs-static-backdrop-modal-category"
+                                        >
                                             <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                                  width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                  stroke="currentColor" strokeWidth="2" strokeLinecap="round"
@@ -297,11 +299,11 @@ export default function Category() {
                                                 <path d="M12 5v14"/>
                                             </svg>
                                             Add category
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
-                                <AddCategoryModal isOpen={isAddModalOpen} onClose={closeAddModal}/>
                             </div>
+                                <AddCategoryModal isOpen={isAddModalOpen} onClose={closeAddModal}/>
                             <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
                                 <thead className="bg-gray-50 dark:bg-neutral-800">
                                 <tr>

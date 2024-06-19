@@ -68,9 +68,11 @@ class BrandController extends Controller
             ->first();
 //        $brand = Brand::find($id)->with('products')->get();;
         $products = Product::where('brand_id', $id)
+            ->with('type')
             ->orderBy('price', 'asc')
             ->paginate();
         $productsAll = Product::where('brand_id', $id)
+            ->with('type')
             ->orderBy('price', 'asc')->get();
         $formInputs = FormInputBrand::where('brand_id',$id)->with('options')->get();
 //        $optionsInput = OptionSelectInput::where('form_input_id',$formInputs->id)->get();
