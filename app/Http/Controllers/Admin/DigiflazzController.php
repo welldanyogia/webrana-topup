@@ -12,6 +12,7 @@ use App\Models\Type;
 use App\Services\FonnteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -49,6 +50,9 @@ class DigiflazzController extends Controller
     public function index(){
         $latestAuth = DigiAuth::latest()->first();
         $ipAddress = $this->getServerIP();
+        $existingProducts = Product::whereHas('brand', function($query) {
+            $query->where('processed_by', 'manual');
+        })->get();
 
         $balance = null;
         if ($latestAuth) {
@@ -61,6 +65,7 @@ class DigiflazzController extends Controller
             'digi_auth' => $latestAuth,
             'digi_balance' => $balance,
             'ipAddress' => $ipAddress,
+            'existingProducts' => $existingProducts,
         ]);
     }
 
@@ -93,48 +98,73 @@ class DigiflazzController extends Controller
 
     public function fetchAndStorePriceList()
     {
-        Log:info('test '.now());
-        $this->sendMessage();
-        // Validasi request
+        Log::info('Fetching and storing price list ' . now());
+
+
+        // Validasi request dan buat tanda tangan
         $latestAuth = DigiAuth::latest()->first();
         $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');
-        // Mengirim request ke endpoint API
+
+        // Kirim permintaan ke endpoint API
         $response = Http::post($this->url.'/price-list', [
-            'cmd' => 'prepaid', // atau 'cmd' => 'postpaid' sesuai kebutuhan
+            'cmd' => 'prepaid', // atau sesuai kebutuhan 'cmd' => 'postpaid'
             'username' => $latestAuth->username,
             'sign' => $sign,
         ]);
 
-        // Memeriksa apakah responsenya berhasil
+        // Periksa apakah respons berhasil
         if ($response->successful()) {
-            // Mendapatkan data dari response
+            // Ambil data dari respons
             $priceList = $response->json()['data'];
 
-            // Ambil semua produk yang ada di database sebelum memproses response
-            $existingProducts = Product::pluck('buyer_sku_code')->all();
+            // Ambil semua produk yang ada di database sebelum memproses respons
+            $existingProducts = Product::whereHas('brand', function($query) {
+                $query->where('processed_by', 'digiflazz');
+            })->get();
+            $existingProductCodes = $existingProducts->pluck('buyer_sku_code')->toArray();
 
-            // Menyimpan data brand, category, dan type ke dalam database
+//            Log::info('Existing Productssss: ' . $existingProducts);
+
+            // Simpan SKU yang akan diproses
             $products = [];
+//            $productsUpdated = [];
+
             foreach ($priceList as $item) {
                 $status = $item['seller_product_status'] && $item['buyer_product_status'];
+
+                // Cari produk yang sudah ada di database berdasarkan buyer_sku_code
+                $existingProduct = Product::where('buyer_sku_code', $item['buyer_sku_code'])->first();
+
+                // Logging informasi produk yang ada
+//                Log::info('Existing Product: ' . json_encode($existingProduct));
+
+
                 // Menyimpan hanya jika seller_product_status dan buyer_product_status bernilai true
                 if ($status) {
                     $this->storeProduct($item, $status);
+                    $productsUpdated[] = $item['buyer_sku_code'];
                 } else {
-                    // Jika salah satu status bernilai false, cek apakah data sudah tersimpan sebelumnya
-                    $existingProduct = Product::where('buyer_sku_code', $item['buyer_sku_code'])->first();
+                    // Jika salah satu status bernilai false
                     if ($existingProduct) {
-                        // Jika sudah tersimpan, hapus data atau ubah status produk menjadi false
+                        // Hapus data atau ubah status produk menjadi false
                         $this->storeProduct($item, $status);
+                        $productsUpdated[] = $item['buyer_sku_code'];
                     }
                 }
 
                 // Simpan SKU yang diproses ke dalam array
                 $products[] = $item['buyer_sku_code'];
+//                $message = 'Product Updated ' . implode(', ',$productsUpdated);
+//                $this->sendMessage($message);
+
             }
 
-            // Cari produk yang ada di database tapi tidak ada di response dan hapus
-            $productsToDelete = array_diff($existingProducts, $products);
+            // Cari produk yang ada di database tapi tidak ada di respons dan hapus
+            $productsToDelete = array_diff($existingProductCodes, $products);
+//            Log::info('Products to delete: ' . implode(', ', $productsToDelete));
+//            Log::info('Existing Product: ' . implode(', ', $existingProducts));
+
+            // Hapus produk yang tidak diperlukan
             Product::whereIn('buyer_sku_code', $productsToDelete)->delete();
 
             return redirect()->back()->with(['flash' => ['success' => 'Price list fetched and stored successfully.']]);
@@ -142,6 +172,7 @@ class DigiflazzController extends Controller
             return redirect()->back()->with(['flash' => ['error' => 'Failed to fetch price list.']]);
         }
     }
+
 
     private function storeProduct($item, $status)
     {
@@ -216,7 +247,7 @@ class DigiflazzController extends Controller
         }
     }
 
-    public function sendMessage(): \Illuminate\Http\RedirectResponse
+    public function sendMessage($message): \Illuminate\Http\RedirectResponse
     {
 //        $request->validate([
 //            'target' => $this->wa_owner,
@@ -225,7 +256,7 @@ class DigiflazzController extends Controller
 //        ]);
         $data = [
             'target' => $this->wa_owner,
-            'message' => 'Product Updated '. now(),
+            'message' => $message. now(),
         ];
 
         try {

@@ -4,12 +4,14 @@ import {router} from "@inertiajs/react";
 
 
 export default function Digiflazz(props) {
-    const {digi_auth, digi_balance,ipAddress} = props
+    const {digi_auth, digi_balance,ipAddress,existingProducts} = props
     const [values, setValues] = useState({ // Form fields
         username_digiflazz: digi_auth?.username,
         api_key_digiflazz: digi_auth?.api_key,
         is_production: digi_auth?.is_production
     });
+
+    console.log(existingProducts)
 
     function handleChange(e) {
         const key = e.target.id;
