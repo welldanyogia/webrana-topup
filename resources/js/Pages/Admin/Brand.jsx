@@ -1,6 +1,4 @@
 import AuthenticatedAdmin from "@/Layouts/AuthenticatedAdminLayout.jsx";
-import Alert from "@/Components/Alert.jsx";
-import AddCategoryModal from "@/Components/AddCategoryModal.jsx";
 import React, {useEffect, useState} from "react";
 import {router, usePage} from "@inertiajs/react";
 import SuccessAlert from "@/Components/SuccessAlert.jsx";
@@ -39,6 +37,16 @@ export default function Brand() {
         setBrandNames(initialBrandNames);
     }, [brands]);
 
+    function reset() {
+        setDataStore({
+            brand_name: "",
+            category_id:"",
+            processed_by:"",
+            brand_status:"",
+            image_url: ""
+        })
+    }
+
     const handleInputChange = (e, brandId) => {
         setBrandNames({
             ...brandNames,
@@ -57,7 +65,7 @@ export default function Brand() {
 
     function handleStore(e) {
         e.preventDefault()
-        router.post('/admin/brand/store/data',dataStore)
+        router.post('/admin/brand/store/data',dataStore,{onFinish:reset})
     }
 
     function handleSync(e) {
@@ -198,30 +206,29 @@ export default function Brand() {
                             brand.brand_status === 0 && (
                                 <span
                                     className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-red-100 text-red-800 rounded-full dark:bg-red-500/10 dark:text-red-500">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                             viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
-                                                             className="size-4">
-                                                          <path strokeLinecap="round" strokeLinejoin="round"
-                                                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                                        </svg>
-
-                                                        Nonactive
-                                                      </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+                                         className="size-4">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                              d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                    Nonactive
+                                </span>
                             )
                         }
                     </div>
                 </td>
                 <td className="size-px whitespace-nowrap">
                     <div className="px-6 py-3">
-                                            <span
-                                                className="text-sm text-gray-500 dark:text-neutral-500">{new Date(brand.updated_at).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric',
-                                                hour: 'numeric',
-                                                minute: 'numeric',
-                                                second: 'numeric'
-                                            })}</span>
+                        <span
+                            className="text-sm text-gray-500 dark:text-neutral-500">{new Date(brand.updated_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            second: 'numeric'
+                            })}</span>
                     </div>
                 </td>
                 <td className="size-px whitespace-nowrap">
@@ -473,6 +480,7 @@ export default function Brand() {
                                     Sync with Digiflazz
                                 </a>
                                 <button type="button"
+                                        onClick={reset}
                                         className="hs-collapse-toggle hs-collapse-open:bg-red-700 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
                                         id="hs-basic-collapse" data-hs-collapse="#hs-basic-collapse-heading">
                                     <div className="hs-collapse-open:hidden flex">

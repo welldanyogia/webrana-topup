@@ -1,7 +1,7 @@
 import {Head} from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import Authenticated from "@/Layouts/AuthenticatedLayout.jsx";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import TextFieldUser from "@/Components/TextFieldUser.jsx";
 import NumberFieldUser from "@/Components/NumberFieldUser.jsx";
 import SelectFieldUser from "@/Components/SelectFieldUser.jsx";
@@ -18,6 +18,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
     const [activeTab, setActiveTab] = useState(
         brand && brand.products && brand.products.length > 0 ? brand.products[0].type_id : null
     );
+    const editorRef = useRef();
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedProductName, setSelectedProductName] = useState(null);
     const [selectedProductBrand, setSelectedProductBrand] = useState(brand.brand_name);
@@ -486,7 +487,6 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                         {
                                             brand.brand_desc !== null ? (
                                                 <Editor value={brand.brand_desc} toolbar={false} setValue={() => { }} readOnly={true} />
-
                                             ) : (
                                                 <>
                                                     <h4 className="text-sm font-bold">
@@ -511,7 +511,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">1
                                         </div>
                                         <div
-                                            className="dark:text-white font-bold text-center text-sm">Masukkan {formNamesString}
+                                            className="dark:text-white font-bold text-center text-sm">Masukkan Detail Pesanan
                                         </div>
                                     </div>
                                     <div className="text-xs text-start my-4 dark:text-white mx-auto">
@@ -699,7 +699,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                                                   strokeLinejoin="round" strokeWidth="2"
                                                                   d="M9 5 5 1 1 5"/>
                                                         </svg>
-                                                        <input className="hidden" id="payment_type"
+                                                        <input className="hidden" id={`payment_type_${group.replace(/\s+/g, '_').toLowerCase()}`}
                                                                value={group.replace(/\s+/g, '_').toLowerCase()}
                                                                readOnly/>
                                                     </button>

@@ -96,7 +96,6 @@ const RecentTransactions = () => {
 
         const intervalId = setInterval(() => {
             fetchData();
-            setLoading(true)
         }, 2000);
 
         return () => clearInterval(intervalId);
