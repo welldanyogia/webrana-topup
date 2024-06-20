@@ -101,7 +101,7 @@ class DigiflazzController extends Controller
         Log::info('Fetching and storing price list ' . now());
 
 
-        $message = 'Fetching and storing price list ' . now();
+        $message = config('app_name').' Fetching and storing price list ' . now();
         $this->sendMessage($message);
         // Validasi request dan buat tanda tangan
         $latestAuth = DigiAuth::latest()->first();
