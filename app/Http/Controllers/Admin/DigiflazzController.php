@@ -10,6 +10,7 @@ use App\Models\Fonnte;
 use App\Models\Product;
 use App\Models\Type;
 use App\Services\FonnteService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -101,7 +102,7 @@ class DigiflazzController extends Controller
         Log::info('Fetching and storing price list ' . now());
 
 
-        $message = config('app_name').' Fetching and storing price list ' . now();
+        $message = config('app.name') . " Fetching and storing price list\n" . Carbon::now()->locale('id')->translatedFormat('d F Y H:i:s');
         $this->sendMessage($message);
         // Validasi request dan buat tanda tangan
         $latestAuth = DigiAuth::latest()->first();
