@@ -13,6 +13,6 @@ Artisan::command('app:fetch-price-list', function () {
     $this->comment('Price list fetched and stored successfully.');
 })->purpose('Update price lsit')->everyFiveMinutes();
 
-Schedule::command('app:fetch-price-list')->everyMinute();
+Schedule::command('app:fetch-price-list')->everyFiveMinutes();
 //Schedule::command(\App\Console\Commands\FetchPriceList::class, ['app:fetch-price-list', '--force'])->everyMinute();
 
