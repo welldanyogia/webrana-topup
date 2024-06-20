@@ -101,6 +101,8 @@ class DigiflazzController extends Controller
         Log::info('Fetching and storing price list ' . now());
 
 
+        $message = 'Fetching and storing price list ' . now();
+        $this->sendMessage($message)
         // Validasi request dan buat tanda tangan
         $latestAuth = DigiAuth::latest()->first();
         $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');
