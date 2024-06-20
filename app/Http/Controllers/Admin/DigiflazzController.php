@@ -102,8 +102,8 @@ class DigiflazzController extends Controller
         Log::info('Fetching and storing price list ' . now());
 
 
-        $message = config('app.name') . " Fetching and storing price list\n" . Carbon::now()->locale('id')->translatedFormat('d F Y H:i:s');
-        $this->sendMessage($message);
+//        $message = config('app.name') . " Fetching and storing price list\n" . Carbon::now()->locale('id')->translatedFormat('d F Y H:i:s');
+//        $this->sendMessage($message);
         // Validasi request dan buat tanda tangan
         $latestAuth = DigiAuth::latest()->first();
         $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');
