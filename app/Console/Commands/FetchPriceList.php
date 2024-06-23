@@ -28,7 +28,7 @@ class FetchPriceList extends Command
     public function __construct(FonnteService $fonnteService)
     {
         parent::__construct();
-//        $this->fonnteService = $fonnteService;
+        $this->fonnteService = $fonnteService;
     }
 
     /**
@@ -36,8 +36,8 @@ class FetchPriceList extends Command
      */
     public function handle()
     {
-//        info("Cron Job running at ". now());
-//        $controller = new DigiflazzController($this->fonnteService); // Instantiate your controller
-//        $controller->fetchAndStorePriceList(); // Call your method
+        info("Cron Job running at ". now());
+        $controller = new DigiflazzController($this->fonnteService); // Instantiate your controller
+        $controller->fetchAndStorePriceList(); // Call your method
     }
 }
