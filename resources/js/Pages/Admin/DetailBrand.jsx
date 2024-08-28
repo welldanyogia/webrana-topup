@@ -12,6 +12,7 @@ import AddProduct from "@/Components/AddProduct.jsx";
 import {Inertia} from "@inertiajs/inertia";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
 import QuillRichTextEditor from "@/Components/QuillRichTextEditor.jsx";
+import {OrderModal} from "@/Components/order-dialog.jsx";
 
 export default function DetailBrand() {
     const {flash, brand, categories, products,productsAll, formInputs} = usePage().props
@@ -31,6 +32,7 @@ export default function DetailBrand() {
     const [productSellingPrices, setProductSellingPrices] = useState({})
     const [keyword, setKeyword] = useState('');
     const [model,setModel] = useState(brand.brand_desc);
+    const [isOrderOpen, setIsOrderOpen] = useState(false)
     const [values, setValues] = useState({
         brand_name: brand.brand_name,
         category_id: brand.category.category_id,
@@ -309,6 +311,8 @@ export default function DetailBrand() {
 
     function renderProductRow(product, index) {
         return (
+            <>
+            <OrderModal product={product} isOpen={isOrderOpen}/>
             <tr key={product.id}>
                 <td className="size-px whitespace-nowrap">
                     <div className="ps-6 py-3">
@@ -448,6 +452,7 @@ export default function DetailBrand() {
                 {/*<EditProductModal product={product}/>*/}
 
             </tr>
+            </>
         )
     }
 

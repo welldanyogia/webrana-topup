@@ -14,7 +14,7 @@ Route::get('/admin/digiflazz/fetch',[\App\Http\Controllers\Admin\DigiflazzContro
 Route::get('/settings/app-name', [\App\Http\Controllers\WebIdentityController::class, 'getAppName']);
 Route::post('/settings/app-name', [\App\Http\Controllers\WebIdentityController::class, 'setAppName']);
 Route::post('/brands/{id}',[BrandController::class,'update']);
-Route::get('/tripay/getpaymentmethod',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'paymentChannel'])->name('tripay.update.paymentChannel');
+//Route::get('/tripay/getpaymentmethod',[\App\Http\Controllers\Admin\PaymentGatewayController::class,'paymentChannel'])->name('tripay.update.paymentChannel');
 Route::post('/addform',[\App\Http\Controllers\FormInputController::class,'store']);
 Route::get('/bank/bank-account', [\App\Http\Controllers\BankAccountController::class, 'getAllAccounts']);
 Route::get('/bank-list', [BankAccountController::class, 'getList']);

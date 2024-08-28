@@ -231,7 +231,7 @@ export default function AdminDashboard(props) {
             }
         >
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid w-full sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {/*<!-- Card */}
                 <div
                     className="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
