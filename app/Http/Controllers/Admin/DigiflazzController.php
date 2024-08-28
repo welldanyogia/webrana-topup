@@ -97,77 +97,138 @@ class DigiflazzController extends Controller
         return null;
     }
 
+//    public function fetchAndStorePriceList()
+//    {
+//        Log::info('Fetching and storing price list ' . now());
+//
+//
+////        $message = config('app.name') . " Fetching and storing price list\n" . Carbon::now()->locale('id')->translatedFormat('d F Y H:i:s');
+////        $this->sendMessage($message);
+//        // Validasi request dan buat tanda tangan
+//        $latestAuth = DigiAuth::latest()->first();
+//        $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');
+//
+//        // Kirim permintaan ke endpoint API
+//        $response = Http::post($this->url.'/price-list', [
+//            'cmd' => 'prepaid', // atau sesuai kebutuhan 'cmd' => 'postpaid'
+//            'username' => $latestAuth->username,
+//            'sign' => $sign,
+//        ]);
+//
+//        // Periksa apakah respons berhasil
+//        if ($response->successful()) {
+//            // Ambil data dari respons
+//            $priceList = $response->json()['data'];
+//
+//            // Ambil semua produk yang ada di database sebelum memproses respons
+//            $existingProducts = Product::whereHas('brand', function($query) {
+//                $query->where('processed_by', 'digiflazz');
+//            })->get();
+//            $existingProductCodes = $existingProducts->pluck('buyer_sku_code')->toArray();
+//
+////            Log::info('Existing Productssss: ' . $existingProducts);
+//
+//            // Simpan SKU yang akan diproses
+//            $products = [];
+////            $productsUpdated = [];
+//
+//            foreach ($priceList as $item) {
+//                $status = $item['seller_product_status'] && $item['buyer_product_status'];
+//
+//                // Cari produk yang sudah ada di database berdasarkan buyer_sku_code
+//                $existingProduct = Product::where('buyer_sku_code', $item['buyer_sku_code'])->first();
+//
+//                // Logging informasi produk yang ada
+////                Log::info('Existing Product: ' . json_encode($existingProduct));
+//
+//
+//                // Menyimpan hanya jika seller_product_status dan buyer_product_status bernilai true
+//                if ($status) {
+//                    $this->storeProduct($item, $status);
+//                    $productsUpdated[] = $item['buyer_sku_code'];
+//                } else {
+//                    // Jika salah satu status bernilai false
+//                    if ($existingProduct) {
+//                        // Hapus data atau ubah status produk menjadi false
+//                        $this->storeProduct($item, $status);
+//                        $productsUpdated[] = $item['buyer_sku_code'];
+//                    }
+//                }
+//
+//                // Simpan SKU yang diproses ke dalam array
+//                $products[] = $item['buyer_sku_code'];
+////                $message = 'Product Updated ' . implode(', ',$productsUpdated);
+////                $this->sendMessage($message);
+//
+//            }
+//
+//            // Cari produk yang ada di database tapi tidak ada di respons dan hapus
+//            $productsToDelete = array_diff($existingProductCodes, $products);
+////            Log::info('Products to delete: ' . implode(', ', $productsToDelete));
+////            Log::info('Existing Product: ' . implode(', ', $existingProducts));
+//
+//            // Hapus produk yang tidak diperlukan
+//            Product::whereIn('buyer_sku_code', $productsToDelete)->delete();
+//
+//            return redirect()->back()->with(['flash' => ['success' => 'Price list fetched and stored successfully.']]);
+//        } else {
+//            return redirect()->back()->with(['flash' => ['error' => 'Failed to fetch price list.']]);
+//        }
+//    }
+
     public function fetchAndStorePriceList()
     {
         Log::info('Fetching and storing price list ' . now());
 
-
-//        $message = config('app.name') . " Fetching and storing price list\n" . Carbon::now()->locale('id')->translatedFormat('d F Y H:i:s');
-//        $this->sendMessage($message);
-        // Validasi request dan buat tanda tangan
         $latestAuth = DigiAuth::latest()->first();
         $sign = md5($latestAuth->username . $latestAuth->api_key . 'prepaid');
 
         // Kirim permintaan ke endpoint API
         $response = Http::post($this->url.'/price-list', [
-            'cmd' => 'prepaid', // atau sesuai kebutuhan 'cmd' => 'postpaid'
+            'cmd' => 'prepaid',
             'username' => $latestAuth->username,
             'sign' => $sign,
         ]);
 
         // Periksa apakah respons berhasil
         if ($response->successful()) {
-            // Ambil data dari respons
             $priceList = $response->json()['data'];
 
-            // Ambil semua produk yang ada di database sebelum memproses respons
             $existingProducts = Product::whereHas('brand', function($query) {
                 $query->where('processed_by', 'digiflazz');
             })->get();
             $existingProductCodes = $existingProducts->pluck('buyer_sku_code')->toArray();
 
-//            Log::info('Existing Productssss: ' . $existingProducts);
-
-            // Simpan SKU yang akan diproses
             $products = [];
-//            $productsUpdated = [];
+            $productsUpdated = [];
 
             foreach ($priceList as $item) {
+                // Check if buyer_sku_code starts with "WS"
+                if (!Str::startsWith($item['buyer_sku_code'], 'WS')) {
+                    continue; // Skip processing if it doesn't start with "WS"
+                }
+
                 $status = $item['seller_product_status'] && $item['buyer_product_status'];
 
-                // Cari produk yang sudah ada di database berdasarkan buyer_sku_code
                 $existingProduct = Product::where('buyer_sku_code', $item['buyer_sku_code'])->first();
 
-                // Logging informasi produk yang ada
-//                Log::info('Existing Product: ' . json_encode($existingProduct));
-
-
-                // Menyimpan hanya jika seller_product_status dan buyer_product_status bernilai true
+                // Process only if both statuses are true
                 if ($status) {
                     $this->storeProduct($item, $status);
                     $productsUpdated[] = $item['buyer_sku_code'];
                 } else {
-                    // Jika salah satu status bernilai false
                     if ($existingProduct) {
-                        // Hapus data atau ubah status produk menjadi false
+                        // Update or deactivate product if necessary
                         $this->storeProduct($item, $status);
                         $productsUpdated[] = $item['buyer_sku_code'];
                     }
                 }
 
-                // Simpan SKU yang diproses ke dalam array
                 $products[] = $item['buyer_sku_code'];
-//                $message = 'Product Updated ' . implode(', ',$productsUpdated);
-//                $this->sendMessage($message);
-
             }
 
-            // Cari produk yang ada di database tapi tidak ada di respons dan hapus
             $productsToDelete = array_diff($existingProductCodes, $products);
-//            Log::info('Products to delete: ' . implode(', ', $productsToDelete));
-//            Log::info('Existing Product: ' . implode(', ', $existingProducts));
 
-            // Hapus produk yang tidak diperlukan
             Product::whereIn('buyer_sku_code', $productsToDelete)->delete();
 
             return redirect()->back()->with(['flash' => ['success' => 'Price list fetched and stored successfully.']]);
@@ -175,7 +236,6 @@ class DigiflazzController extends Controller
             return redirect()->back()->with(['flash' => ['error' => 'Failed to fetch price list.']]);
         }
     }
-
 
     private function storeProduct($item, $status)
     {

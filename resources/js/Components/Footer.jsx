@@ -8,7 +8,7 @@ function Footer() {
         // <!-- ========== FOOTER ========== -->
         <footer className="mt-20 w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
             {/*<!-- Grid */}
-            <div className="grid grid-rows-3 grid-flow-col gap-4 md:grid-cols-3 lg:grid-cols-3 gap-x-20 gap-y-5 mb-10">
+            <div className="grid grid-rows-3 grid-flow-col gap-4 md:grid-cols-3 lg:grid-cols-3 gap-x-20 gap-y-5 mb-10 overflow-hidden">
                 {/*<div className="col-span-full hidden lg:col-span-1 lg:block py-6">*/}
                 {/*    <img className='hidden dark:flex w-1/2 mx-auto' src="/storage/logo_dark.png" alt="logo"/>*/}
                 {/*    <img className='flex dark:hidden w-1/2 mx-auto' src="/storage/logo_light.png" alt="logo"/>*/}
@@ -67,6 +67,8 @@ function Footer() {
                     </div>
 
                 </div>
+
+
                 <div className='row-span-2 col-span-1 '>
                     <h4 className="text-xs font-semibold text-primary-900 uppercase dark:text-neutral-100">
                         Dukungan
