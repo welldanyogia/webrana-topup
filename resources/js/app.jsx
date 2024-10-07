@@ -8,7 +8,7 @@ import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import {BrowserRouter, Router, useLocation} from 'react-router-dom';
-import "preline/preline";
+// import "preline/preline";
 import {HSAccordion, HSDropdown, HSOverlay, HSSelect, HSStaticMethods, HSTooltip} from "preline";
 import ApexCharts from 'apexcharts'
 import ClipboardJS from "clipboard";
