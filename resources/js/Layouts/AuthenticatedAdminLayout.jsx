@@ -6,8 +6,6 @@ import Breadcrumb from "@/Components/BreadCrumb.jsx";
 import DigiflazzConfigurationAlert from "@/Components/DigiflazzConfigurationAlert.jsx";
 import PaymentGatewayConfigurationAlert from "@/Components/PaymentGatewayConfigurationAlert.jsx";
 import WhatsappGatewayConfigurationAlert from "@/Components/WhatsappGatewayConfigurationAlert.jsx";
-import AdminPanelLayout from "@/Components/admin-panel/admin-panel-layout";
-import {ContentLayout} from "@/Components/admin-panel/content-layout";
 
 export default function AuthenticatedAdmin({auth, user, digi_auths,fonntes,tripays, children}) {
     return (
