@@ -1,6 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
-import 'preline';
+import 'preline'
 
 
 import { render } from "react-dom";
