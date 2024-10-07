@@ -11,7 +11,7 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
         // './node_modules/preline/preline.js',
-        'node_modules/preline/dist/*.js',
+        './node_modules/preline/dist/*.js',
         "node_modules/flowbite/**/*.js",
     ],
 
