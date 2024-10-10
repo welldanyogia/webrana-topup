@@ -77,13 +77,16 @@ function Footer() {
                     <div className="mt-3 grid space-y-3 text-sm">
                         <p><a
                             className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200"
-                            href="https://instagram.com/">Instagram</a></p>
+                            href="https://instagram.com/webrana.store/" target="_blank" 
+                rel="noopener noreferrer">Instagram</a></p>
                         <p><a
                             className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200"
-                            href="#">Whatsapp</a></p>
+                            href="https://wa.me/message/R3UJIIT5GX4QB1" target="_blank" 
+                rel="noopener noreferrer">Whatsapp</a></p>
                         <p><a
                             className="inline-flex gap-x-2 text-primary-600 hover:text-primary-800 dark:text-neutral-400 dark:hover:text-neutral-200"
-                            href="#">Email</a></p>
+                            href="https://x.com/Webranas" target="_blank" 
+                rel="noopener noreferrer">Twitter/X</a></p>
                     </div>
                 </div>
 

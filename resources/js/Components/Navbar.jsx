@@ -32,7 +32,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-x-2 ms-auto py-1 md:ps-6 md:order-3 md:col-span-3">
                     <div className='max-sm:hidden space-x-4'>
                     <button
-                        type="button" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-primary-200 text-black hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white" data-hs-overlay="#hs-modal-signin">
+                        type="button" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-primary-200 text-black hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white" data-hs-overlay="#hs-basic-modal">
                             Sign in
                     </button>
                     <button data-hs-overlay="#hs-modal-signup"
@@ -70,7 +70,7 @@ export default function Navbar() {
                             <button
                                 type="button"
                                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-primary-200 text-black hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white"
-                                data-hs-overlay="#hs-modal-signin">
+                                data-hs-overlay="#hs-basic-modal">
                                 Sign in
                             </button>
                             <button
