@@ -19,7 +19,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-package-lock.json
-composer.lock
+/package-lock.json
+/composer.lock
 /public/storage/banners/
 /public/storage/
