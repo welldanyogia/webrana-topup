@@ -58,7 +58,7 @@
         "katex": "^0.16.10",
         "lodash": "^4.17.21",
         "lucide-react": "^0.397.0",
-        "preline": "^2.3.0",
+        "preline": "^2.4.0",
         "prop-types": "^15.8.1",
         "quill": "^2.0.2",
         "react-apexcharts": "^1.4.1",
