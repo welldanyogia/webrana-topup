@@ -97,6 +97,10 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                                                 ID
                                             </th>
                                             <th scope="col"
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-white">Transaksi
+                                                Produk
+                                            </th>
+                                            <th scope="col"
                                                 className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-white">Nomor
                                                 Handphone
                                             </th>
@@ -124,6 +128,9 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                                                       href={route('detail.transaction', searchResult.trx_id)}>
                                                     {searchResult.trx_id}
                                                 </Link>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
+                                                {transaction.product_name}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
                                                 {searchResult.phone_number}
@@ -204,6 +211,10 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                                                 ID
                                             </th>
                                             <th scope="col"
+                                                className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-white">
+                                                Produk
+                                            </th>
+                                            <th scope="col"
                                                 className="px-6 py-3 text-start text-xs font-medium text-primary-500 uppercase dark:text-white">Nomor
                                                 Handphone
                                             </th>
@@ -226,6 +237,9 @@ export default function TransactionHistory({auth, latestTransaction, searchResul
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
                                                         {maskValue(transaction.trx_id)}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
+                                                        {transaction.product_name}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-800 dark:text-neutral-200">
                                                         {maskValue(transaction.phone_number)}
