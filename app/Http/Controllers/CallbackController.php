@@ -348,7 +348,7 @@ class CallbackController extends Controller
 
         $message .= "\n\nDetail Order " .strtoupper($transaction->product_brand). " :\n";
         $message .= "{$formattedDataTrx}\n";
-        $message .= "*Whatsapp :* {$transaction->phone_number}\n\n"
+        $message .= "*Whatsapp :* {$transaction->phone_number}\n\n";
         $message .= "Terima kasih,\n";
         $message .= "Tim {$appName}";
 
