@@ -29,11 +29,11 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                'primary' : colors.gray,
-                'primary-dark' : colors.gray,
+                'primary' : colors.blue,
+                'primary-dark' : colors.blue,
                 // 'primary' : colors.blue,
                 // 'primary-dark' : colors.blue,
-                'secondary' : colors.blue,
+                'secondary' : colors.dodger,
                 // 'blue': {
                 //     '50': '#e8efff',
                 //     '100': '#d5e1ff',
@@ -60,6 +60,20 @@ export default {
                     '900': '#1a418e',
                     '950': '#152956',
                 },
+                'dodger': {
+                    '50': '#eff9ff',
+                    '100': '#dcf0fd',
+                    '200': '#c0e7fd',
+                    '300': '#95d9fb',
+                    '400': '#63c1f7',
+                    '500': '#3fa5f2',
+                    '600': '#2788e7',
+                    '700': '#2172d4',
+                    '800': '#215cac',
+                    '900': '#204f88',
+                    '950': '#183153',
+                },
+
             },
             animation: {
                 'infinite-scroll': 'infinite-scroll 25s linear infinite',
