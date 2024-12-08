@@ -191,49 +191,115 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
         }
     };
 
-    function handleProductButton(e, product) {
-        let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '')
-        let concatenatedValues = Object.values(values).join('');
+    // function handleProductButton(e, product) {
+    //     let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '')
+    //     let concatenatedValues = Object.values(values).join('');
+    //
+    //     validateInputs()
+    //
+    //     if (gamecode === 'mobilelegends') {
+    //         gamecode = 'mobilelegend'
+    //     }
+    //     e.preventDefault()
+    //     if (gamecode === 'mobilelegend' || gamecode === 'freefire') {
+    //         axios.post('/api/checkusername', {
+    //             brand_name: gamecode,
+    //             user_id: concatenatedValues
+    //         }).then(response => {
+    //             // Tangani respons yang diterima dari API
+    //             const data = response.data;
+    //             if (data.status === 0 && data.rc === 2) {
+    //                 document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
+    //                 setMessage(`${data.error_msg}`);
+    //                 setIsAlert(true);
+    //                 return
+    //                 // alert('Data tidak ditemukan'); // Tampilkan alert jika data tidak ditemukan
+    //             }
+    //             if (data?.data?.is_valid === true) {
+    //                 setUsername(data.data.username)
+    //                 document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth'});
+    //             }
+    //         }).catch(error => {
+    //             // Tangani error jika terjadi kesalahan dalam permintaan API
+    //             // console.error('Error:', error);
+    //         })
+    //     }
+    //     setSelectedProduct(product.id)
+    //     setSelectedProductName(product.product_name)
+    //     setSelectedProductCode(product.buyer_sku_code)
+    //     setPaymentPrice(product.selling_price)
+    //     if (qtyMinimum !== null || qtyMinimum > 0){
+    //         setAmount(parseInt(product.selling_price*qtyMinimum))
+    //     }else {
+    //         setAmount(parseInt(product.selling_price))
+    //     }
+    // }
 
-        validateInputs()
+    function handleProductButton(e, product) {
+        console.log("handleProductButton called");
+        e.preventDefault();
+
+        let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '');
+        console.log("Initial gamecode:", gamecode);
+
+        let concatenatedValues = Object.values(values).join('');
+        console.log("Concatenated values:", concatenatedValues);
+
+        validateInputs();
+        console.log("Inputs validated");
 
         if (gamecode === 'mobilelegends') {
-            gamecode = 'mobilelegend'
+            gamecode = 'mobilelegend';
+            console.log("Gamecode adjusted for mobile legends:", gamecode);
         }
-        e.preventDefault()
+
         if (gamecode === 'mobilelegend' || gamecode === 'freefire') {
+            console.log("Making API request for gamecode:", gamecode);
             axios.post('/api/checkusername', {
                 brand_name: gamecode,
                 user_id: concatenatedValues
             }).then(response => {
-                // Tangani respons yang diterima dari API
+                console.log("API response received:", response);
                 const data = response.data;
                 if (data.status === 0 && data.rc === 2) {
-                    document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
+                    console.log("Data not found:", data.error_msg);
+                    document.getElementById('values-input').scrollIntoView({ behavior: 'smooth' });
                     setMessage(`${data.error_msg}`);
                     setIsAlert(true);
-                    return
-                    // alert('Data tidak ditemukan'); // Tampilkan alert jika data tidak ditemukan
+                    return;
                 }
                 if (data?.data?.is_valid === true) {
-                    setUsername(data.data.username)
-                    document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth'});
+                    console.log("Username is valid:", data.data.username);
+                    setUsername(data.data.username);
+                    document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
                 }
             }).catch(error => {
-                // Tangani error jika terjadi kesalahan dalam permintaan API
-                // console.error('Error:', error);
-            })
+                console.error("API request error:", error);
+            });
         }
-        setSelectedProduct(product.id)
-        setSelectedProductName(product.product_name)
-        setSelectedProductCode(product.buyer_sku_code)
-        setPaymentPrice(product.selling_price)
-        if (qtyMinimum !== null || qtyMinimum > 0){
-            setAmount(parseInt(product.selling_price*qtyMinimum))
-        }else {
-            setAmount(parseInt(product.selling_price))
+
+        console.log("Setting selected product details:");
+        console.log("Product ID:", product.id);
+        console.log("Product Name:", product.product_name);
+        console.log("Product Code:", product.buyer_sku_code);
+        console.log("Selling Price:", product.selling_price);
+
+        setSelectedProduct(product.id);
+        setSelectedProductName(product.product_name);
+        setSelectedProductCode(product.buyer_sku_code);
+        setPaymentPrice(product.selling_price);
+
+        if (qtyMinimum !== null || qtyMinimum > 0) {
+            console.log("Using quantity minimum:", qtyMinimum);
+            setAmount(parseInt(product.selling_price * qtyMinimum));
+        } else {
+            console.log("Using default selling price");
+            setAmount(parseInt(product.selling_price));
         }
+
+        console.log("handleProductButton execution completed");
     }
+
 
     function handlePaymentButton(e, channel) {
         e.preventDefault()

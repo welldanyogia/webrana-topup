@@ -89,7 +89,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/brand/{id}',[\App\Http\Controllers\DetailController::class,'show'])->name('detail');
         Route::get('/transaction/{id}',[\App\Http\Controllers\TransactionController::class,'show'])->name('detail.transaction');
 //Route::get('/history',[\App\Http\Controllers\TransactionHistoryController::class,'index'])->name('transaction.history');
-        Route::middleware('throttle:10,1')->post('/pay',[\App\Http\Controllers\TransactionController::class,'createTransaction'])->name('tripay.create.transaction');
+//        Route::middleware('throttle:10,1')->post('/pay',[\App\Http\Controllers\TransactionController::class,'createTransaction'])->name('tripay.create.transaction');
+        Route::post('/pay',[\App\Http\Controllers\TransactionController::class,'createTransaction'])->name('tripay.create.transaction');
         Route::get('/transactions/history',[\App\Http\Controllers\TransactionHistoryController::class,'index'])->name('history');
         Route::post('/transactions/history', [TransactionHistoryController::class, 'search'])->name('transactions.search');
 

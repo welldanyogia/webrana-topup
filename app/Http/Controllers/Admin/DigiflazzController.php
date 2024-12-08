@@ -204,9 +204,9 @@ class DigiflazzController extends Controller
 
             foreach ($priceList as $item) {
                 // Check if buyer_sku_code starts with "WS"
-                if (!Str::startsWith($item['buyer_sku_code'], 'WS')) {
-                    continue; // Skip processing if it doesn't start with "WS"
-                }
+//                if (!Str::startsWith($item['buyer_sku_code'], )) {
+//                    continue; // Skip processing if it doesn't start with "WS"
+//                }
 
                 $status = $item['seller_product_status'] && $item['buyer_product_status'];
 
