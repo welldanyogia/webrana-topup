@@ -29,12 +29,8 @@ export default function GuestDashboard(props) {
             }
             <div className="py-12">
 
-                <div className="mx-auto max-w-7xl space-y-8 sm:px-6 lg:px-8 dark:text-white">
+                <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8 dark:text-white">
                     <CarouselHero/>
-                    <div className="text-center py-6">
-                        <h1 className="text-2xl sm:text-3xl font-bold text-primary-800 dark:text-white">Beli Voucher Game &amp; Pulsa Online</h1>
-                        <p className="text-primary-600 dark:text-neutral-300 mt-2">Transaksi cepat, aman dan terpercaya layaknya Codashop.</p>
-                    </div>
                     <BrandSection/>
 
                 <SigninModal />

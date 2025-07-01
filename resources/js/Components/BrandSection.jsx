@@ -73,14 +73,12 @@ function BrandSection() {
                                             alt={card.title}
                                         />
                                         {hoveredButton === index && (
-                                            <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center">
-                                                <span className="px-4 py-2 bg-secondary-600 text-white text-sm font-semibold rounded-lg">Top Up Now</span>
+                                            <div className="absolute inset-0 rounded-xl bg-black/60 flex flex-col items-center justify-center space-y-2">
+                                                <span className="text-white text-sm font-bold">{card.brand_name}</span>
+                                                <span className="px-3 py-1 bg-secondary-600 text-white text-xs font-semibold rounded-md">Top Up</span>
                                             </div>
                                         )}
                                     </Link>
-                                    <div>
-                                    <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-white text-center font-bold mx-auto max-sm:hidden`}>{card.brand_name}</h1>
-                                    </div>
                                 </div>
                             ))}
             </div>

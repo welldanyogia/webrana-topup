@@ -3,6 +3,7 @@ import { usePage } from "@inertiajs/react";
 
 export default function CarouselHero() {
     const { banners } = usePage().props;
+    const appName = import.meta.env.VITE_APP_NAME;
 
     useEffect(() => {
         // Initialize the carousel using any JavaScript library if required
@@ -18,12 +19,11 @@ export default function CarouselHero() {
                 <div className="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700">
                     {
                         banners && banners.map((banner, index) => (
-                            <div key={index} className="hs-carousel-slide flex-shrink-0 w-full p-2">
-                                <div className="flex justify-center h-full">
-                                    <img className="rounded-xl"
-                                         src={`/${banner.banner_url}`}
-                                         alt={`Banner ${index + 1}`}
-                                    />
+                            <div key={index} className="hs-carousel-slide relative flex-shrink-0 w-full">
+                                <img className="w-full h-96 sm:h-[28rem] object-cover rounded-xl" src={`/${banner.banner_url}`} alt={`Banner ${index + 1}`}/>
+                                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-4 rounded-xl">
+                                    <h2 className="text-white text-2xl sm:text-3xl font-bold drop-shadow">Top Up Game &amp; Pulsa</h2>
+                                    <p className="mt-2 text-white text-sm sm:text-base drop-shadow">Transaksi cepat &amp; terpercaya di {appName}</p>
                                 </div>
                             </div>
                         ))
