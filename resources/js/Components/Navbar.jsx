@@ -8,8 +8,8 @@ export default function Navbar() {
     const [activePage, setActivePage] = useState('');
     return(
         // ========== HEADER =========
-        <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 py-7 max-sm:py-1 w-full">
-            <nav className="relative max-w-7xl w-full flex flex-wrap md:grid md:grid-cols-12 basis-full items-center px-4 md:px-6  mx-auto" aria-label="Global">
+        <header className="bg-gradient-to-b from-primary-50 to-white dark:from-primary-dark-900 dark:to-primary-dark-800 flex flex-wrap md:justify-start md:flex-nowrap z-50 py-5 max-sm:py-2 w-full shadow-sm">
+            <nav className="relative max-w-7xl w-full flex flex-wrap md:grid md:grid-cols-12 basis-full items-center px-4 md:px-6 mx-auto" aria-label="Global">
                 <div className="md:col-span-3">
                     {/*// <!-- Logo -->*/}
                     <a className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
@@ -32,11 +32,11 @@ export default function Navbar() {
                 <div className="flex items-center gap-x-2 ms-auto py-1 md:ps-6 md:order-3 md:col-span-3">
                     <div className='max-sm:hidden space-x-4'>
                     <button
-                        type="button" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-primary-200 text-black hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white" data-hs-overlay="#hs-basic-modal">
+                        type="button" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-primary-300 bg-white text-primary-800 hover:bg-primary-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-primary-dark-700 dark:text-white" data-hs-overlay="#hs-basic-modal">
                             Sign in
                     </button>
                     <button data-hs-overlay="#hs-modal-signup"
-                        type="submit" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-secondary-400 text-black hover:bg-secondary-500 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-secondary-500">
+                        type="submit" className="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-gradient-to-r from-secondary-400 to-secondary-500 text-black hover:to-secondary-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none">
                         Sign up
                     </button>
                     </div>
@@ -69,14 +69,14 @@ export default function Navbar() {
                         <div className='grid grid-cols-2 gap-4 sm:hidden'>
                             <button
                                 type="button"
-                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-primary-200 text-black hover:bg-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white"
+                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-primary-300 bg-white text-primary-800 hover:bg-primary-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-primary-dark-700 dark:text-white"
                                 data-hs-overlay="#hs-basic-modal">
                                 Sign in
                             </button>
                             <button
                                 type="submit"
                                 data-hs-overlay="#hs-modal-signup"
-                                className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-secondary-400 text-black hover:bg-secondary-500 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-secondary-500">
+                                className="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-gradient-to-r from-secondary-400 to-secondary-500 text-black hover:to-secondary-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none">
                                 Sign up
                             </button>
                         </div>

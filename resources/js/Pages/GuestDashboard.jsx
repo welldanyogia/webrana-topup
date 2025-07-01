@@ -29,7 +29,7 @@ export default function GuestDashboard(props) {
             }
             <div className="py-12">
 
-                <div className="mx-auto max-w-7xl space-y-8 sm:px-6 lg:px-8 dark:text-white">
+                <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8 dark:text-white">
                     <CarouselHero/>
                     <BrandSection/>
 

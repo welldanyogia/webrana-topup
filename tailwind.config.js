@@ -29,10 +29,8 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                'primary' : colors.blue,
-                'primary-dark' : colors.blue,
-                // 'primary' : colors.blue,
-                // 'primary-dark' : colors.blue,
+                'primary' : colors.orange,
+                'primary-dark' : colors.orange,
                 'secondary' : colors.lime,
                 'blue': {
                     '50': '#e8efff',
