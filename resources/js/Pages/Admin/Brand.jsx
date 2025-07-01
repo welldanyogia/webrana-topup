@@ -394,6 +394,7 @@ export default function Brand() {
 
                                     >
                                         <option value="">Choose</option>
+                                        <option value='otomatis'>Otomatis</option>
                                         <option value='digiflazz'>Digiflazz</option>
                                         <option value='manual'>Manual</option>
                                     </select>

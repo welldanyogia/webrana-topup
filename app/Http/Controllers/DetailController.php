@@ -39,10 +39,14 @@ class DetailController extends Controller
         $brand = Brand::where('brand_id', $id)
             ->with(['products' => function ($query) {
                 $query->select('*')
+                    ->with(['accounts' => function ($query) {
+                        $query->where('sold', false); // Hanya ambil accounts yang sold-nya false
+                    }])
                     ->join('types', 'products.type_id', '=', 'types.type_id')
                     ->orderBy('products.selling_price', 'ASC'); // Mengurutkan produk berdasarkan harga termurah
             }])
             ->first();
+
         $formInputs = FormInputBrand::where('brand_id', $id)->with('options')->get();
 
         $activeChannels = TripayPaymentChannel::where('active', 1)->get();

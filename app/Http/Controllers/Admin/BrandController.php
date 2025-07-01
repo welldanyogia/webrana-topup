@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\FormInputBrand;
@@ -41,7 +42,7 @@ class BrandController extends Controller
             'category_id' => 'required|string',
             'brand_status' => 'required|integer',
             'image_url' => 'nullable|string',
-            'processed_by' => 'required|in:manual,digiflazz' // Tambahkan validasi untuk processed_by
+            'processed_by' => 'required|in:manual,digiflazz,otomatis' // Tambahkan validasi untuk processed_by
         ]);
 
         // Buat objek Brand baru dengan menggunakan Eloquent
@@ -63,32 +64,57 @@ class BrandController extends Controller
      */
     public function show(string $id)
     {
+        // Initialize $accounts to avoid undefined variable error
+        $accounts = collect();
+
         $brand = Brand::where('brand_id', $id)
             ->with(['products', 'category'])
             ->first();
-//        $brand = Brand::find($id)->with('products')->get();;
+
+        // Paginate products for the brand and dynamically update product statuses
         $products = Product::where('brand_id', $id)
-            ->with('type')
+            ->with('type', 'accounts')
             ->orderBy('price', 'asc')
-            ->paginate();
+            ->paginate(); // Adjust the number per page as needed
+
+        // Update product statuses dynamically after retrieving paginated results
+        foreach ($products as $product) {
+            if ($product->accounts->where('sold', false)->count() === 0) {
+                $product->updateQuietly(['product_status' => false]);
+            }else{
+                $product->updateQuietly(['product_status' => true]);
+            }
+        }
+
+        // Retrieve all products for the brand (without pagination)
         $productsAll = Product::where('brand_id', $id)
-            ->with('type')
-            ->orderBy('price', 'asc')->get();
-        $formInputs = FormInputBrand::where('brand_id',$id)->with('options')->get();
-//        $optionsInput = OptionSelectInput::where('form_input_id',$formInputs->id)->get();
+            ->with('type', 'accounts')
+            ->orderBy('price', 'asc')
+            ->get();
+
+
+        $formInputs = FormInputBrand::where('brand_id', $id)->with('options')->get();
         $categories = Category::all();
 
-        return Inertia::render('Admin/DetailBrand',[
-//            'brands' => $brands,
+        if ($brand && $brand->products) {
+            // Get the product_ids from the brand's products
+            $productIds = $brand->products->pluck('id'); // Assuming 'id' is the primary key of the product
+
+            // Retrieve the accounts with product_id matching the product_ids in the brand
+            $accounts = Account::whereIn('product_id', $productIds)->with('product')->get();
+        }
+
+        return Inertia::render('Admin/DetailBrand', [
             'brand' => $brand,
             'products' => $products,
             'formInputs' => $formInputs,
-//            'optionsInput' => $optionsInput,
             'flash' => session('flash'),
             'categories' => $categories,
             'productsAll' => $productsAll,
+            'accounts' => $accounts // Will always have a value (either empty or populated)
         ]);
     }
+
 
     /**
      * Update the specified resource in storage.

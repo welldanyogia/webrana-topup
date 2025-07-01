@@ -13,9 +13,10 @@ import {Inertia} from "@inertiajs/inertia";
 import AddFormInputModal from "@/Components/AddFormInputModal.jsx";
 import QuillRichTextEditor from "@/Components/QuillRichTextEditor.jsx";
 import {OrderModal} from "@/Components/order-dialog.jsx";
+import AddAccount from "@/Components/AddAccount.jsx";
 
 export default function DetailBrand() {
-    const {flash, brand, categories, products,productsAll, formInputs} = usePage().props
+    const {flash, brand, categories, products, accounts, productsAll, formInputs} = usePage().props
     const [alertVisible, setAlertVisible] = useState(true);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isAddFormModalOpen, setIsAddFormModalOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function DetailBrand() {
     const [productNames, setProductNames] = useState({})
     const [productSellingPrices, setProductSellingPrices] = useState({})
     const [keyword, setKeyword] = useState('');
-    const [model,setModel] = useState(brand.brand_desc);
+    const [model, setModel] = useState(brand.brand_desc);
     const [isOrderOpen, setIsOrderOpen] = useState(false)
     const [values, setValues] = useState({
         brand_name: brand.brand_name,
@@ -63,8 +64,18 @@ export default function DetailBrand() {
         desc: '',
         product_status: ''
     });
+    const [dataAccStore, setDataAccStore] = useState({
+        type: '',
+        email: '',
+        password: '',
+        profile: '',
+        pin: '',
+        duration: '',
+        product_id: '',
+    });
 
-    const handleModelChange= (event)=>{
+
+    const handleModelChange = (event) => {
         setModel(event)
         setValues({
             ...values,
@@ -72,11 +83,10 @@ export default function DetailBrand() {
         })
     }
 
-    const replaceClass = (string) =>{
+    const replaceClass = (string) => {
         return string.replace(/class=/g, 'className=');
     }
 
-    // console.log(model)
 
     const handleIncrement = () => {
         setValues((prevValues) => ({
@@ -152,6 +162,17 @@ export default function DetailBrand() {
             product_status: ''
         });
     };
+    const handleResetAcc = () => {
+        setDataAccStore({
+            type: '',
+            email: '',
+            password: '',
+            profile: '',
+            pin: '',
+            duration: '',
+            product_id: '',
+        });
+    };
 
     useEffect(() => {
         // Inisialisasi state dengan nama kategori dari props
@@ -182,7 +203,7 @@ export default function DetailBrand() {
                 [key]: e.target.checked ? 1 : 0,
             })
         }
-        if (key !== 'brand_image' && key !== 'mass_profit_status'&& key !== 'qty_status') {
+        if (key !== 'brand_image' && key !== 'mass_profit_status' && key !== 'qty_status') {
             setValues({
                 ...values,
                 [key]: value,
@@ -308,82 +329,103 @@ export default function DetailBrand() {
             product.buyer_sku_code.toLowerCase().includes(keyword.toLowerCase())
         );
     }) : [];
+    const filteredAccounts = accounts && accounts && keyword.length > 0 ? accounts.filter(account => {
+        return (
+            account.email
+        ) && (
+            account.email.toLowerCase().includes(keyword.toLowerCase())
+        );
+    }) : [];
+
 
     function renderProductRow(product, index) {
         return (
             <>
-            <OrderModal product={product} isOpen={isOrderOpen}/>
-            <tr key={product.id}>
-                <td className="size-px whitespace-nowrap">
-                    <div className="ps-6 py-3">
+                <OrderModal product={product} isOpen={isOrderOpen}/>
+                <tr key={product.id}>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="ps-6 py-3">
                         <span
                             className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{index + 1}</span>
-                    </div>
-                </td>
-                <td className="whitespace-nowrap">
-                    <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
-                        <div className="flex items-center gap-x-3">
-                            <div className="max-w-sm space-y-3">
-                                <input type="text"
-                                       value={productNames[product.id] || ''}
-                                       onChange={(e) => handleInputNameChange(e, product.id)}
-                                       className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                       placeholder="This is placeholder"/>
+                        </div>
+                    </td>
+                    <td className="whitespace-nowrap">
+                        <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                            <div className="flex items-center gap-x-3">
+                                <div className="max-w-sm space-y-3">
+                                    <input type="text"
+                                           value={productNames[product.id] || ''}
+                                           onChange={(e) => handleInputNameChange(e, product.id)}
+                                           className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                           placeholder="This is placeholder"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-                <td className="h-px w-72 whitespace-nowrap">
-                    <div className="px-6 py-3">
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
                         <span
                             className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.buyer_sku_code}</span>
-                    </div>
-                </td>
-                <td className="size-px whitespace-nowrap">
-                    <div className="px-6 py-3">
+                        </div>
+                    </td>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-3">
                         <span
                             className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500'}`}>
                             {product.type.type_name}
                         </span>
-                    </div>
-                </td>
-                <td className="h-px w-72 whitespace-nowrap">
-                    <div className="px-6 py-3">
+                        </div>
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
                         <span
                             className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.price)}</span>
-                    </div>
-                </td>
-                <td className="whitespace-nowrap">
-                    <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
-                        <div className="flex items-center gap-x-3">
-                            <div className="max-w-sm space-y-3">
-                                <input type="text"
-                                       value={productSellingPrices[product.id] || ''}
-                                       onChange={(e) => handleInputSellingPriceChange(e, product.id)}
-                                       className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                       placeholder="Masukkan harga jual"/>
+                        </div>
+                    </td>
+                    <td className="whitespace-nowrap">
+                        <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                            <div className="flex items-center gap-x-3">
+                                <div className="max-w-sm space-y-3">
+                                    <input type="text"
+                                           value={productSellingPrices[product.id] || ''}
+                                           onChange={(e) => handleInputSellingPriceChange(e, product.id)}
+                                           className="py-3 px-4 block w-min-60 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                           placeholder="Masukkan harga jual"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-                <td className="h-px w-72 whitespace-nowrap">
-                    <div className="px-6 py-3">
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
                         <span
                             className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{formatRupiah(product.selling_price - product.price)}</span>
-                    </div>
-                </td>
-                {
-                    brand.processed_by === 'digiflazz' && (
-                        <td className="h-px w-72 whitespace-nowrap">
-                            <div className="px-6 py-3">
+                        </div>
+                    </td>
+                    {
+                        brand.processed_by === 'digiflazz' && (
+                            <td className="h-px w-72 whitespace-nowrap">
+                                <div className="px-6 py-3">
                                 <span
                                     className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{product.seller_name}</span>
-                            </div>
-                        </td>
-                    )
-                }
-                <td className="size-px whitespace-nowrap">
-                    <div className="px-6 py-3">
+                                </div>
+                            </td>
+                        )
+                    }
+                    {
+                        brand.category.category_name === 'akun' || brand.category.category_name === 'AKUN' && (
+                            <td className="h-px w-72 whitespace-nowrap">
+                                <div className="px-6 py-3">
+                                <span
+                                    className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
+    {product.accounts.filter(account => !account.sold).length}
+</span>
+
+                                </div>
+                            </td>
+                        )
+                    }
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-3">
                         <span
                             className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${product.product_status ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
                             <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
@@ -394,10 +436,10 @@ export default function DetailBrand() {
                             </svg>
                             {product.product_status ? 'Active' : 'Nonactive'}
                         </span>
-                    </div>
-                </td>
-                <td className="size-px whitespace-nowrap">
-                    <div className="px-6 py-3">
+                        </div>
+                    </td>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-3">
                         <span
                             className="text-sm text-gray-500 dark:text-neutral-500">{new Date(product.updated_at).toLocaleDateString('en-US', {
                             year: 'numeric',
@@ -407,58 +449,174 @@ export default function DetailBrand() {
                             minute: 'numeric',
                             second: 'numeric'
                         })}</span>
-                    </div>
-                </td>
-                <td className="size-px whitespace-nowrap">
-                    <div className="px-6 py-1.5 flex space-x-4">
-                        <div className="hs-tooltip flex items-center">
-                            <input type="checkbox" checked={product.product_status}
-                                   onChange={(e) => {
-                                       handleCheckboxProductChange(e, product)
-                                   }}
-                                   id="hs-small-switch"
-                                   className="relative w-[35px] h-[21px] bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
+                        </div>
+                    </td>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-1.5 flex space-x-4">
+                            <div className="hs-tooltip flex items-center">
+                                <input type="checkbox" checked={product.product_status}
+                                       onChange={(e) => {
+                                           handleCheckboxProductChange(e, product)
+                                       }}
+                                       id="hs-small-switch"
+                                       className="relative w-[35px] h-[21px] bg-gray-100 border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-600
                                                            before:inline-block before:size-4 before:bg-white checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200 dark:before:bg-neutral-400 dark:checked:before:bg-blue-200"/>
-                            {/*<label htmlFor="hs-tooltip-example"*/}
-                            {/*       className="text-sm text-gray-500 ms-3 dark:text-neutral-400">*/}
-                            {/*    {category.category_status === true ? "Brand Active" : "Brand Nonactive"}*/}
-                            {/*</label>*/}
-                            <div
-                                className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
-                                role="tooltip">
-                                {product.product_status === true ? "Nonactive Brand" : "Activated Brand"}
+                                {/*<label htmlFor="hs-tooltip-example"*/}
+                                {/*       className="text-sm text-gray-500 ms-3 dark:text-neutral-400">*/}
+                                {/*    {category.category_status === true ? "Brand Active" : "Brand Nonactive"}*/}
+                                {/*</label>*/}
+                                <div
+                                    className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
+                                    role="tooltip">
+                                    {product.product_status === true ? "Nonactive Brand" : "Activated Brand"}
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button"
+                                        onClick={(e) => {
+                                            handleSave(e, product)
+                                        }}
+                                        className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
+                                    Save
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button"
+                                        onClick={(e) => {
+                                            handleDelete(product.id)
+                                        }}
+                                        className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
+                                    Delete
+                                </button>
                             </div>
                         </div>
-                        <div>
-                            <button type="button"
-                                    onClick={(e) => {
-                                        handleSave(e, product)
-                                    }}
-                                    className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
-                                Save
-                            </button>
-                        </div>
-                        <div>
-                            <button type="button"
-                                    onClick={(e) => {
-                                        handleDelete(product.id)
-                                    }}
-                                    className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </td>
-                {/*<EditProductModal product={product}/>*/}
+                    </td>
+                    {/*<EditProductModal product={product}/>*/}
 
-            </tr>
+                </tr>
+            </>
+        )
+    }
+
+    function renderAccountRow(account, index) {
+        return (
+            <>
+                <OrderModal product={account} isOpen={isOrderOpen}/>
+                <tr key={index}>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="ps-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{index + 1}</span>
+                        </div>
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{account.product.buyer_sku_code}</span>
+                        </div>
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{account.email}</span>
+                        </div>
+                    </td>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500'}`}>
+                            {account.password}
+                        </span>
+                        </div>
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{account.profile}</span>
+                        </div>
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{account.pin}</span>
+                        </div>
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{account.duration}</span>
+                        </div>
+                    </td>
+                    <td className="h-px w-72 whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{account.duration_left}</span>
+                        </div>
+                    </td>
+                    {/*<td className="h-px w-72 whitespace-nowrap">*/}
+                    {/*    <div className="px-6 py-3">*/}
+                    {/*    <span*/}
+                    {/*        className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">{account.sold}</span>*/}
+                    {/*    </div>*/}
+                    {/*</td>*/}
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className={`py-1 px-1.5 inline-flex rounded-full items-center gap-x-1 text-xs font-medium ${!account.sold ? 'bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500' : 'bg-gray-100 text-red-800 dark:bg-red-500/10 dark:text-red-500'}`}>
+                            <svg className="size-2.5" xmlns="http://www.w3.org/2000/svg"
+                                 width="16" height="16" fill="currentColor"
+                                 viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>
+                            {account.sold ? 'Sold' : 'Available'}
+                        </span>
+                        </div>
+                    </td>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-3">
+                        <span
+                            className="text-sm text-gray-500 dark:text-neutral-500">{new Date(account.updated_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            second: 'numeric'
+                        })}</span>
+                        </div>
+                    </td>
+                    <td className="size-px whitespace-nowrap">
+                        <div className="px-6 py-1.5 flex space-x-4">
+                            <div>
+                                <button type="button"
+                                        onClick={(e) => {
+                                            handleSave(e, account)
+                                        }}
+                                        className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
+                                    Save
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button"
+                                        onClick={(e) => {
+                                            handleDelete(account.id)
+                                        }}
+                                        className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none dark:text-red-500 dark:hover:text-red-400">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                    {/*<EditProductModal product={product}/>*/}
+
+                </tr>
             </>
         )
     }
 
     const ProductsTable = () => {
         const hasFilteredProducts = keyword.length > 0 && filteredProducts.length > 0;
-
         return (
             <>
                 {hasFilteredProducts ? (
@@ -468,6 +626,22 @@ export default function DetailBrand() {
                 ) : (
                     products.data.map((product, index) => (
                         renderProductRow(product, index)
+                    ))
+                )}
+            </>
+        );
+    };
+    const AccountsTable = () => {
+        const hasFilteredAccounts = keyword.length > 0 && filteredAccounts.length > 0;
+        return (
+            <>
+                {hasFilteredAccounts ? (
+                    filteredAccounts.map((product, index) => (
+                        renderAccountRow(product, index)
+                    ))
+                ) : (
+                    accounts.map((product, index) => (
+                        renderAccountRow(product, index)
                     ))
                 )}
             </>
@@ -757,7 +931,7 @@ export default function DetailBrand() {
 
                                             {/*    /!*<p>{model}</p>*!/*/}
                                             {/*    /!*<div>*!/*/}
-                                                {/*/!*{Parser().parse(model)}*!/*/}
+                                            {/*/!*{Parser().parse(model)}*!/*/}
                                             {/*    /!*    model*!/*/}
                                             {/*    /!*    <div dangerouslySetInnerHTML={{__html: replaceClass(model)}}></div>*!/*/}
                                             {/*    /!*</div>*!/*/}
@@ -1064,6 +1238,18 @@ export default function DetailBrand() {
                                             </th>
                                         )
                                     }
+                                    {
+                                        brand.category.category_name === 'akun' || brand.category.category_name === 'AKUN' && (
+                                            <th scope="col" className="px-6 py-3 text-start">
+                                                <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            Stok AKUN
+                                          </span>
+                                                </div>
+                                            </th>
+                                        )
+                                    }
                                     <th scope="col" className="px-6 py-3 text-start">
                                         <div className="flex items-center gap-x-2">
                                           <span
@@ -1160,6 +1346,243 @@ export default function DetailBrand() {
                 </div>
                 {/*<!-- End Footer */}
             </div>
+            {
+                brand.category.category_name === 'akun' || brand.category.category_name === 'AKUN' && (
+                    <>
+                        <AddAccount brand={brand} categories={categories} products={productsAll}
+                                    handleReset={handleResetAcc} setDataStore={setDataAccStore}
+                                    dataStore={dataAccStore}/>
+                        <div className="flex flex-col">
+                            <div
+                                className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 dark:border-neutral-700">
+                                {/*<div>*/}
+                                {brand && (
+                                    <div key={brand.brand_id}>
+                                        <h2 className="text-xl font-semibold capitalize text-gray-800 dark:text-neutral-200">AKUN {brand.brand_name}</h2>
+                                        {/*{brand.products && brand.products.map((product) => (*/}
+                                        {/*    <p key={product.product_id}>{product.product_name}</p>*/}
+                                        {/*))}*/}
+                                        <p className="text-sm text-gray-600 dark:text-neutral-400">
+                                            Add AKUN {brand.brand_name} products, edit and more.
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/*</div>*/}
+
+                                <div>
+                                    <div className="inline-flex gap-x-2">
+                                        <div className="sm:block">
+                                            <label htmlFor="icon" className="sr-only">Search</label>
+                                            <div className="relative min-w-72 md:min-w-80">
+                                                <div
+                                                    className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                                                    <svg
+                                                        className="flex-shrink-0 size-4 text-gray-400 dark:text-neutral-400"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round">
+                                                        <circle cx="11" cy="11" r="8"/>
+                                                        <path d="m21 21-4.3-4.3"/>
+                                                    </svg>
+                                                </div>
+                                                <input type="text" id="icon" name="icon"
+                                                       className="py-2 px-4 ps-11 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                       placeholder="Search"
+                                                       onChange={(e) => setKeyword(e.target.value)}/>
+                                            </div>
+                                        </div>
+
+                                        <button type="button"
+                                                onClick={handleReset}
+                                                disabled={brand.processed_by === 'digiflazz'}
+                                                className="hs-collapse-toggle hs-collapse-open:bg-red-700 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                                                id="hs-basic-collapse" data-hs-collapse="#hs-acc-basic-collapse-heading">
+                                            <div className="hs-collapse-open:hidden flex">
+                                                Add Account
+                                            </div>
+                                            <div className="hs-collapse-open:block hidden flex">
+                                                Close
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="-m-1.5 overflow-x-auto">
+                                <div className="p-1.5 min-w-full inline-block align-middle">
+                                    <div
+                                        className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-neutral-800 dark:border-neutral-700">
+                                        {/*<!-- Header >*/}
+                                        <table
+                                            className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                            <thead className="bg-gray-50 dark:bg-neutral-800">
+                                            <tr>
+                                                <th scope="col" className="ps-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            No
+                                          </span>
+                                                    </div>
+                                                </th>
+
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            Product Code
+                                          </span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            EMAIL
+                                          </span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            PASSWORD
+                                          </span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            PROFILE
+                                          </span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            PIN
+                                          </span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            DURATION
+                                          </span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            DURATION LEFT
+                                          </span>
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            Status
+                                          </span>
+                                                    </div>
+                                                </th>
+
+
+                                                <th scope="col" className="px-6 py-3 text-start">
+                                                    <div className="flex items-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            Updated
+                                          </span>
+                                                    </div>
+                                                </th>
+
+                                                <th scope="col" className="px-6 py-3 text-end">
+                                                    <div className="flex items-center justify-center gap-x-2">
+                                          <span
+                                              className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                                            Action
+                                          </span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {
+                                                AccountsTable()
+                                            }
+                                            </tbody>
+                                        </table>
+                                        {/*{selectedProduct && (*/}
+                                        {/*    <EditProductModal product={selectedProduct}/>*/}
+                                        {/*// )}*/}
+                                    </div>
+                                </div>
+                            </div>
+                            {/*<!-- Footer */}
+                            <div
+                                className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
+                                <div>
+                                    <p className="text-sm text-gray-600 dark:text-neutral-400">
+                                                        <span
+                                                            className="font-semibold text-gray-800 dark:text-neutral-200">{products.total}</span> results
+                                    </p>
+
+                                </div>
+
+                                <div>
+                                    <div className="inline-flex gap-x-2">
+                                        {/*{products.links}*/}
+                                        <a
+                                            type="button"
+                                            href={products.prev_page_url ? products.prev_page_url : "#"}
+                                            className={`py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 ${!products.prev_page_url && 'disabled:opacity-50 disabled:pointer-events-none'}`}
+                                            disabled={products.prev_page_url != null}
+                                        >
+                                            <svg className="flex-shrink-0 size-4"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                 stroke="currentColor" strokeWidth="2"
+                                                 strokeLinecap="round"
+                                                 strokeLinejoin="round">
+                                                <path d="m15 18-6-6 6-6"/>
+                                            </svg>
+                                            Prev
+                                        </a>
+                                        <div
+                                            className="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                        >
+                                            {products.current_page}
+                                        </div>
+
+                                        <a type="button"
+                                           href={products.next_page_url ? products.next_page_url : "#"}
+                                           className="py-1.5 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800"
+                                           disabled={products.prev_page_url != null}
+                                        >
+                                            Next
+                                            <svg className="flex-shrink-0 size-4"
+                                                 xmlns="http://www.w3.org/2000/svg" width="24"
+                                                 height="24" viewBox="0 0 24 24" fill="none"
+                                                 stroke="currentColor" strokeWidth="2"
+                                                 strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="m9 18 6-6-6-6"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {/*<!-- End Footer */}
+                        </div>
+                    </>
+                )
+            }
         </AuthenticatedAdmin>
     )
 }

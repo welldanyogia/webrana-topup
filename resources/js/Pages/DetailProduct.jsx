@@ -13,7 +13,7 @@ import {Parser} from "html-to-react";
 import CarouselHero from "@/Components/CarouselHero.jsx";
 import Editor from "../../Editor.jsx";
 
-export default function DetailProduct({auth, brand,banners, formInputs, sortedGroupedChannels}) {
+export default function DetailProduct({auth, brand, banners, formInputs, sortedGroupedChannels}) {
     const [activeGroup, setActiveGroup] = useState(null);
     const [activeTab, setActiveTab] = useState(
         brand && brand.products && brand.products.length > 0 ? brand.products[0].type_id : null
@@ -52,15 +52,14 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
 
     const handleIncrement = () => {
         setQtyMinimum((prevQty) => prevQty + 1);
-        setAmount(parseInt((qtyMinimum+1)*paymentPrice))
+        setAmount(parseInt((qtyMinimum + 1) * paymentPrice))
     };
 
     const handleDecrement = () => {
         setQtyMinimum((prevQty) =>
             Math.max(prevQty - 1, brand.qty_minimum)
         ); // ensure qtyMinimum doesn't go below brand.qty_minimum
-        setAmount(parseInt((qtyMinimum-1)*paymentPrice))
-
+        setAmount(parseInt((qtyMinimum - 1) * paymentPrice))
 
 
     };
@@ -133,7 +132,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
 
     function price(amount, feeFlat, feePercent) {
         // setPaymentPriceWithFee(amount + feeFlat + (amount*(feePercent/100)))
-        return parseFloat(amount) + totalFee(amount,feeFlat,feePercent)
+        return parseFloat(amount) + totalFee(amount, feeFlat, feePercent)
     }
 
     function totalFee(amount, feeFlat, feePercent) {
@@ -236,53 +235,38 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
     // }
 
     function handleProductButton(e, product) {
-        console.log("handleProductButton called");
         e.preventDefault();
 
         let gamecode = brand.brand_name.toLowerCase().replace(/\s+/g, '');
-        console.log("Initial gamecode:", gamecode);
 
         let concatenatedValues = Object.values(values).join('');
-        console.log("Concatenated values:", concatenatedValues);
 
         validateInputs();
-        console.log("Inputs validated");
 
         if (gamecode === 'mobilelegends') {
             gamecode = 'mobilelegend';
-            console.log("Gamecode adjusted for mobile legends:", gamecode);
         }
 
         if (gamecode === 'mobilelegend' || gamecode === 'freefire') {
-            console.log("Making API request for gamecode:", gamecode);
             axios.post('/api/checkusername', {
                 brand_name: gamecode,
                 user_id: concatenatedValues
             }).then(response => {
-                console.log("API response received:", response);
                 const data = response.data;
                 if (data.status === 0 && data.rc === 2) {
-                    console.log("Data not found:", data.error_msg);
-                    document.getElementById('values-input').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('values-input').scrollIntoView({behavior: 'smooth'});
                     setMessage(`${data.error_msg}`);
                     setIsAlert(true);
                     return;
                 }
                 if (data?.data?.is_valid === true) {
-                    console.log("Username is valid:", data.data.username);
                     setUsername(data.data.username);
-                    document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('paymentSection').scrollIntoView({behavior: 'smooth'});
                 }
             }).catch(error => {
                 console.error("API request error:", error);
             });
         }
-
-        console.log("Setting selected product details:");
-        console.log("Product ID:", product.id);
-        console.log("Product Name:", product.product_name);
-        console.log("Product Code:", product.buyer_sku_code);
-        console.log("Selling Price:", product.selling_price);
 
         setSelectedProduct(product.id);
         setSelectedProductName(product.product_name);
@@ -290,14 +274,11 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
         setPaymentPrice(product.selling_price);
 
         if (qtyMinimum !== null || qtyMinimum > 0) {
-            console.log("Using quantity minimum:", qtyMinimum);
             setAmount(parseInt(product.selling_price * qtyMinimum));
         } else {
-            console.log("Using default selling price");
             setAmount(parseInt(product.selling_price));
         }
 
-        console.log("handleProductButton execution completed");
     }
 
 
@@ -319,7 +300,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
     }
 
     const renderProductTabs = (products) => {
-        (products)
+        console.log(products)
         const uniqueTypes = {};
         return products
             .filter(product => product && !uniqueTypes[product.type_id] && (uniqueTypes[product.type_id] = true))
@@ -348,24 +329,52 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                             // }
                             return (
                                 <button
-                                    className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'}`}
+                                    className={`relative flex p-3 w-full rounded-lg hover:bg-secondary-400 dark:hover:bg-secondary-600 ${selectedProduct === product.id ? 'bg-secondary-400 dark:bg-secondary-400 border-4 border-[#72057D]' : 'dark:bg-secondary-500 bg-secondary-500'} ${product.accounts.length === 0 ? 'overflow-hidden opacity-80': ''}`}
                                     key={product.id}
+                                    disabled={product.accounts.length === 0}
                                     onClick={(e) => handleProductButton(e, product)}
                                 >
-                                    <div className='flex flex-col max-sm:text-xs text-start'>
-                                        <div className='font-semibold flex flex-wrap w-full'>{productName}</div>
-                                        <div className='font-bold'>{formatRupiah(product.selling_price)}</div>
+                                    <div className="flex flex-col max-sm:text-xs text-start">
+                                        <div className="font-semibold flex flex-wrap w-full">{productName}</div>
+                                        <div className="font-bold">{formatRupiah(product.selling_price)}</div>
                                     </div>
-                                    {selectedProduct === product.id ? <span
-                                        className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white"><svg
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        className="size-6">
-                                      <path fillRule="evenodd"
-                                            d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                                            clipRule="evenodd"/>
-                                    </svg>
-                                    </span> : ''}
 
+                                    {/* Pita dekorasi miring */}
+                                    {
+                                        product.accounts.length === 0 && (
+                                            <div
+                                                className="absolute top-9 -right-6 bg-red-600 text-white text-xs font-semibold py-1 px-3 transform rotate-45"
+                                                style={{
+                                                    transformOrigin: 'top right',
+                                                    marginTop: '10px', // Adjust margin to fine-tune position
+                                                    marginRight: '10px', // Adjust margin to fine-tune position
+                                                }}
+                                            >
+                                                Stok Habis
+                                            </div>
+                                        )
+                                    }
+
+                                    {selectedProduct === product.id ? (
+                                        <span
+                                            className="absolute top-0 end-0 inline-flex items-center rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-[#72057D] text-white"
+                                        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+            >
+                <path
+                    fillRule="evenodd"
+                    d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                    clipRule="evenodd"
+                />
+            </svg>
+        </span>
+                                    ) : (
+                                        ''
+                                    )}
                                 </button>
                             )
                         })
@@ -408,14 +417,18 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 grid grid-cols-6  text-primary-900 dark:text-primary-dark-100 gap-6">
-                            <div
-                                className=' col-span-6 bg-primary-200 h-full max-sm:min-h-52 shadow-md rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800 h-40'>
-                                {/*<CarouselHero/>*/}
-                                <img className="rounded-xl w-full h-full"
-                                     src={`/${randomBanner.banner_url}`}
-                                     alt={`Banner ${randomIndex + 1}`}
-                                />
-                            </div>
+                            {
+                                banners.length > 0 && (
+                                    <div
+                                        className=' col-span-6 bg-primary-200 h-full max-sm:min-h-52 shadow-md rounded-md dark:shadow dark:shadow-secondary-400 dark:bg-primary-dark-800 h-40'>
+                                        {/*<CarouselHero/>*/}
+                                        <img className="rounded-xl w-full h-full"
+                                             src={`/${randomBanner.banner_url}`}
+                                             alt={`Banner ${randomIndex + 1}`}
+                                        />
+                                    </div>
+                                )
+                            }
                             <div className='col-span-2 max-md:col-span-6'>
                                 <div
                                     className="col-span-2 w-full h-fit flex flex-col px-7 py-7 gap-4 bg-primary-200 dark:bg-primary-dark-800 rounded-lg shadow-md shadow-secondary-400">
@@ -552,15 +565,19 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                     <div className="text-sm dark:text-white space-y-2">
                                         {
                                             brand.brand_desc !== null ? (
-                                                <Editor value={brand.brand_desc} toolbar={false} setValue={() => { }} readOnly={true} />
+                                                <Editor value={brand.brand_desc} toolbar={false} setValue={() => {
+                                                }} readOnly={true}/>
                                             ) : (
                                                 <>
                                                     <h4 className="text-sm font-bold">
-                                                        Order Produk {brand.brand_name} di {appName} Hanya Dalam Hitungan Detik!
+                                                        Order Produk {brand.brand_name} di {appName} Hanya Dalam
+                                                        Hitungan Detik!
                                                     </h4>
                                                     <p className="mt-3 text-sm font-sans text-primary-900 dark:text-neutral-100">
-                                                        {appName} adalah platform digital yang menyediakan berbagai produk digital seperti game,
-                                                        pulsa, paket data, dan e-money. Kami menawarkan layanan cepat, mudah, dan aman untuk memenuhi
+                                                        {appName} adalah platform digital yang menyediakan berbagai
+                                                        produk digital seperti game,
+                                                        pulsa, paket data, dan e-money. Kami menawarkan layanan cepat,
+                                                        mudah, dan aman untuk memenuhi
                                                         kebutuhan digital Anda.
                                                     </p>
                                                 </>
@@ -577,7 +594,8 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                             className="rounded-full font-bold border-neutral-800 dark:border-white border-2 px-2 py-0.5 text-sm dark:text-white">1
                                         </div>
                                         <div
-                                            className="dark:text-white font-bold text-center text-sm">Masukkan Detail Pesanan
+                                            className="dark:text-white font-bold text-center text-sm">Masukkan Detail
+                                            Pesanan
                                         </div>
                                     </div>
                                     <div className="text-xs text-start my-4 dark:text-white mx-auto">
@@ -665,7 +683,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                                     </div>
                                                     <div className="flex justify-end items-center gap-x-1.5">
                                                         <button type="button"
-                                                                onClick={()=> {
+                                                                onClick={() => {
                                                                     handleDecrement()
                                                                     // setAmount(parseInt(qtyMinimum*paymentPrice))
                                                                     setSelectedPayment(null);
@@ -685,7 +703,7 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                                             </svg>
                                                         </button>
                                                         <button type="button"
-                                                                onClick={()=> {
+                                                                onClick={() => {
                                                                     handleIncrement()
                                                                     // setAmount(parseInt(paymentPrice*qtyMinimum))
                                                                     setSelectedPayment(null);
@@ -765,7 +783,8 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                                                   strokeLinejoin="round" strokeWidth="2"
                                                                   d="M9 5 5 1 1 5"/>
                                                         </svg>
-                                                        <input className="hidden" id={`payment_type_${group.replace(/\s+/g, '_').toLowerCase()}`}
+                                                        <input className="hidden"
+                                                               id={`payment_type_${group.replace(/\s+/g, '_').toLowerCase()}`}
                                                                value={group.replace(/\s+/g, '_').toLowerCase()}
                                                                readOnly/>
                                                     </button>
@@ -806,8 +825,10 @@ export default function DetailProduct({auth, brand,banners, formInputs, sortedGr
                                                                         <div className="border-t-2">
                                                                             <h2 className="text-xs font-bold uppercase text-start">{channel.name}</h2>
                                                                             {
-                                                                                channel.interval  && (
-                                                                                    <p className="text-[8px] font-medium uppercase text-start">Pengecekan setiap {channel.interval} menit sekali</p>
+                                                                                channel.interval && (
+                                                                                    <p className="text-[8px] font-medium uppercase text-start">Pengecekan
+                                                                                        setiap {channel.interval} menit
+                                                                                        sekali</p>
                                                                                 )
                                                                             }
                                                                         </div>

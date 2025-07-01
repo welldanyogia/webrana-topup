@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/admin/brand/store/data',[\App\Http\Controllers\Admin\BrandController::class,'store']);
         Route::post('/admin/product/{id}',[\App\Http\Controllers\Admin\ProductController::class,'update']);
         Route::post('/admin/store/product', [ProductController::class, 'store']);
+        Route::post('/admin/store/account', [\App\Http\Controllers\Admin\AccountsController::class, 'store']);
         Route::post('/admin/product/{id}/destroy', [ProductController::class, 'destroy'])->name('admin.product.destroy');
         Route::get('/admin/transaction',[\App\Http\Controllers\Admin\TransactionController::class,'index']);
         Route::post('/admin/transaction/{id}/update-status', [TransactionController::class, 'updateStatus'])->name('admin.transactions.update-status');

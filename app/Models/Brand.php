@@ -15,7 +15,7 @@ class Brand extends Model
 
     protected $fillable = [
         'brand_id','brand_name','code','qty_status','qty_minimum', 'category_id','brand_status','brand_desc','image_url',
-        'processed_by', 'mass_profit', 'mass_profit_status','brand_desc'];
+        'processed_by', 'mass_profit', 'mass_profit_status','brand_desc','brand_type'];
 
     public function category()
     {
