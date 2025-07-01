@@ -67,7 +67,7 @@ function BrandSection() {
                                         <img
                                             className="rounded-xl"
                                             src={card.image_url ? card.image_url :
-                                                'https://placehold.co/120x200'
+                                                'https://placehold.co/150x150'
                                                 // 'https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2532&q=80'
                                         }
                                             alt={card.title}
