@@ -47,7 +47,7 @@ function BrandSection() {
                         key={tab.category_id}
                         id={`basic-tabs-${tab.category_id}`}
                         className={`${activeTab === tab.category_id ? '' : 'hidden'}
-                        grid grid-cols-10 max-md:grid-cols-6 sm:grid-cols-6 sm:gap-3 lg:grid-cols-10  max-sm:grid-cols-3 max-sm:gap-3`
+                        grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4`
                     }
                         role="tabpanel"
                         aria-labelledby={`basic-tabs-item-${tab.category_id}`}
@@ -58,7 +58,7 @@ function BrandSection() {
                                 <div>
                                     <Link
                                         key={card.brand_id}
-                                        className="relative shadow-sm rounded-xl grid-cols-1 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+                                        className="relative rounded-xl overflow-hidden shadow hover:shadow-lg transition-transform transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                                         href={`/brand/${card.brand_id}`}
                                         style={{backdropFilter: 'blur(10px)'}} // Efek blur pada latar belakang
                                         onMouseEnter={() => setHoveredButton(index)}
@@ -73,10 +73,8 @@ function BrandSection() {
                                             alt={card.title}
                                         />
                                         {hoveredButton === index && (
-                                            <div className="absolute flex-col gap-4 rounded-xl border-secondary-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
-                                                <img className='hidden dark:flex w-24 max-sm:w-10' src="/storage/logo_dark.png" alt="logo"/>
-                                                <img className='flex dark:hidden w-24 max-sm:w-10' src="/storage/logo_dark.png" alt="logo"/>
-                                                <h2 className='text-black dark:text-white text-center font-bold max-sm:hidden'>{card.brand_name}</h2>
+                                            <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/70 to-transparent flex items-center justify-center">
+                                                <span className="px-4 py-2 bg-secondary-600 text-white text-sm font-semibold rounded-lg">Top Up Now</span>
                                             </div>
                                         )}
                                     </Link>
