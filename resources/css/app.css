@@ -56,5 +56,5 @@ input,
 }
 
 body {
-    @apply bg-gradient-to-b from-primary-50 via-secondary-50 to-primary-100;
+    @apply bg-gradient-to-b from-neutral-900 via-neutral-800 to-neutral-900;
 }

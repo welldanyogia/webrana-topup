@@ -21,14 +21,14 @@ function BrandSection() {
             tab.brands.some(brand => brand.brand_status === 1) // Filter categories with at least one brand with brand_status 1
         );
     return (
-        <div className="w-full rounded-lg shadow-md">
-            <div className="border-b border-primary-200 px-4 dark:border-neutral-700">
+        <div className="w-full rounded-lg shadow-md bg-neutral-800/50">
+            <div className="border-b border-neutral-700 px-4">
                 <nav className="flex space-x-2 overflow-x-auto" aria-label="Tabs" role="tablist">
                     {filteredCategories && filteredCategories.map(tab => (
                         <button
                             key={tab.category_id}
                             type="button"
-                            className={`hs-tab-active:font-semibold hs-tab-active:border-secondary-600 hs-tab-active:text-secondary-600 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-md whitespace-nowrap text-primary-500 hover:text-secondary-600 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-secondary-500 ${activeTab === tab.category_id ? 'active' : ''}`}
+                            className={`hs-tab-active:font-semibold hs-tab-active:border-neutral-400 hs-tab-active:text-neutral-100 py-4 px-1 inline-flex items-center gap-x-2 border-b-2 border-transparent text-md whitespace-nowrap text-neutral-300 hover:text-neutral-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-neutral-200 ${activeTab === tab.category_id ? 'active' : ''}`}
                             id={`basic-tabs-item-${tab.category_id}`}
                             data-hs-tab={`#basic-tabs-${tab.category_id}`}
                             aria-controls={`basic-tabs-${tab.category_id}`}
@@ -58,7 +58,7 @@ function BrandSection() {
                                 <div>
                                     <Link
                                         key={card.brand_id}
-                                        className="relative shadow-sm rounded-xl grid-cols-1 focus:outline-none focus:ring-2 focus:ring-secondary-500"
+                                        className="relative shadow-sm rounded-xl grid-cols-1 focus:outline-none focus:ring-2 focus:ring-neutral-700"
                                         href={`/brand/${card.brand_id}`}
                                         style={{backdropFilter: 'blur(10px)'}} // Efek blur pada latar belakang
                                         onMouseEnter={() => setHoveredButton(index)}
@@ -73,15 +73,15 @@ function BrandSection() {
                                             alt={card.title}
                                         />
                                         {hoveredButton === index && (
-                                            <div className="absolute flex-col gap-4 rounded-xl border-secondary-500 border-4 inset-0 backdrop-blur flex items-center justify-center">
+                                            <div className="absolute flex-col gap-4 rounded-xl border-neutral-700 border-4 inset-0 backdrop-blur flex items-center justify-center bg-neutral-900/70">
                                                 <img className='hidden dark:flex w-24 max-sm:w-10' src="/storage/logo_dark.png" alt="logo"/>
                                                 <img className='flex dark:hidden w-24 max-sm:w-10' src="/storage/logo_dark.png" alt="logo"/>
-                                                <h2 className='text-black dark:text-white text-center font-bold max-sm:hidden'>{card.brand_name}</h2>
+                                                <h2 className='text-white text-center font-bold max-sm:hidden'>{card.brand_name}</h2>
                                             </div>
                                         )}
                                     </Link>
                                     <div>
-                                    <h1 className={`${hoveredButton === index && `hidden`} text-black dark:text-white text-center font-bold mx-auto max-sm:hidden`}>{card.brand_name}</h1>
+                                    <h1 className={`${hoveredButton === index && `hidden`} text-white text-center font-bold mx-auto max-sm:hidden`}>{card.brand_name}</h1>
                                     </div>
                                 </div>
                             ))}
