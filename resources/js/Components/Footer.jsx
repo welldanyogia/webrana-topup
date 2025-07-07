@@ -6,7 +6,7 @@ function Footer() {
     const appName = import.meta.env.VITE_APP_NAME;
     return (
         // <!-- ========== FOOTER ========== -->
-        <footer className="mt-20 w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto bg-gradient-to-r from-secondary-600 via-primary-500 to-secondary-600 text-white">
+        <footer className="mt-20 w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 text-white">
             {/*<!-- Grid */}
             <div className="grid grid-rows-3 grid-flow-col gap-4 md:grid-cols-3 lg:grid-cols-3 gap-x-20 gap-y-5 mb-10 overflow-hidden">
                 {/*<div className="col-span-full hidden lg:col-span-1 lg:block py-6">*/}
