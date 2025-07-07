@@ -19,11 +19,13 @@ export default function CarouselHero() {
                     {
                         banners && banners.map((banner, index) => (
                             <div key={index} className="hs-carousel-slide flex-shrink-0 w-full p-2">
-                                <div className="flex justify-center h-full">
-                                    <img className="rounded-xl"
-                                         src={`/${banner.banner_url}`}
-                                         alt={`Banner ${index + 1}`}
-                                    />
+                                <div className="relative flex justify-center h-full">
+                                    <img className="rounded-xl" src={`/${banner.banner_url}`} alt={`Banner ${index + 1}`}/>
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <h2 className="text-2xl md:text-4xl font-bold text-white drop-shadow">
+                                            Top up game favoritmu
+                                        </h2>
+                                    </div>
                                 </div>
                             </div>
                         ))

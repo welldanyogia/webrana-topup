@@ -29,11 +29,11 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                'primary' : colors.blue,
-                'primary-dark' : colors.blue,
-                // 'primary' : colors.blue,
-                // 'primary-dark' : colors.blue,
-                'secondary' : colors.lime,
+                // Update color palette to use warm orange tones similar to Codashop
+                'primary' : colors.orange,
+                'primary-dark' : colors.orange,
+                // Adjust secondary to a purple shade for complementary accents
+                'secondary' : colors.violet,
                 'blue': {
                     '50': '#e8efff',
                     '100': '#d5e1ff',
