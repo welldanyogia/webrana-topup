@@ -54,3 +54,7 @@ input,
 #editor {
     height: 130px;
 }
+
+body {
+    @apply bg-gradient-to-b from-primary-50 via-secondary-50 to-primary-100;
+}

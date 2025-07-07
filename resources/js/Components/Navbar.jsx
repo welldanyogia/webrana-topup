@@ -8,7 +8,7 @@ export default function Navbar() {
     const [activePage, setActivePage] = useState('');
     return(
         // ========== HEADER =========
-        <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 py-7 max-sm:py-1 w-full">
+        <header className="flex flex-wrap md:justify-start md:flex-nowrap z-50 py-7 max-sm:py-1 w-full bg-gradient-to-r from-secondary-600 via-primary-500 to-secondary-600 text-white">
             <nav className="relative max-w-7xl w-full flex flex-wrap md:grid md:grid-cols-12 basis-full items-center px-4 md:px-6  mx-auto" aria-label="Global">
                 <div className="md:col-span-3">
                     {/*// <!-- Logo -->*/}
